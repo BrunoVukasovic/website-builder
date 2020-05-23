@@ -50,6 +50,30 @@ const SiteController = {
       });
     }
   },
+  getSite: async (req: Request, res: Response) => {
+    const { slug } = req.params;
+    try {
+      const site = await SiteModel.findOne({ slug });
+      if (site) {
+        const pages = await PageModel.find({ siteID: site._id }).select(
+          "-siteID"
+        );
+        const navbar = await NavbarModel.findById(site.navbarID).select("-_id");
+        const siteToRender = {
+          slug: site.slug,
+          pages: pages,
+          navbar,
+        };
+
+        res.status(200).send(siteToRender);
+      } else {
+        res.status(500).send("Couldn't find site");
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Couldn't fetch site");
+    }
+  },
 };
 
 export default SiteController;
