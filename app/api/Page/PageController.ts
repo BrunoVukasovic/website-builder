@@ -1,60 +1,88 @@
 import { Request, Response } from "express";
-import { Types } from "mongoose";
 
 import PageModel from "./PageModel";
 import SiteModel from "../Site";
 
-import NavbarModel, { Navbar } from "../Navbar";
+import { UpdatePagesPayload, AddNewPagesPayload } from "../../models";
 
 const PageController = {
-  addNewPage: async (req: Request, res: Response) => {
-    console.log("SiteController");
-    const { container } = req.body;
-    const { siteSlug, pageSlug } = req.params;
+  addNew: async (req: Request, res: Response) => {
+    const { newPages } = req.body as AddNewPagesPayload;
+    const { siteSlug } = req.params;
+    try {
+      const site = await SiteModel.findOne({ slug: siteSlug });
 
-    if (container) {
+      if (site) {
+        await Promise.all(
+          newPages.map(
+            async (newPage) =>
+              await PageModel.create({
+                name: newPage.name,
+                position: newPage.position,
+                container: newPage.container,
+                siteID: site._id,
+              })
+          )
+        );
+
+        res.status(200).send("Pages created");
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Error while creating pages.");
+    }
+  },
+  update: async (req: Request, res: Response) => {
+    const { updatedPages } = req.body as UpdatePagesPayload;
+    const { siteSlug } = req.params;
+    if (updatedPages) {
       try {
-        const site = await SiteModel.findOne({ siteSlug });
+        const site = await SiteModel.findOne({ slug: siteSlug });
         if (site) {
-          const navbar = await NavbarModel.findById(site.navbarID);
+          //@TODO nije dobro, mora trazit sve stranice
+          const currentPages = await PageModel.find({ siteID: site._id });
 
-          if (
-            navbar &&
-            navbar.navbarItems.find((item) => item.name === pageSlug)
-          ) {
-            // updatePage(container, ...sta jos triba)
-          } else {
-            // kreiraj praznu starnicu
-            // dodaj navbarItem
-            // updatePage(container, ...sta jos triba)
+          console.log(site);
+          console.log(currentPages);
+          if (currentPages) {
+            await Promise.all(
+              currentPages.map(async (currentPage) => {
+                const updatedPage = updatedPages.find(
+                  //@TODO vidi moze li === kad napravis frontend
+                  (page) => page._id == currentPage._id
+                );
+
+                if (updatedPage) {
+                  await currentPage.updateOne({
+                    name: updatedPage.name
+                      ? updatedPage.name
+                      : currentPage.name,
+                    position: updatedPage.position
+                      ? updatedPage.position
+                      : currentPage.position,
+                    container: updatedPage.container
+                      ? updatedPage.container
+                      : currentPage.container,
+                    siteID: currentPage.siteID,
+                  });
+                }
+              })
+            );
+
+            res.status(200).send("Pages updated");
           }
         } else {
-          res.status(500).send("Couldn't find site with that slug");
+          res.status(500).send("Error while finding site.");
         }
       } catch (err) {
         console.log(err);
-        res.status(500).send("Server error while creating page");
+        res.status(500).send("Error while updating pages.");
       }
     } else {
       res
         .status(400)
-        .json({ msg: "Title and slug must be provided in request" });
+        .send("Updated page content must be provided in the request.");
     }
-  },
-  createEmpty: async (navbarID: Types.ObjectId) => {
-    try {
-      const page = await PageModel.create({ navbarID, container: [] });
-      if (page) {
-        return page._id;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-
-    return undefined;
-  },
-  update: async (req: Request, res: Response) => {
-    const {} = req.body;
   },
 };
 

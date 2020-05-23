@@ -4,10 +4,8 @@ import PageController from "./PageController";
 
 const PageRouter = express.Router();
 
-// PageRouter.get("/", (req, res) => res.send("Get"));
+PageRouter.post("/:siteSlug/addPages", PageController.addNew);
 
-// ne triba PageRouter.post("/:siteSlug/:pageSlug/add", PageController.addNewPage);
-
-// PageRouter.patch("/:siteSlug/updatePages", PageController.update);
+PageRouter.patch("/:siteSlug/updatePages", PageController.update);
 
 export default PageRouter;

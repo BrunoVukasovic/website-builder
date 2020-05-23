@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export interface PageItem {
   position: number;
   content: string;
@@ -21,12 +23,18 @@ export interface CreateSitePayload {
 }
 
 export interface UpdatePagesPayload {
-  updatedPages?: {
+  updatedPages: {
+    _id: Types.ObjectId;
+    name?: string;
+    position?: number;
+    container?: PageItem[];
+  }[];
+}
+
+export interface AddNewPagesPayload {
+  newPages: {
     name: string;
     position: number;
-    container?: PageItem[];
-    oldName?: string;
-    oldPosition?: string;
-    new?: boolean;
+    container: PageItem[];
   }[];
 }
