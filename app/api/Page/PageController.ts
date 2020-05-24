@@ -35,45 +35,22 @@ const PageController = {
   update: async (req: Request, res: Response) => {
     const { updatedPages } = req.body as UpdatePagesPayload;
     const { siteSlug } = req.params;
+
     if (updatedPages) {
       try {
-        const site = await SiteModel.findOne({ slug: siteSlug });
-        if (site) {
-          //@TODO nije dobro, mora trazit sve stranice
-          const currentPages = await PageModel.find({ siteID: site._id });
+        Promise.all(
+          updatedPages.map(async (page) => {
+            const { name, position, container, _id } = page;
 
-          console.log(site);
-          console.log(currentPages);
-          if (currentPages) {
-            await Promise.all(
-              currentPages.map(async (currentPage) => {
-                const updatedPage = updatedPages.find(
-                  //@TODO vidi moze li === kad napravis frontend
-                  (page) => page._id == currentPage._id
-                );
+            await PageModel.findByIdAndUpdate(_id, {
+              ...(name && { name }),
+              ...(position && { position }),
+              ...(container && { container }),
+            });
+          })
+        );
 
-                if (updatedPage) {
-                  await currentPage.updateOne({
-                    name: updatedPage.name
-                      ? updatedPage.name
-                      : currentPage.name,
-                    position: updatedPage.position
-                      ? updatedPage.position
-                      : currentPage.position,
-                    container: updatedPage.container
-                      ? updatedPage.container
-                      : currentPage.container,
-                    siteID: currentPage.siteID,
-                  });
-                }
-              })
-            );
-
-            res.status(200).send("Pages updated");
-          }
-        } else {
-          res.status(500).send("Error while finding site.");
-        }
+        res.status(200).send("Pages updated");
       } catch (err) {
         console.log(err);
         res.status(500).send("Error while updating pages.");
