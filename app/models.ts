@@ -5,19 +5,12 @@ export interface PageItem {
   content: string;
 }
 
-export interface UpdateNavbarPayload {
-  name: string;
-  position: number;
-  oldName?: string;
-  oldPosition?: number;
-  isNewItem?: boolean;
-}
-
 export interface CreateSitePayload {
   title: string;
   pages: {
     name: string;
     position: number;
+    slug: string;
     container: PageItem[];
   }[];
 }
@@ -27,6 +20,7 @@ export interface UpdatePagesPayload {
     _id: Types.ObjectId;
     name?: string;
     position?: number;
+    slug?: string;
     container?: PageItem[];
   }[];
 }
@@ -35,6 +29,7 @@ export interface AddNewPagesPayload {
   newPages: {
     name: string;
     position: number;
+    slug: string;
     container: PageItem[];
   }[];
 }

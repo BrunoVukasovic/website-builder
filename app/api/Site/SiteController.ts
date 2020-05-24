@@ -8,7 +8,6 @@ import { CreateSitePayload } from "../../models";
 
 const SiteController = {
   createNewSite: async (req: Request, res: Response) => {
-    console.log("SiteController");
     const { title, pages } = req.body as CreateSitePayload;
     const { slug } = req.params;
 
@@ -24,11 +23,12 @@ const SiteController = {
 
           if (navbar && site) {
             await Promise.all(
-              pages.map(async ({ name, position, container }) => {
+              pages.map(async ({ name, position, slug, container }) => {
                 await PageModel.create({
-                  container,
-                  position,
                   name,
+                  position,
+                  slug,
+                  container,
                   //@ts-ignore
                   siteID: site._id,
                 });
@@ -56,11 +56,13 @@ const SiteController = {
       const site = await SiteModel.findOne({ slug });
       if (site) {
         const pages = await PageModel.find({ siteID: site._id }).select(
-          "-siteID"
+          "-siteID -__v"
         );
-        const navbar = await NavbarModel.findById(site.navbarID).select("-_id");
+        const navbar = await NavbarModel.findById(site.navbarID).select(
+          "-_id -__v"
+        );
         const siteToRender = {
-          slug: site.slug,
+          title: site.title,
           pages: pages,
           navbar,
         };

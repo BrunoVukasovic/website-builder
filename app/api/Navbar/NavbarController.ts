@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 
 import SiteModel from "../Site";
 import NavbarModel from "../Navbar";
-import { UpdateNavbarPayload } from "../../models";
 import PageController from "../Page/PageController";
 
 const NavbarController = {

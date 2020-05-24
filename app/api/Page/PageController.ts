@@ -20,6 +20,7 @@ const PageController = {
                 name: newPage.name,
                 position: newPage.position,
                 container: newPage.container,
+                slug: newPage.slug,
                 siteID: site._id,
               })
           )
@@ -34,17 +35,17 @@ const PageController = {
   },
   update: async (req: Request, res: Response) => {
     const { updatedPages } = req.body as UpdatePagesPayload;
-    const { siteSlug } = req.params;
 
     if (updatedPages) {
       try {
         Promise.all(
           updatedPages.map(async (page) => {
-            const { name, position, container, _id } = page;
+            const { name, position, slug, container, _id } = page;
 
             await PageModel.findByIdAndUpdate(_id, {
               ...(name && { name }),
               ...(position && { position }),
+              ...(slug && { slug }),
               ...(container && { container }),
             });
           })
