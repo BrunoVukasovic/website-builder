@@ -6,6 +6,7 @@ export interface Page extends Document {
   name: string;
   position: number;
   slug: string;
+  //@TODO sortiraj PageItem-e po positionu
   container: PageItem[];
   siteID: Types.ObjectId;
 }

@@ -63,6 +63,7 @@ const SiteController = {
         );
         const siteToRender = {
           title: site.title,
+          slug: site.slug,
           pages: pages,
           navbar,
         };

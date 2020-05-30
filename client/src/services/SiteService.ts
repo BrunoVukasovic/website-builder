@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { CreateSite } from "../models";
+import { CreateSite, Site } from "../models";
 
 class SiteService {
   public create = (payload: CreateSite) =>
@@ -12,6 +12,21 @@ class SiteService {
           resolve(data);
         } catch (error) {
           reject(error);
+        }
+      };
+
+      callApi();
+    });
+
+  public getSite = (slug: string) =>
+    new Promise<Site>((resolve, reject) => {
+      const callApi = async () => {
+        try {
+          const { data } = await axios.get<Site>(`/site/${slug}`);
+
+          resolve(data);
+        } catch (err) {
+          reject(err);
         }
       };
 
