@@ -3,9 +3,16 @@ import { getFormValues } from "redux-form";
 import { AppState } from "../reducers/rootReducer";
 import { createDeepEqualitySelector } from "./shared";
 
-const getCurrentSite = (state: AppState) => state.site;
+const getCurrentPage = (state: AppState) => state.site.currentPage;
+
+const getCurrentSite = (state: AppState) => state.site.currentSite;
+
+export const selectCurrentPage = createDeepEqualitySelector(
+  getCurrentPage,
+  (page) => page
+);
 
 export const selectCurrentSite = createDeepEqualitySelector(
   getCurrentSite,
-  (site) => site
+  (currentSite) => currentSite
 );
