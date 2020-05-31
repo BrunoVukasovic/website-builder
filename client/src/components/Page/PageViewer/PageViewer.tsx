@@ -14,9 +14,15 @@ const PageViewer: React.FC<PageViewerProps> = ({ pageContainer }) => (
   <Flex direction="column">
     {pageContainer.map((segment) => {
       const { content, type } = segment;
+      console.log(content);
       switch (type) {
         case "text":
-          return <Flex dangerouslySetInnerHTML={{ __html: content }} />;
+          return (
+            <Flex
+              key={segment.content}
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          );
         default:
           return undefined;
       }

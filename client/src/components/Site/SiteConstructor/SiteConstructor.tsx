@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,79 +8,81 @@ import Flex from "../../Flex";
 import NotFound from "../../../views/NotFound";
 import SiteContainer from "../../SiteContainer";
 import Footer from "../../Footer";
-import NavbarViewer from "../../Navbar/NavbarViewer";
 
 import { setSite } from "../../../redux/actions/site";
 import { selectCurrentSite } from "../../../redux/selectors/site";
-import { PageViewer } from "../../Page";
 import { defaultSite, emptyPage } from "../Site.helpers";
+import PageConstructor from "../../Page/PageConstructor";
+import { NavbarConstructor } from "../../Navbar";
 
 const SiteConstructor: React.FC = () => {
   const params = useParams<{ site: string; page: string }>();
   const currentSite = useSelector(selectCurrentSite);
   const dispatch = useDispatch();
 
-  console.log("SiteViewer");
   useEffect(() => {
-    console.log("UseEffect params.site");
     if (params.site) {
-      if (params.site === "new-website") {
-        dispatch(setSite(defaultSite));
-      } else {
-        const callApi = async () => {
-          try {
-            const site = await SiteService.getSite(params.site);
-            console.log(site);
-            dispatch(setSite({ ...site, currentPage: emptyPage }));
-          } catch (err) {
-            //@TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
-            return <NotFound />;
-          }
-        };
+      if (params.site !== currentSite.slug) {
+        if (params.site === "new-website") {
+          dispatch(setSite(defaultSite));
+        } else {
+          const callApi = async () => {
+            try {
+              const site = await SiteService.getSite(params.site);
+              console.log(site);
+              dispatch(setSite({ ...site, currentPage: emptyPage }));
+            } catch (err) {
+              //@TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
+              return <NotFound />;
+            }
+          };
 
-        callApi();
+          callApi();
+        }
       }
     } else {
       dispatch(setSite(defaultSite));
     }
   }, [params.site]);
 
-  const slugsAndNames = React.useMemo(() => {
-    return currentSite.pages.map((page) => {
-      return {
-        slug: page.slug,
-        name: page.name,
-      };
-    });
-  }, [currentSite.pages]);
+  const slugsAndNames = React.useMemo(
+    () =>
+      currentSite.pages.map((page) => {
+        return {
+          slug: page.slug,
+          name: page.name,
+        };
+      }),
+    [currentSite.pages]
+  );
   console.log(slugsAndNames);
 
-  console.log("const currentPage = React.useMemo(() => {");
   const currentPage = React.useMemo(() => {
-    const activePage = currentSite.pages.find(
+    const wantedPage = currentSite.pages.find(
       (page) => page.slug === params.page
     );
-    console.log("activePage");
-    if (!activePage) {
+
+    if (!wantedPage) {
       return currentSite.pages[0];
     }
 
-    return activePage;
+    return wantedPage;
   }, [currentSite.pages, params.page]);
+  console.log("const currentPage = React.useMemo");
   console.log(currentPage);
 
-  if (currentSite && currentPage) {
+  if (currentPage && currentSite.shouldAllowEditing) {
     return (
       <Flex direction="column" alignItems="center">
         <SiteContainer>
-          <NavbarViewer
+          <NavbarConstructor
             slugsAndNames={slugsAndNames}
             activePageName={currentPage.name}
             siteSlug={params.site}
           />
-          <PageViewer pageContainer={currentPage.container} />
+          <PageConstructor page={currentPage} />
         </SiteContainer>
-        {currentSite.shouldAllowEditing && <Footer buttonText="Edit" />}
+        <Footer />
       </Flex>
     );
   }

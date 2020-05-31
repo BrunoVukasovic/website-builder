@@ -11,7 +11,7 @@ const DefaultRouter: React.FC = () => (
     <Route path="/" exact>
       <Redirect to="edit/new-website" />
     </Route>
-    <Route path="edit/:site?/:page?" component={SiteConstructor} />
+    <Route path="/edit/:site?/:page?" component={SiteConstructor} />
     <Route path="/:site/:page?" component={SiteViewer} />
     <Route component={NotFound} />
   </Switch>

@@ -6,7 +6,7 @@ import Flex from "../../Flex";
 
 import { Navbar } from "../../../models";
 
-import styles from "./navbar_viewer.module.scss";
+import styles from "./navbar_constructor.module.scss";
 
 export interface NavbarViewerProps {
   slugsAndNames: { slug: string; name: string }[];
@@ -26,7 +26,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({
       {slugsAndNames.map((item) => (
         <Link
           key={item.slug}
-          to={`/${siteSlug}/${item.slug}`}
+          to={`/edit/${siteSlug}/${item.slug}`}
           className={styles.link}
         >
           <p>{item.name}</p>

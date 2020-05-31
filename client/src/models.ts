@@ -8,6 +8,15 @@ export interface Navbar {
   textColor?: string;
 }
 
+export interface CurrentPage extends Page {
+  updatedElements?: {
+    name?: boolean;
+    position?: boolean;
+    slug?: boolean;
+    container?: boolean;
+  };
+}
+
 export interface Page {
   name: string;
   position: number;
@@ -32,10 +41,15 @@ export interface PageItemState extends PageItem {
   isEditMenuOpen: boolean;
 }
 
-export interface Site {
+export interface currentSite {
   title: string;
   slug: string;
   pages: Page[];
   navbar: Navbar;
   shouldAllowEditing?: boolean;
+}
+
+export interface Site {
+  currentSite: currentSite;
+  allSites?: string[];
 }
