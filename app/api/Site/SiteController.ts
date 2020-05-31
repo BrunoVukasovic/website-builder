@@ -4,7 +4,7 @@ import SiteModel from "./SiteModel";
 import NavbarModel from "../Navbar";
 import PageModel from "../Page/PageModel";
 
-import { CreateSitePayload } from "../../models";
+import { CreateSitePayload, GetSiteRes } from "../../models";
 
 const SiteController = {
   createNewSite: async (req: Request, res: Response) => {
@@ -61,14 +61,17 @@ const SiteController = {
         const navbar = await NavbarModel.findById(site.navbarID).select(
           "-_id -__v"
         );
-        const siteToRender = {
-          title: site.title,
-          slug: site.slug,
-          pages: pages,
-          navbar,
+        const payload: GetSiteRes = {
+          currentSite: {
+            title: site.title,
+            slug: site.slug,
+            pages: pages,
+            navbar,
+          },
+          allSites: [site.slug], //@TODO ako ima pravo edita zakaci sve slugove i imena
         };
 
-        res.status(200).send(siteToRender);
+        res.status(200).send(payload);
       } else {
         res.status(500).send("Couldn't find site");
       }

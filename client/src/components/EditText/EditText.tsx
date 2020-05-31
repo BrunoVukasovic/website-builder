@@ -6,34 +6,47 @@ import { useDispatch } from "react-redux";
 
 import Flex from "../Flex";
 
-import { setItemContent } from "../../redux/actions/page";
+import { updateCurrentPageSegment } from "../../redux/actions/site";
 
 import "react-quill/dist/quill.snow.css";
 
 export interface EditTextProps {
+  itemPosition: number;
+  closeEditor: () => void;
+  action: "updateSegment" | "addSegment" | "updateNavbar" | "addNavbar";
   initialValue?: string;
-  itemPosition?: number;
-  closeEditMenu?: () => void;
 }
 
 const EditText: React.FC<EditTextProps> = ({
   initialValue,
   itemPosition,
-  closeEditMenu,
+  closeEditor,
+  action,
 }) => {
-  const [text, setText] = useState<string | undefined>(initialValue);
+  const [text, setText] = useState<string>(initialValue ? initialValue : "");
   const dispatch = useDispatch();
 
   const updateText = (value: string) => {
     setText(value);
   };
 
+  //@TODO slat ko prop, da se zna ocemo zvat updateCurrentPageSegment ili addNewSegment
   const onSaveChangesClick = () => {
-    //@TODO itemPosition i closeEditMenu bi triba bit obavezan ako neces ovu komponentu nigdi drugo kotisiti
-    if (itemPosition && text && closeEditMenu) {
-      dispatch(setItemContent({ position: itemPosition, content: text }));
-      closeEditMenu();
+    switch (action) {
+      case "updateSegment":
+        dispatch(
+          updateCurrentPageSegment({
+            position: itemPosition,
+            content: text,
+            type: "text",
+          })
+        );
+        break;
+      default:
+      //@TODO show error, couldn't save
     }
+
+    closeEditor();
   };
 
   return (
