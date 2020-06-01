@@ -1,12 +1,12 @@
-import { Action } from ".";
-import { CurrentPage, PageSegment } from "../../models";
+import { Action } from '.';
+import { CurrentPage, PageSegment } from '../../models';
 import {
   SET_SITE,
   UPDATE_CURRENT_PAGE_SEGMENT,
-  UPDATE_PAGE_ON_CURRENT_SITE,
+  SET_CURRENT_PAGE_TO_CURRENT_SITE,
   SET_CURRENT_PAGE,
-} from "../types/site";
-import { SiteReducerState } from "../reducers/site";
+} from '../types/site';
+import { SiteReducerState } from '../reducers/site';
 
 export const setCurrentPage = (page: CurrentPage): Action<CurrentPage> => ({
   type: SET_CURRENT_PAGE,
@@ -18,16 +18,11 @@ export const setSite = (site: SiteReducerState): Action<SiteReducerState> => ({
   payload: site,
 });
 
-export const updatePageOnCurrentSite = (
-  page: CurrentPage
-): Action<CurrentPage> => ({
-  type: UPDATE_PAGE_ON_CURRENT_SITE,
-  payload: page,
+export const setCurrentPageToCurrentSite = (): Action => ({
+  type: SET_CURRENT_PAGE_TO_CURRENT_SITE,
 });
 
-export const updateCurrentPageSegment = (
-  segment: PageSegment
-): Action<PageSegment> => ({
+export const updateCurrentPageSegment = (segment: PageSegment): Action<PageSegment> => ({
   type: UPDATE_CURRENT_PAGE_SEGMENT,
   payload: segment,
 });

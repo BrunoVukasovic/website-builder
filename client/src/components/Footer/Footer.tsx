@@ -1,34 +1,35 @@
-import React from "react";
+import React from 'react';
 
-import Button from "@material-ui/core/Button";
-import SaveIcon from "@material-ui/icons/Save";
-import EditIcon from "@material-ui/icons/Edit";
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
+import EditIcon from '@material-ui/icons/Edit';
 
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
-import Flex from "../Flex";
-import SiteService from "../../services/SiteService";
+import Flex from '../Flex';
+import SiteService from '../../services/SiteService';
 
-import styles from "./footer.module.scss";
+import styles from './footer.module.scss';
 
 export interface FooterProps {
-  buttonText?: string;
+  onPrimaryBtnClick: () => void;
+  primaryBtnText?: string;
 }
 
-const Footer: React.FC<FooterProps> = ({ buttonText }) => {
+const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText }) => {
   const saveChanges = async () => {
-    console.log("clicked save changes");
+    console.log('clicked save changes');
     const payload = {
       // richTextHTML: pageFormValues.richTextHTML,
-      title: "Site Title",
+      title: 'Site Title',
     };
     try {
-      console.log("try");
+      console.log('try');
       const response = await SiteService.create(payload);
       console.log(response);
-      console.log("no res");
+      console.log('no res');
     } catch (err) {
-      console.log("err");
+      console.log('err');
       console.log(err.response);
     }
   };
@@ -42,25 +43,14 @@ const Footer: React.FC<FooterProps> = ({ buttonText }) => {
         variant="contained"
         color="primary"
         size="large"
-        onClick={saveChanges}
+        onClick={onPrimaryBtnClick}
         className={styles.saveBtn}
-        startIcon={buttonText ? <EditIcon /> : <SaveIcon />}
+        startIcon={primaryBtnText ? <EditIcon /> : <SaveIcon />}
       >
-        {buttonText ? `${buttonText}` : "Save changes"}
+        {primaryBtnText ? `${primaryBtnText}` : 'Save changes'}
       </Button>
     </Flex>
   );
-
-  // return (
-  //   <AppBar position="sticky">
-  //     <Toolbar>
-  //       <Button color="inherit">Login</Button>
-  //       <Button color="inherit" onClick={saveChanges}>
-  //         Save
-  //       </Button>
-  //     </Toolbar>
-  //   </AppBar>
-  // );
 };
 
 export default Footer;

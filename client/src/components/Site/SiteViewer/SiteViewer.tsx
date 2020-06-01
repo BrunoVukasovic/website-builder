@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import SiteService from "../../../services/SiteService";
-import Flex from "../../Flex";
-import NotFound from "../../../views/NotFound";
-import SiteContainer from "../../SiteContainer";
-import Footer from "../../Footer";
-import NavbarViewer from "../../Navbar/NavbarViewer";
+import SiteService from '../../../services/SiteService';
+import Flex from '../../Flex';
+import NotFound from '../../../views/NotFound';
+import SiteContainer from '../../SiteContainer';
+import Footer from '../../Footer';
+import NavbarViewer from '../../Navbar/NavbarViewer';
 
-import { setSite } from "../../../redux/actions/site";
-import { selectCurrentSite } from "../../../redux/selectors/site";
-import { PageViewer } from "../../Page";
-import { defaultSite, emptyPage } from "../Site.helpers";
+import { setSite } from '../../../redux/actions/site';
+import { selectCurrentSite } from '../../../redux/selectors/site';
+import { PageViewer } from '../../Page';
+import { defaultSite, emptyPage } from '../Site.helpers';
 
 const SiteConstructor: React.FC = () => {
   const params = useParams<{ site: string; page: string }>();
   const currentSite = useSelector(selectCurrentSite);
   const dispatch = useDispatch();
 
-  console.log("SiteViewer");
+  console.log('SiteViewer');
   useEffect(() => {
-    console.log("UseEffect params.site");
+    console.log('UseEffect params.site');
     if (params.site) {
-      if (params.site === "new-website") {
+      if (params.site === 'new-website') {
         dispatch(setSite(defaultSite));
       } else {
         const callApi = async () => {
@@ -55,12 +55,10 @@ const SiteConstructor: React.FC = () => {
   }, [currentSite.pages]);
   console.log(slugsAndNames);
 
-  console.log("const currentPage = React.useMemo(() => {");
+  console.log('const currentPage = React.useMemo(() => {');
   const currentPage = React.useMemo(() => {
-    const activePage = currentSite.pages.find(
-      (page) => page.slug === params.page
-    );
-    console.log("activePage");
+    const activePage = currentSite.pages.find((page) => page.slug === params.page);
+    console.log('activePage');
     if (!activePage) {
       return currentSite.pages[0];
     }
@@ -69,18 +67,16 @@ const SiteConstructor: React.FC = () => {
   }, [currentSite.pages, params.page]);
   console.log(currentPage);
 
+  const handleEditClick = () => <Redirect to={`/edit/${params.site}/${params.page}`} />;
+
   if (currentSite && currentPage) {
     return (
       <Flex direction="column" alignItems="center">
         <SiteContainer>
-          <NavbarViewer
-            slugsAndNames={slugsAndNames}
-            activePageName={currentPage.name}
-            siteSlug={params.site}
-          />
+          <NavbarViewer slugsAndNames={slugsAndNames} activePageName={currentPage.name} siteSlug={params.site} />
           <PageViewer pageContainer={currentPage.container} />
         </SiteContainer>
-        {currentSite.shouldAllowEditing && <Footer buttonText="Edit" />}
+        {currentSite.shouldAllowEditing && <Footer primaryBtnText="Edit" onPrimaryBtnClick={handleEditClick} />}
       </Flex>
     );
   }

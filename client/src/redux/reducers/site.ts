@@ -1,13 +1,13 @@
-import { Reducer } from "redux";
+import { Reducer } from 'redux';
 
-import { Page, Navbar, CurrentPage, Site } from "../../models";
+import { Page, Navbar, CurrentPage, Site } from '../../models';
 import {
   SET_SITE,
   UPDATE_CURRENT_PAGE_SEGMENT,
-  UPDATE_PAGE_ON_CURRENT_SITE,
+  SET_CURRENT_PAGE_TO_CURRENT_SITE,
   SET_CURRENT_PAGE,
-} from "../types/site";
-import { DialogTitle } from "@material-ui/core";
+} from '../types/site';
+import { DialogTitle } from '@material-ui/core';
 
 export interface SiteReducerState extends Site {
   currentSite: {
@@ -25,25 +25,22 @@ export interface SiteReducerState extends Site {
 
 const initialState: SiteReducerState = {
   currentSite: {
-    title: "",
-    slug: "",
+    title: '',
+    slug: '',
     navbar: {},
     pages: [],
     shouldAllowEditing: false,
     // isSaved: false,
   },
   currentPage: {
-    name: "",
+    name: '',
     position: 0,
-    slug: "",
+    slug: '',
     container: [],
   },
 };
 
-const siteReducer: Reducer<SiteReducerState> = (
-  state = initialState,
-  { type, payload }
-) => {
+const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_CURRENT_PAGE:
       return {
@@ -65,13 +62,13 @@ const siteReducer: Reducer<SiteReducerState> = (
         // navbar: payload.navbar,
         // pages: payload.pages,
       };
-    case UPDATE_PAGE_ON_CURRENT_SITE:
+    case SET_CURRENT_PAGE_TO_CURRENT_SITE:
       return {
         ...state,
         currentSite: {
           ...state.currentSite,
           pages: state.currentSite.pages.map((page) =>
-            page.slug === payload.slug ? { ...payload } : page
+            page.slug === state.currentPage.slug ? { ...state.currentPage } : page
           ),
         },
       };
@@ -85,9 +82,7 @@ const siteReducer: Reducer<SiteReducerState> = (
             container: true,
           },
           container: state.currentPage.container.map((segment) =>
-            segment.position === payload.position
-              ? { ...segment, content: payload.content }
-              : segment
+            segment.position === payload.position ? { ...segment, content: payload.content } : segment
           ),
         },
       };
