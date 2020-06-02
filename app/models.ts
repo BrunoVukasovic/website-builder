@@ -1,6 +1,6 @@
-import { Types } from "mongoose";
-import { Page } from "./api/Page/PageModel";
-import { Navbar } from "./api/Navbar/NavbarModel";
+import { Types } from 'mongoose';
+import { Page } from './api/Page/PageModel';
+import { Navbar } from './api/Navbar/NavbarModel';
 
 export interface GetSiteRes {
   currentSite: {
@@ -15,18 +15,19 @@ export interface GetSiteRes {
 export interface PageItem {
   position: number;
   content: string;
-  type: "text" | "image";
+  type: 'text' | 'image';
 }
 //@TODO rename u CreateSiteReq
-export interface CreateSitePayload {
-  title: string;
-  pages: {
-    name: string;
-    position: number;
-    slug: string;
-    container: PageItem[];
-  }[];
-}
+// export interface CreateSiteReq {
+//   title: string;
+//   slug: string;
+//   // pages: {
+//   //   name: string;
+//   //   position: number;
+//   //   slug: string;
+//   //   container: PageItem[];
+//   // }[];
+// }
 //@TODO rename u UpdatePagesReq
 export interface UpdatePagesPayload {
   updatedPages: {
