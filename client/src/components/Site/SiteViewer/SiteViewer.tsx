@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,7 +31,7 @@ const SiteConstructor: React.FC = () => {
 
             dispatch(setSite({ ...site, currentPage: emptyPage }));
           } catch (err) {
-            //@TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
+            // @TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
             return <NotFound />;
           }
         };

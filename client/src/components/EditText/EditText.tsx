@@ -23,14 +23,14 @@ const EditText: React.FC<EditTextProps> = ({
   closeEditor,
   action,
 }) => {
-  const [text, setText] = useState<string>(initialValue ? initialValue : "");
+  const [text, setText] = useState<string>(initialValue || "");
   const dispatch = useDispatch();
 
   const updateText = (value: string) => {
     setText(value);
   };
 
-  //@TODO slat ko prop, da se zna ocemo zvat updateCurrentPageSegment ili addNewSegment
+  // @TODO slat ko prop, da se zna ocemo zvat updateCurrentPageSegment ili addNewSegment
   const onSaveChangesClick = () => {
     switch (action) {
       case "updateSegment":
@@ -43,7 +43,7 @@ const EditText: React.FC<EditTextProps> = ({
         );
         break;
       default:
-      //@TODO show error, couldn't save
+      // @TODO show error, couldn't save
     }
 
     closeEditor();

@@ -7,10 +7,8 @@ class SiteService {
     new Promise((resolve, reject) => {
       const callApi = async () => {
         try {
-          console.log('SiteService.create');
-          console.log(`site/create/${slug}`);
           const { data } = await axios.post(`/site/create/${slug}`, { title });
-          console.log('Triba bi bit error a ne ovo');
+
           resolve(data);
         } catch (error) {
           reject(error);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useSnackbar } from 'notistack';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
 import { reduxForm, Form, Field, InjectedFormProps, change } from 'redux-form';
 
@@ -22,7 +22,7 @@ const CreateSite: React.FC<CreateSiteFormProps> = ({ handleSubmit }) => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const origin = React.useMemo(() => window.location.origin, [window.location]);
+  const origin = React.useMemo(() => window.location.origin, []);
 
   const handleTitleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const slug = e.currentTarget.value.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
@@ -33,23 +33,26 @@ const CreateSite: React.FC<CreateSiteFormProps> = ({ handleSubmit }) => {
     }
   };
 
-  const onSubmit = ({ title, url }: CreateSiteFormValues) => {
-    const callApi = async () => {
-      try {
-        const slug = url.slice(url.lastIndexOf('/') + 1);
-        await SiteService.create(title, slug);
-        dispatch(updateTitleAndSlug({ title, slug }));
-      } catch (error) {
-        if (error.response && error.response.status === 400) {
-          setErrorMessage(error.response.data);
-        } else {
-          enqueueSnackbar('Something went wrong. Please, try again.', { variant: 'error' });
+  const onSubmit = React.useCallback(
+    ({ title, url }: CreateSiteFormValues) => {
+      const callApi = async () => {
+        try {
+          const slug = url.slice(url.lastIndexOf('/') + 1);
+          await SiteService.create(title, slug);
+          dispatch(updateTitleAndSlug({ title, slug }));
+        } catch (error) {
+          if (error.response && error.response.status === 400) {
+            setErrorMessage(error.response.data);
+          } else {
+            enqueueSnackbar('Something went wrong. Please, try again.', { variant: 'error' });
+          }
         }
-      }
-    };
+      };
 
-    callApi();
-  };
+      callApi();
+    },
+    [dispatch, enqueueSnackbar]
+  );
 
   return (
     <Flex direction="column">

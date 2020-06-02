@@ -18,18 +18,8 @@ import styles from './page_constructor.module.scss';
 // import { PageReducerState } from "../../../redux/reducers/page";
 import { setCurrentPageToCurrentSite } from '../../../redux/actions/site';
 import { setCurrentPage } from '../../../redux/actions/site';
-import { PageSegment, CurrentPage } from '../../../models';
-import { initialCurrentSegment } from './PageConstructor.helpers';
-
-export interface CurrentSegment extends PageSegment {
-  position: number;
-  content: string;
-  type: 'text' | 'image';
-  shouldEdit?: boolean;
-  shouldMoveUp?: boolean;
-  shouldMoveDown?: boolean;
-  shouldDelete?: boolean;
-}
+import { CurrentPage } from '../../../models';
+import { initialCurrentSegment, CurrentSegment } from './PageConstructor.helpers';
 
 export interface PageConstructorProps {
   page: CurrentPage;
@@ -55,7 +45,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     return () => {
       dispatch(setCurrentPageToCurrentSite());
     };
-  }, [page, currentPage]);
+  }, [page, currentPage, dispatch]);
 
   const onOpenMenuClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { id } = event.currentTarget;
@@ -98,7 +88,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               )}
               {item.position === currentSegment.position && currentSegment.shouldEdit && (
                 <EditText
-                  action={'updateSegment'}
+                  action="updateSegment"
                   initialValue={item.content}
                   itemPosition={item.position}
                   closeEditor={removeCurrentSegment}

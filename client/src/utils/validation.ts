@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import isEmpty from 'lodash/isEmpty';
 
 class Validation {

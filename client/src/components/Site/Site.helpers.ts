@@ -1,4 +1,4 @@
-import { Site, CurrentPage } from '../../models';
+import { CurrentPage } from '../../models';
 import { SiteReducerState } from '../../redux/reducers/site';
 
 export const emptyPage: CurrentPage = {

@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
 
+import { DialogTitle } from '@material-ui/core';
 import { Page, Navbar, CurrentPage, Site } from '../../models';
 import {
   SET_SITE,
@@ -8,11 +9,10 @@ import {
   SET_CURRENT_PAGE,
   UPDATE_TITLE_AND_SLUG,
 } from '../types/site';
-import { DialogTitle } from '@material-ui/core';
 
 export interface SiteReducerState extends Site {
   currentSite: {
-    //@TOOD:
+    // @TOOD:
     title: string; // odma se update
     slug: string; // odma se update-a skupa sa title
     navbar: Navbar; // samo jedan elements isSaved

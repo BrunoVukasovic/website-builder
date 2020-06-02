@@ -21,7 +21,7 @@ export interface Page {
   id?: string;
 }
 
-//@TODO vise ne posotji PageItem nego PageSegment
+// @TODO vise ne posotji PageItem nego PageSegment
 export interface PageItem {
   position: number;
   content: string;

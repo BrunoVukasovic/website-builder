@@ -35,8 +35,8 @@ const Input: React.FC<InputProps> = ({
       margin="normal"
       variant={variant as 'outlined'}
       InputProps={{ ...MUIInputProps, ...input, readOnly }}
-      error={Boolean(meta && meta.error && meta.touched) ? true : error}
-      helperText={Boolean(meta && meta.error && meta.touched) ? meta && meta.error : helperText}
+      error={meta && meta.error && meta.touched ? true : error}
+      helperText={meta && meta.error && meta.touched ? meta && meta.error : helperText}
       FormHelperTextProps={{ ...FormHelperTextProps, className: styles.helperText }}
       {...props}
     >
