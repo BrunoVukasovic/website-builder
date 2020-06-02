@@ -17,17 +17,7 @@ export interface PageItem {
   content: string;
   type: 'text' | 'image';
 }
-//@TODO rename u CreateSiteReq
-// export interface CreateSiteReq {
-//   title: string;
-//   slug: string;
-//   // pages: {
-//   //   name: string;
-//   //   position: number;
-//   //   slug: string;
-//   //   container: PageItem[];
-//   // }[];
-// }
+
 //@TODO rename u UpdatePagesReq
 export interface UpdatePagesPayload {
   updatedPages: {
