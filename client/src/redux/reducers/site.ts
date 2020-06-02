@@ -6,6 +6,7 @@ import {
   UPDATE_CURRENT_PAGE_SEGMENT,
   SET_CURRENT_PAGE_TO_CURRENT_SITE,
   SET_CURRENT_PAGE,
+  UPDATE_TITLE_AND_SLUG,
 } from '../types/site';
 import { DialogTitle } from '@material-ui/core';
 
@@ -84,6 +85,15 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           container: state.currentPage.container.map((segment) =>
             segment.position === payload.position ? { ...segment, content: payload.content } : segment
           ),
+        },
+      };
+    case UPDATE_TITLE_AND_SLUG:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          title: payload.title,
+          slug: payload.slug,
         },
       };
     default:

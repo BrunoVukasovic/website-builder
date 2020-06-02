@@ -17,23 +17,6 @@ export interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText }) => {
-  const saveChanges = async () => {
-    console.log('clicked save changes');
-    const payload = {
-      // richTextHTML: pageFormValues.richTextHTML,
-      title: 'Site Title',
-    };
-    try {
-      console.log('try');
-      const response = await SiteService.create(payload);
-      console.log(response);
-      console.log('no res');
-    } catch (err) {
-      console.log('err');
-      console.log(err.response);
-    }
-  };
-
   return (
     <Flex justifyContent="space-between" className={styles.footerContainer}>
       <Button color="inherit" size="large">

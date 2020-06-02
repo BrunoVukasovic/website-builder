@@ -1,7 +1,3 @@
-export interface CreateSite {
-  title: string;
-}
-
 export interface Navbar {
   logo?: string;
   backgroundColor?: string;
@@ -34,7 +30,7 @@ export interface PageItem {
 export interface PageSegment {
   position: number;
   content: string;
-  type: "text" | "image";
+  type: 'text' | 'image';
 }
 
 export interface PageItemState extends PageItem {

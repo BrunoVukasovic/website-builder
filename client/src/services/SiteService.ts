@@ -1,14 +1,16 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { CreateSite, Site } from "../models";
+import { Site } from '../models';
 
 class SiteService {
-  public create = (payload: CreateSite) =>
+  public create = (title: string, slug: string) =>
     new Promise((resolve, reject) => {
       const callApi = async () => {
         try {
-          const { data } = await axios.post("site/create/treci", payload);
-
+          console.log('SiteService.create');
+          console.log(`site/create/${slug}`);
+          const { data } = await axios.post(`/site/create/${slug}`, { title });
+          console.log('Triba bi bit error a ne ovo');
           resolve(data);
         } catch (error) {
           reject(error);
@@ -22,11 +24,11 @@ class SiteService {
     new Promise<Site>((resolve, reject) => {
       const callApi = async () => {
         try {
-          const { data } = await axios.get<Site>(`/site/${slug}`);
+          const { data } = await axios.get<Site>(`/site/get/${slug}`);
 
           resolve(data);
-        } catch (err) {
-          reject(err);
+        } catch (error) {
+          reject(error);
         }
       };
 

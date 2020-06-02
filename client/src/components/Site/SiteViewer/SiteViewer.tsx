@@ -20,9 +20,7 @@ const SiteConstructor: React.FC = () => {
   const currentSite = useSelector(selectCurrentSite);
   const dispatch = useDispatch();
 
-  console.log('SiteViewer');
   useEffect(() => {
-    console.log('UseEffect params.site');
     if (params.site) {
       if (params.site === 'new-website') {
         dispatch(setSite(defaultSite));
@@ -30,7 +28,7 @@ const SiteConstructor: React.FC = () => {
         const callApi = async () => {
           try {
             const site = await SiteService.getSite(params.site);
-            console.log(site);
+
             dispatch(setSite({ ...site, currentPage: emptyPage }));
           } catch (err) {
             //@TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
@@ -53,19 +51,15 @@ const SiteConstructor: React.FC = () => {
       };
     });
   }, [currentSite.pages]);
-  console.log(slugsAndNames);
 
-  console.log('const currentPage = React.useMemo(() => {');
   const currentPage = React.useMemo(() => {
     const activePage = currentSite.pages.find((page) => page.slug === params.page);
-    console.log('activePage');
     if (!activePage) {
       return currentSite.pages[0];
     }
 
     return activePage;
   }, [currentSite.pages, params.page]);
-  console.log(currentPage);
 
   const handleEditClick = () => <Redirect to={`/edit/${params.site}/${params.page}`} />;
 
