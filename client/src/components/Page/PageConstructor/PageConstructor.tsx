@@ -33,13 +33,19 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
   useEffect(() => {
     if (currentPage && currentPage.slug) {
       if (currentPage.slug !== page.slug) {
-        console.log(' if (currentPage.slug !== page.slug) {');
         dispatch(setCurrentPageToCurrentSite());
         dispatch(setCurrentPage(page));
+
+        if (currentSegment.content) {
+          setCurrentSegment(initialCurrentSegment);
+        }
       }
     } else {
-      console.log('else');
       dispatch(setCurrentPage(page));
+
+      if (currentSegment.content) {
+        setCurrentSegment(initialCurrentSegment);
+      }
     }
 
     return () => {

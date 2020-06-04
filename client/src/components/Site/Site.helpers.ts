@@ -12,6 +12,7 @@ export const defaultSite: SiteReducerState = {
   currentSite: {
     title: 'New website',
     slug: 'new-website',
+    oldSlug: 'new-website',
     navbar: {},
     shouldAllowEditing: true,
     pages: [

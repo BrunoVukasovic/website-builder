@@ -15,9 +15,13 @@ import { updateTitleAndSlug } from '../../redux/actions/site';
 
 import styles from './create_site.module.scss';
 
-type CreateSiteFormProps = InjectedFormProps<CreateSiteFormValues>;
+export interface CreateSiteProps {
+  onCancelClick: () => void;
+}
 
-const CreateSite: React.FC<CreateSiteFormProps> = ({ handleSubmit }) => {
+type WithInjectedFormProps = InjectedFormProps<CreateSiteFormValues, CreateSiteProps> & CreateSiteProps;
+
+const CreateSite: React.FC<WithInjectedFormProps> = ({ handleSubmit, onCancelClick }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -73,7 +77,7 @@ const CreateSite: React.FC<CreateSiteFormProps> = ({ handleSubmit }) => {
           />
           <Field name="url" type="text" component={Input} label="Link" className={styles.input} readOnly />
           <Flex className={styles.buttonContainer}>
-            <Button variant="outlined" color="primary" classes={{ root: styles.cancelBtn }}>
+            <Button variant="outlined" color="primary" classes={{ root: styles.cancelBtn }} onClick={onCancelClick}>
               Cancel
             </Button>
             <Button type="submit" variant="contained" color="primary">
@@ -86,4 +90,6 @@ const CreateSite: React.FC<CreateSiteFormProps> = ({ handleSubmit }) => {
   );
 };
 
-export default reduxForm<CreateSiteFormValues>({ form: 'createSiteForm' })(CreateSite);
+export default reduxForm<CreateSiteFormValues, CreateSiteProps>({ form: 'createSiteForm' })(
+  CreateSite
+) as React.ComponentType<CreateSiteProps>;

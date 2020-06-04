@@ -9,6 +9,7 @@ export interface CurrentSegment extends PageSegment {
   shouldMoveDown?: boolean;
   shouldDelete?: boolean;
 }
+
 export const initialCurrentSegment: CurrentSegment = {
   position: 0,
   content: '',

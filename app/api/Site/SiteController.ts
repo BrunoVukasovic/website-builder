@@ -2,9 +2,10 @@ import { Request, Response } from 'express';
 
 import SiteModel from './SiteModel';
 import NavbarModel from '../Navbar';
-import PageModel from '../Page/PageModel';
+import PageModel from '../Page';
+import PageController from '../Page/PageController';
 
-import { GetSiteRes } from '../../models';
+import { GetSiteRes, UpdateSiteReq, Page } from '../../models';
 
 const SiteController = {
   createSite: async (req: Request, res: Response) => {
@@ -80,19 +81,26 @@ const SiteController = {
     try {
       const site = await SiteModel.findOne({ slug });
       if (site) {
-        const pages = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
+        const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
         const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
-        const payload: GetSiteRes = {
-          currentSite: {
-            title: site.title,
-            slug: site.slug,
-            pages: pages,
-            navbar,
-          },
-          allSites: [site.slug], //@TODO ako ima pravo edita zakaci sve slugove i imena
-        };
 
-        res.status(200).send(payload);
+        if (navbar && pages) {
+          const payload: GetSiteRes = {
+            currentSite: {
+              title: site.title,
+              slug: site.slug,
+              oldSlug: site.slug,
+              pages: pages,
+              navbar,
+              shouldAllowEditing: true,
+            },
+            allSites: [site.slug], //@TODO ako ima pravo edita zakaci sve slugove i imena
+          };
+
+          res.status(200).send(payload);
+        } else {
+          res.status(500).send("Couldn't find site elements");
+        }
       } else {
         res.status(500).send("Couldn't find site");
       }
@@ -104,6 +112,40 @@ const SiteController = {
   // updateSite
   // dohvati Site
   // PageController: za svaki updatePage provjeri ima li _id, ako nema kreiraj je, ako ima updateaj
+  updateSite: async (req: Request, res: Response) => {
+    const { siteData, pagesData, navbarData } = req.body as UpdateSiteReq;
+    const { slug } = req.params;
+
+    if (siteData || pagesData || navbarData) {
+      try {
+        const site = await SiteModel.findOne({ slug });
+
+        if (site) {
+          if (siteData) {
+            const { title, slug } = siteData;
+            await site.update({ title, slug });
+          }
+
+          if (pagesData) {
+            await PageController.updatePages(pagesData, site._id);
+          }
+
+          if (navbarData) {
+            // @TODO update Navbar
+          }
+
+          res.status(200).send('Website updated successfully');
+        } else {
+          res.status(500).send("Couldn't find site");
+        }
+      } catch (error) {
+        console.log(error);
+        res.status(500).send("Couldn't update site");
+      }
+    } else {
+      res.status(400).send('Updated site elements must be provided in the request.');
+    }
+  },
 };
 
 export default SiteController;
