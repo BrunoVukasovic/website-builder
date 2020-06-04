@@ -1,39 +1,105 @@
-import { Types } from 'mongoose';
-import { Page } from './api/Page/PageModel';
-import { Navbar } from './api/Navbar/NavbarModel';
+//@TODO rename u AddNewPagesReq
+// export interface AddNewPagesPayload {
+//   newPages: {
+//     name: string;
+//     position: number;
+//     slug: string;
+//     container: PageSegment[];
+//   }[];
+// }
+
+export interface CurrentPage extends Page {
+  updatedElements?: {
+    name?: boolean;
+    position?: boolean;
+    slug?: boolean;
+    container?: boolean;
+  };
+}
+
+export interface CurrentSite {
+  title: string;
+  slug: string;
+  oldSlug: string;
+  pages: Page[];
+  navbar: Navbar;
+  shouldAllowEditing?: boolean;
+}
+
+export interface DeletedPage {
+  id: string;
+}
 
 export interface GetSiteRes {
-  currentSite: {
-    title: string;
-    slug: string;
-    pages: Page[];
-    navbar: Navbar | null;
-  };
-  allSites: string[];
+  currentSite: CurrentSite;
+  allSites?: string[];
 }
-//@TODO rename u PageSegment
-export interface PageItem {
+
+export interface Navbar {
+  logo?: string;
+  backgroundColor?: string;
+}
+
+export interface Page {
+  name: string;
+  position: number;
+  slug: string;
+  container: PageSegment[];
+  _id: string;
+}
+
+export interface PageSegment {
   position: number;
   content: string;
   type: 'text' | 'image';
 }
 
-//@TODO rename u UpdatePagesReq
-export interface UpdatePagesPayload {
-  updatedPages: {
-    _id: Types.ObjectId;
-    name?: string;
-    position?: number;
-    slug?: string;
-    container?: PageItem[];
-  }[];
+export interface PagesData {
+  updatedPages?: CurrentPage[];
+  deletedPages?: DeletedPage[];
+  newPages?: CurrentPage[];
 }
-//@TODO rename u AddNewPagesReq
-export interface AddNewPagesPayload {
-  newPages: {
-    name: string;
-    position: number;
+
+//@TODO deprecated
+// export interface UpdatePagesPayload {
+//   updatedPages: {
+//     _id: string;
+//     name?: string;
+//     position?: number;
+//     slug?: string;
+//     container?: PageSegment[];
+//   }[];
+// }
+
+//@TODO deprecated
+// export interface UpdatePageReq {
+//   name: string;
+//   position: number;
+//   slug: string;
+//   container: PageSegment[];
+//   _id?: string;
+//   updatedElements: {
+//     name?: boolean;
+//     position?: boolean;
+//     slug?: boolean;
+//     container?: boolean;
+//   };
+// }
+
+// export interface UpdatedPage extends Page {
+//   updatedElements: {
+//     name?: boolean;
+//     position?: boolean;
+//     slug?: boolean;
+//     container?: boolean;
+//   };
+// }
+
+export interface UpdateSiteReq {
+  siteData?: {
+    title: string;
     slug: string;
-    container: PageItem[];
-  }[];
+  };
+  navbarData?: Navbar;
+  pagesData?: PagesData;
 }

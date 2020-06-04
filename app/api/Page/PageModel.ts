@@ -1,13 +1,13 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
-import { PageItem } from "../../models";
+import { PageSegment } from '../../models';
 
-export interface Page extends Document {
+export interface PageModel extends Document {
   name: string;
   position: number;
   slug: string;
-  //@TODO sortiraj PageItem-e po positionu
-  container: PageItem[];
+  //@TODO sortiraj PageSegmente-e po positionu
+  container: PageSegment[];
   siteID: Types.ObjectId;
 }
 
@@ -19,4 +19,4 @@ const PageSchema: Schema = new Schema({
   siteID: { type: Schema.Types.ObjectId, required: true },
 });
 
-export default mongoose.model<Page>("Page", PageSchema);
+export default mongoose.model<PageModel>('Page', PageSchema);

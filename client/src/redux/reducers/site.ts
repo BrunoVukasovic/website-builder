@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 
-import { DialogTitle } from '@material-ui/core';
-import { Page, Navbar, CurrentPage, Site } from '../../models';
+import { CurrentPage } from '../../models';
+import { CurrentSiteState } from '../models';
 import {
   SET_SITE,
   UPDATE_CURRENT_PAGE_SEGMENT,
@@ -10,16 +10,8 @@ import {
   UPDATE_TITLE_AND_SLUG,
 } from '../types/site';
 
-export interface SiteReducerState extends Site {
-  currentSite: {
-    // @TOOD:
-    title: string; // odma se update
-    slug: string; // odma se update-a skupa sa title
-    navbar: Navbar; // samo jedan elements isSaved
-    pages: (Page | CurrentPage)[]; // pages.filter(page => page.hasOwnProperty(updatedElements) => switch po onome sta imaju updateano)
-    shouldAllowEditing?: boolean;
-    // isSaved: boolean; // ne triba
-  };
+export interface SiteReducerState {
+  currentSite: CurrentSiteState;
   currentPage: CurrentPage;
   allSites?: string[];
 }
@@ -28,10 +20,10 @@ const initialState: SiteReducerState = {
   currentSite: {
     title: '',
     slug: '',
+    oldSlug: '',
     navbar: {},
     pages: [],
     shouldAllowEditing: false,
-    // isSaved: false,
   },
   currentPage: {
     name: '',
@@ -94,6 +86,7 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           ...state.currentSite,
           title: payload.title,
           slug: payload.slug,
+          oldSlug: payload.slug,
         },
       };
     default:

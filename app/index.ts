@@ -1,6 +1,5 @@
 import express, { Application } from 'express';
 import connectDatabase from './config/database';
-// const SiteRouter = require("./api/Site/SiteRoutes";
 import SiteRouter from './api/Site/SiteRoutes';
 import PageRouter from './api/Page/PageRoutes';
 import NavbarRouter from './api/Navbar/NavbarRoutes';

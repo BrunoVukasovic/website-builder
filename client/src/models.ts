@@ -1,9 +1,3 @@
-export interface Navbar {
-  logo?: string;
-  backgroundColor?: string;
-  textColor?: string;
-}
-
 export interface CurrentPage extends Page {
   updatedElements?: {
     name?: boolean;
@@ -11,6 +5,29 @@ export interface CurrentPage extends Page {
     slug?: boolean;
     container?: boolean;
   };
+}
+
+export interface CurrentSite {
+  title: string;
+  slug: string;
+  oldSlug: string;
+  pages: Page[];
+  navbar: Navbar;
+  shouldAllowEditing?: boolean;
+}
+
+export interface DeletedPage {
+  id: string;
+}
+
+export interface GetSiteRes {
+  currentSite: CurrentSite;
+  allSites?: string[];
+}
+
+export interface Navbar {
+  logo?: string;
+  backgroundColor?: string;
 }
 
 export interface Page {
@@ -21,31 +38,32 @@ export interface Page {
   id?: string;
 }
 
-// @TODO vise ne posotji PageItem nego PageSegment
-export interface PageItem {
-  position: number;
-  content: string;
-}
-
 export interface PageSegment {
   position: number;
   content: string;
   type: 'text' | 'image';
 }
 
-export interface PageItemState extends PageItem {
-  isEditMenuOpen: boolean;
+export interface PagesData {
+  updatedPages?: CurrentPage[];
+  deletedPages?: DeletedPage[];
+  newPages?: CurrentPage[];
 }
 
-export interface currentSite {
-  title: string;
-  slug: string;
-  pages: Page[];
-  navbar: Navbar;
-  shouldAllowEditing?: boolean;
-}
+// export interface UpdatedPage extends Page {
+//   updatedElements: {
+//     name?: boolean;
+//     position?: boolean;
+//     slug?: boolean;
+//     container?: boolean;
+//   };
+// }
 
-export interface Site {
-  currentSite: currentSite;
-  allSites?: string[];
+export interface UpdateSiteReq {
+  siteData?: {
+    title: string;
+    slug: string;
+  };
+  navbarData?: Navbar;
+  pagesData?: PagesData;
 }
