@@ -15,6 +15,8 @@ import { defaultSite, emptyPage } from '../Site.helpers';
 import PageConstructor from '../../Page/PageConstructor';
 import { NavbarConstructor } from '../../Navbar';
 import Modal from '../../Modal/Modal';
+import SaveChanges from '../../SaveChanges';
+import CreateSite from '../../CreateSite';
 
 const SiteConstructor: React.FC = () => {
   const [saveChangesModalOpen, setSaveChangesModalOpen] = useState<boolean>(false);
@@ -34,7 +36,7 @@ const SiteConstructor: React.FC = () => {
 
               dispatch(setSite({ ...site, currentPage: emptyPage }));
             } catch (err) {
-              //@TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
+              // @TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
               return <NotFound />;
             }
           };
@@ -85,8 +87,9 @@ const SiteConstructor: React.FC = () => {
           <PageConstructor page={currentPage} />
         </SiteContainer>
         {saveChangesModalOpen && (
-          <Modal onClose={toggleSaveChangesModalOpen} headerText="dajslkdjas">
-            <p>asdsadad</p>
+          <Modal onClose={toggleSaveChangesModalOpen}>
+            {currentSite.slug === 'new-website' && <CreateSite onCancelClick={toggleSaveChangesModalOpen} />}
+            {currentSite.slug !== 'new-website' && <SaveChanges currentSite={currentSite} />}
           </Modal>
         )}
         <Footer onPrimaryBtnClick={handleSaveChangesClick} />
