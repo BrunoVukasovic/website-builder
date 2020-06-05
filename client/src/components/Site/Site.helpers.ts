@@ -17,7 +17,7 @@ export const defaultSite: SiteReducerState = {
     shouldAllowEditing: true,
     pages: [
       {
-        name: 'First page',
+        name: '<p>First page</p>',
         position: 1,
         slug: 'prvi',
         container: [
@@ -34,7 +34,7 @@ export const defaultSite: SiteReducerState = {
         ],
       },
       {
-        name: 'Second page',
+        name: '<p>Second page</p>',
         position: 2,
         slug: 'drugi',
         container: [

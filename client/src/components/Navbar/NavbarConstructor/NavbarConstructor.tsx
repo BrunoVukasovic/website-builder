@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import cx from 'classnames';
+import Button from '@material-ui/core/Button';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import IconButton from '@material-ui/core/IconButton';
+import EditText from '../../EditText';
 
 import { NavLink } from 'react-router-dom';
 
@@ -9,9 +12,6 @@ import Flex from '../../Flex';
 import { Navbar } from '../../../models';
 
 import styles from './navbar_constructor.module.scss';
-import IconButton from '@material-ui/core/IconButton';
-import EditText from '../../EditText';
-import Button from '@material-ui/core/Button';
 
 export interface NavbarViewerProps {
   slugsAndNames: { slug: string; name: string }[];
