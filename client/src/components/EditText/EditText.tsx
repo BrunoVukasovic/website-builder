@@ -1,36 +1,58 @@
 import React, { useState } from 'react';
-
+import CloseIcon from '@material-ui/icons/Close';
 import ReactQuill from 'react-quill';
 
+import { Button, Popover, IconButton } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
 import Flex from '../Flex';
 
-import { updateCurrentPageSegment } from '../../redux/actions/site';
+import { updateCurrentPageSegment, addNewPage, addPageSegment } from '../../redux/actions/site';
 
 import 'react-quill/dist/quill.snow.css';
+import styles from './edit_text.module.scss';
 
 export interface EditTextProps {
-  itemPosition: number;
-  closeEditor: () => void;
-  action: 'updateSegment' | 'addSegment' | 'updateNavbar' | 'addNavbar';
+  onCloseEditor: () => void;
+  action: 'updateSegment' | 'addSegment' | 'updateNavbar' | 'addPage';
+  anchorElement?: HTMLElement;
+  itemPosition?: number;
   initialValue?: string;
 }
 
-const EditText: React.FC<EditTextProps> = ({ initialValue, itemPosition, closeEditor, action }) => {
+const EditText: React.FC<EditTextProps> = ({ initialValue, itemPosition, onCloseEditor, action, anchorElement }) => {
   const [text, setText] = useState<string>(initialValue || '');
   const dispatch = useDispatch();
 
-  const updateText = (value: string) => {
+  const onTextValueChange = (value: string) => {
     setText(value);
   };
 
-  // @TODO slat ko prop, da se zna ocemo zvat updateCurrentPageSegment ili addNewSegment
   const onSaveChangesClick = () => {
     switch (action) {
+      case 'addPage':
+        dispatch(
+          addNewPage({
+            title: text,
+            slug: text
+              .replace(/(<([^>]+)>)/gi, '')
+              .replace(/[^a-zA-Z0-9]/g, '-')
+              .toLowerCase(),
+          })
+        );
+        break;
+      case 'addSegment':
+        dispatch(
+          addPageSegment({
+            content: text,
+            type: 'text',
+          })
+        );
+        break;
       case 'updateSegment':
         dispatch(
           updateCurrentPageSegment({
+            //@ts-ignore
             position: itemPosition,
             content: text,
             type: 'text',
@@ -41,14 +63,26 @@ const EditText: React.FC<EditTextProps> = ({ initialValue, itemPosition, closeEd
       // @TODO show notistack error, couldn't save
     }
 
-    closeEditor();
+    onCloseEditor();
   };
 
   return (
-    <Flex alignItems="flex-start">
-      <button onClick={onSaveChangesClick}>Save</button>
-      <ReactQuill value={text} onChange={updateText} />
-    </Flex>
+    <Popover open anchorEl={anchorElement} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
+      <Flex direction="column" alignItems="flex-start" paper className={styles.editorWrapper}>
+        <IconButton aria-label="close" onClick={onCloseEditor} className={styles.closeButton}>
+          <CloseIcon />
+        </IconButton>
+        <ReactQuill value={text} onChange={onTextValueChange} />
+        <Flex justifyContent="space-between" className={styles.buttonWrapper} fluid>
+          <Button color="primary" variant="outlined" onClick={onCloseEditor}>
+            Close
+          </Button>
+          <Button color="primary" variant="contained" onClick={onSaveChangesClick}>
+            Save
+          </Button>
+        </Flex>
+      </Flex>
+    </Popover>
   );
 };
 

@@ -7,7 +7,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import { useSelector } from 'react-redux';
 
 import Flex from '../Flex';
-import SiteService from '../../services/SiteService';
 
 import styles from './footer.module.scss';
 
