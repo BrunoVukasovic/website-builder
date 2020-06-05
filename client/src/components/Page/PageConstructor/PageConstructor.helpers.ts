@@ -1,4 +1,8 @@
+import { Menu } from '@material-ui/core';
+import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
+
 import { PageSegment } from '../../../models';
+import Flex from '../../Flex';
 
 export interface CurrentSegment extends PageSegment {
   position: number;
@@ -8,10 +12,12 @@ export interface CurrentSegment extends PageSegment {
   shouldMoveUp?: boolean;
   shouldMoveDown?: boolean;
   shouldDelete?: boolean;
+  anchorElement?: HTMLElement;
 }
 
 export const initialCurrentSegment: CurrentSegment = {
   position: 0,
   content: '',
   type: 'text',
+  anchorElement: undefined,
 };
