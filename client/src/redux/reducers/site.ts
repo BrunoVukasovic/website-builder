@@ -8,6 +8,8 @@ import {
   SET_CURRENT_PAGE_TO_CURRENT_SITE,
   SET_CURRENT_PAGE,
   UPDATE_TITLE_AND_SLUG,
+  ADD_NEW_PAGE,
+  ADD_PAGE_SEGMENT,
 } from '../types/site';
 
 export interface SiteReducerState {
@@ -35,6 +37,28 @@ const initialState: SiteReducerState = {
 
 const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, payload }) => {
   switch (type) {
+    case ADD_NEW_PAGE:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          pages: [
+            ...state.currentSite.pages,
+            { name: payload.title, slug: payload.slug, position: state.currentSite.pages.length + 1, container: [] },
+          ],
+        },
+      };
+    case ADD_PAGE_SEGMENT:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          container: [
+            ...state.currentPage.container,
+            { content: payload.content, type: payload.type, position: state.currentPage.container.length + 1 },
+          ],
+        },
+      };
     case SET_CURRENT_PAGE:
       return {
         ...state,

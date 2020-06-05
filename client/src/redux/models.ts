@@ -20,6 +20,11 @@ export interface NavbarState extends Navbar {
   isUpdated?: boolean;
 }
 
+export interface SegmentContentAndType {
+  content: string;
+  type: 'text' | 'image';
+}
+
 export interface TitleAndSlug {
   title: string;
   slug: string;
