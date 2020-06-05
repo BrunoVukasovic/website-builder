@@ -1,7 +1,27 @@
+@import '../../../styles/variables';
+
 .navbar {
-  background-color: lightgoldenrodyellow;
+  background-color: $gray;
 
   .link {
+    text-decoration: none;
     margin-right: 1rem;
+
+    .navbarButton {
+      text-transform: none;
+    }
+
+    .active {
+      .textWrapper {
+        & > p {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .addIcon {
+    width: 2rem;
+    height: 2rem;
   }
 }

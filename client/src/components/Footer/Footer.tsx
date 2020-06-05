@@ -4,8 +4,6 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import EditIcon from '@material-ui/icons/Edit';
 
-import { useSelector } from 'react-redux';
-
 import Flex from '../Flex';
 
 import styles from './footer.module.scss';

@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from 'react';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import cx from 'classnames';
 
-import { Link } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
-import Flex from "../../Flex";
+import Flex from '../../Flex';
 
-import { Navbar } from "../../../models";
+import { Navbar } from '../../../models';
 
-import styles from "./navbar_constructor.module.scss";
+import styles from './navbar_constructor.module.scss';
+import IconButton from '@material-ui/core/IconButton';
+import EditText from '../../EditText';
+import Button from '@material-ui/core/Button';
 
 export interface NavbarViewerProps {
   slugsAndNames: { slug: string; name: string }[];
@@ -15,23 +20,42 @@ export interface NavbarViewerProps {
   style?: Navbar;
 }
 
-const NavbarViewer: React.FC<NavbarViewerProps> = ({
-  slugsAndNames,
-  siteSlug,
-  style,
-  activePageName,
-}) => {
+const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, style, activePageName }) => {
+  const [addPageEditorOpen, setAddPageEditorOpen] = useState<boolean>(false);
+  const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
+
+  const toggleAddPageEditorOpen = () => {
+    setAddPageEditorOpen(!addPageEditorOpen);
+  };
+
+  const onAddPageBtnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const { currentTarget } = e;
+    setAnchorElement(currentTarget);
+    toggleAddPageEditorOpen();
+  };
+
   return (
     <Flex className={styles.navbar}>
       {slugsAndNames.map((item) => (
-        <Link
-          key={item.slug}
-          to={`/edit/${siteSlug}/${item.slug}`}
-          className={styles.link}
-        >
-          <p>{item.name}</p>
-        </Link>
+        <NavLink key={item.slug} to={`/edit/${siteSlug}/${item.slug}`} className={styles.link}>
+          <Button
+            color="primary"
+            className={item.name === activePageName ? cx(styles.navbarButton, styles.active) : styles.navbarButton}
+          >
+            <Flex className={styles.textWrapper} dangerouslySetInnerHTML={{ __html: item.name }} />
+          </Button>
+        </NavLink>
       ))}
+      <Flex className={styles.addPageWrapper}>
+        <IconButton aria-label="add-page" onClick={onAddPageBtnClick}>
+          <AddCircleIcon color="primary" className={styles.addIcon} />
+        </IconButton>
+      </Flex>
+      {addPageEditorOpen && (
+        <Flex>
+          <EditText onCloseEditor={toggleAddPageEditorOpen} action="addPage" anchorElement={anchorElement} />
+        </Flex>
+      )}
     </Flex>
   );
 };
