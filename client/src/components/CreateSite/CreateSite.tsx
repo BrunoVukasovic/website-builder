@@ -29,7 +29,7 @@ const CreateSite: React.FC<WithInjectedFormProps> = ({ handleSubmit, onCancelCli
   const { isAuth } = useAuth();
   const [authModal, setAuthModal] = useState<'Login' | 'Register' | undefined>(undefined);
   const { enqueueSnackbar } = useSnackbar();
-  // @TODO if !auth return <Login />
+
   const origin = React.useMemo(() => window.location.origin, []);
 
   const handleTitleChange = (e: React.FormEvent<HTMLInputElement>) => {

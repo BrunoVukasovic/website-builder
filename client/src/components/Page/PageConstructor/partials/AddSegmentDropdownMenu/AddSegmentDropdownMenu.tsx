@@ -10,6 +10,7 @@ import styles from './add_segment_dropdown_menu.module.scss';
 export interface AddSegmentDropdownMenuProps {
   onClose: () => void;
   onAddTextClick: () => void;
+  onNotSupportedClick?: () => void;
   anchorEl?: HTMLElement;
   MenuProps?: Partial<MUIMenuProps>;
 }
@@ -17,6 +18,7 @@ export interface AddSegmentDropdownMenuProps {
 const AddSegmentDropdownMenu: React.FC<AddSegmentDropdownMenuProps> = ({
   anchorEl,
   onClose,
+  onNotSupportedClick,
   onAddTextClick,
   MenuProps,
 }) => {
@@ -35,10 +37,10 @@ const AddSegmentDropdownMenu: React.FC<AddSegmentDropdownMenuProps> = ({
           <Button onClick={onAddTextClick} className={styles.dropdownMenuBtn} color="primary" size="medium">
             Add text
           </Button>
-          <Button className={styles.dropdownMenuBtn} color="primary" size="medium">
+          <Button color="primary" size="medium" onClick={onNotSupportedClick} className={styles.dropdownMenuBtn}>
             Add image
           </Button>
-          <Button className={styles.dropdownMenuBtn} color="primary" size="medium">
+          <Button color="primary" size="medium" onClick={onNotSupportedClick} className={styles.dropdownMenuBtn}>
             Add form
           </Button>
         </Flex>

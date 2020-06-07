@@ -16,6 +16,7 @@ export interface EditSegmentDropdownMenuProps {
   onClose: () => void;
   onEditClick: () => void;
   MenuProps?: Partial<MUIMenuProps>;
+  onNotSupportedClick?: () => void;
 }
 
 const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
@@ -23,6 +24,7 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
   onClose,
   onEditClick,
   MenuProps,
+  onNotSupportedClick,
 }) => {
   return (
     <Menu
@@ -45,14 +47,26 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
           >
             Edit
           </Button>
-          <Button color="primary" size="small" startIcon={<ExpandLessIcon />} className={styles.dropdownMenuBtn}>
+          <Button
+            onClick={onNotSupportedClick}
+            color="primary"
+            size="small"
+            startIcon={<ExpandLessIcon />}
+            className={styles.dropdownMenuBtn}
+          >
             Move up
           </Button>
-          <Button color="primary" size="small" startIcon={<ExpandMoreIcon />} className={styles.dropdownMenuBtn}>
+          <Button
+            onClick={onNotSupportedClick}
+            color="primary"
+            size="small"
+            startIcon={<ExpandMoreIcon />}
+            className={styles.dropdownMenuBtn}
+          >
             Move down
           </Button>
           <Button
-            id="delete"
+            onClick={onNotSupportedClick}
             color="secondary"
             size="small"
             startIcon={<DeleteForeverIcon />}

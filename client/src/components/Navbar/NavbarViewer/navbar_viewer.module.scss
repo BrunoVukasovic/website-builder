@@ -1,7 +1,23 @@
+@import '../../../styles/variables';
+
 .navbar {
-  background-color: lightblue;
+  border-bottom: 0.0625rem solid $grey;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 
   .link {
+    text-decoration: none;
     margin-right: 1rem;
+
+    .navbarButton {
+      text-transform: none;
+    }
+
+    .active {
+      .textWrapper {
+        & > p {
+          font-weight: bold;
+        }
+      }
+    }
   }
 }
