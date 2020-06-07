@@ -19,7 +19,7 @@ export const defaultSite: SiteReducerState = {
       {
         name: '<p>First page</p>',
         position: 1,
-        slug: 'prvi',
+        slug: 'first-page',
         container: [
           {
             position: 1,
@@ -36,7 +36,7 @@ export const defaultSite: SiteReducerState = {
       {
         name: '<p>Second page</p>',
         position: 2,
-        slug: 'drugi',
+        slug: 'second-page',
         container: [
           {
             position: 1,

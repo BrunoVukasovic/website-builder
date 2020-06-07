@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useSnackbar } from 'notistack';
 import { Button } from '@material-ui/core';
-import { reduxForm, Form, Field, InjectedFormProps, change, SubmissionError } from 'redux-form';
+import { reduxForm, Form, Field, InjectedFormProps, SubmissionError } from 'redux-form';
 
 import Flex from '../../Flex';
 import Input from '../../Input/Input';

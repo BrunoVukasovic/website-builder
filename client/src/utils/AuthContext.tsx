@@ -29,7 +29,7 @@ export const useAuth = () => React.useContext(AuthContext);
 export const AuthProvider: React.FC = ({ children }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
-  console.log('AuthProvider');
+
   // useEffect(() => {
   //   const token = localStorage.getItem('token');
   //   refreshAuthHeader(token);
@@ -53,7 +53,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   // }, []);
 
   const initUserData = () => {
-    console.log('initUserData');
     const token = localStorage.getItem('token');
     refreshAuthHeader(token);
 

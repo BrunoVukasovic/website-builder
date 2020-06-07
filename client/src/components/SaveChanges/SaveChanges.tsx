@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
-
 import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 
+import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { Button } from '@material-ui/core';
 
@@ -14,6 +14,7 @@ import { UpdateSiteReq } from '../../models';
 import { CurrentSiteState } from '../../redux/models';
 
 import styles from './save_changes.module.scss';
+import { setSite, setCurrentSite } from '../../redux/actions/site';
 
 export interface SaveChangesProps {
   currentSite: CurrentSiteState;
@@ -23,6 +24,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isSiteUpdated, setIsSiteUpdated] = useState<boolean>(false);
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
   const origin = React.useMemo(() => window.location.origin, []);
 
   const handleCopyToClipboardClick = useCallback(() => {
@@ -66,12 +68,14 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite }) => {
     const callApi = async () => {
       try {
         console.log(payload);
-        await SiteService.updateSite(currentSite.oldSlug, payload);
+        const updatedSite = await SiteService.updateSite(currentSite.oldSlug, payload);
 
         if (errorMessage) {
           setErrorMessage('');
         }
+
         setIsSiteUpdated(true);
+        dispatch(setCurrentSite(updatedSite));
       } catch (error) {
         if (error.response || error.request) {
           setErrorMessage('Something went wrong. Please, try again.');
@@ -82,7 +86,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite }) => {
     };
 
     callApi();
-  }, [currentSite, errorMessage]);
+  }, []);
 
   if (!errorMessage && !isSiteUpdated) {
     return <Flex>Loading...</Flex>;

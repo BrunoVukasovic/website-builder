@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { GetSiteRes, UpdateSiteReq } from '../models';
+import { GetSiteRes, UpdateSiteReq, CurrentSite } from '../models';
 
 class SiteService {
   public create = (title: string, slug: string) =>
@@ -34,12 +34,12 @@ class SiteService {
     });
 
   public updateSite = (slug: string, payload: UpdateSiteReq) =>
-    new Promise((resolve, reject) => {
+    new Promise<CurrentSite>((resolve, reject) => {
       const callApi = async () => {
         try {
-          await axios.patch(`/site/update/${slug}`, payload);
+          const { data } = await axios.patch<CurrentSite>(`/site/update/${slug}`, payload);
 
-          resolve();
+          resolve(data);
         } catch (error) {
           reject(error);
         }

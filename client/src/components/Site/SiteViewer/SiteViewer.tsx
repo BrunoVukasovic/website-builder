@@ -14,7 +14,6 @@ import { setSite } from '../../../redux/actions/site';
 import { selectCurrentSite } from '../../../redux/selectors/site';
 import { PageViewer } from '../../Page';
 import { defaultSite, emptyPage } from '../Site.helpers';
-import UserService from '../../../services/UserService';
 import { useAuth } from '../../../utils/AuthContext';
 
 const SiteConstructor: React.FC = () => {
@@ -63,11 +62,9 @@ const SiteConstructor: React.FC = () => {
     const activePage = currentSite.pages.find((page) => page.slug === params.page);
 
     if (!activePage) {
-      console.log('no active page');
-      console.log(currentSite.pages[0]);
       return currentSite.pages[0];
     }
-    console.log(activePage);
+
     return activePage;
   }, [currentSite.pages, params.page]);
 
@@ -76,7 +73,6 @@ const SiteConstructor: React.FC = () => {
     window.open(url, '_blank');
   };
 
-  console.log(currentPage);
   currentPage && console.log(currentPage.container);
   if (currentSite && currentPage) {
     return (
