@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import passport from 'passport';
+import path from 'path';
 
 import { config } from 'dotenv';
 
@@ -22,9 +23,6 @@ initializePassport(passport);
 
 app.use(passport.initialize());
 
-app.get('/', (req, res) => {
-  res.send('Index');
-});
 app.use(
   '/site',
   (req, res, next) => {
@@ -36,6 +34,14 @@ app.use(
 app.use('/user', UserRouter);
 app.use('/navbar', NavbarRouter);
 app.use('/page', PageRouter);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve(__dirname, '../', 'client', 'build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../', 'client', 'build', 'index.html'));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server listening on the port ${PORT}...`);
