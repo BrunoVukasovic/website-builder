@@ -5,8 +5,8 @@ import NavbarModel from '../Navbar';
 import PageModel from '../Page';
 import PageController from '../Page/PageController';
 
-import { GetSiteRes, UpdateSiteReq, Page, SiteTitleAndSlug } from '../../models';
-import { DecodedToken } from '../../middleware/decodeToken';
+import { GetSiteRes, UpdateSiteReq, Page, SiteTitleAndSlug, CurrentSite } from '../../models';
+import { DecodedToken } from '../../middleware/auth';
 
 const SiteController = {
   createSite: async (req: Request, res: Response) => {
@@ -51,16 +51,18 @@ const SiteController = {
       checkDatabase();
     }),
   getSite: async (req: Request, res: Response) => {
+    const { user } = req as { user: DecodedToken | undefined };
     const { slug } = req.params;
+
     try {
       const site = await SiteModel.findOne({ slug });
-      if (site) {
-        const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
-        const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
 
-        // @TODO
-        // const {user} = req;
-        // shouldAllowEditing: user && user._id === site.userID
+      if (site) {
+        const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
+        // @TODO extract to PageController.findAllBySiteIDAndSort
+        const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
+        pages.sort((a, b) => a.position - b.position);
+
         if (navbar && pages) {
           const payload: GetSiteRes = {
             currentSite: {
@@ -69,7 +71,7 @@ const SiteController = {
               oldSlug: site.slug,
               pages: pages,
               navbar,
-              shouldAllowEditing: true,
+              shouldAllowEditing: user && site.userID.equals(user._id),
             },
             allSites: [site.slug], //@TODO izbaci iz ovoga tu
           };
@@ -89,6 +91,7 @@ const SiteController = {
   updateSite: async (req: Request, res: Response) => {
     const { siteData, pagesData, navbarData } = req.body as UpdateSiteReq;
     const { slug } = req.params;
+    const { user } = req as { user: DecodedToken | undefined };
 
     if (siteData || pagesData || navbarData) {
       try {
@@ -108,7 +111,29 @@ const SiteController = {
             // @TODO update Navbar
           }
 
-          res.status(200).send('Website updated successfully');
+          // @TODO extract to PageController.findAllBySiteIDAndSort
+          const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
+          pages.sort((a, b) => a.position - b.position);
+
+          const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
+
+          console.log(user);
+          user && console.log(site.userID.equals(user._id));
+
+          if (navbar) {
+            const payload: CurrentSite = {
+              title: site.title,
+              slug: site.slug,
+              oldSlug: site.slug,
+              pages: pages,
+              navbar,
+              shouldAllowEditing: user && site.userID.equals(user._id),
+            };
+
+            res.status(200).send(payload);
+          } else {
+            res.status(500).send('Something went wrong');
+          }
         } else {
           res.status(500).send("Couldn't find site");
         }

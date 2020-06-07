@@ -1,14 +1,14 @@
 import express from 'express';
 
 import SiteController from './SiteController';
-import decodeToken from '../../middleware/decodeToken';
+import checkToken from '../../middleware/checkToken';
 import auth from '../../middleware/auth';
 
 const SiteRouter = express.Router();
 
-SiteRouter.get('/get/:slug', decodeToken, SiteController.getSite);
+SiteRouter.get('/get/:slug', checkToken, SiteController.getSite);
 
-SiteRouter.patch('/update/:slug', SiteController.updateSite);
+SiteRouter.patch('/update/:slug', auth, SiteController.updateSite);
 
 SiteRouter.post('/create/:slug', auth, SiteController.createSite);
 

@@ -5,6 +5,7 @@ export interface DecodedToken {
   _id: string;
   name: string;
   email: string;
+  iat: number;
 }
 
 const auth = (req: Request, res: Response, next: NextFunction) => {

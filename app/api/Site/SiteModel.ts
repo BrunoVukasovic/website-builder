@@ -4,7 +4,7 @@ export interface SiteDocument extends Document {
   title: string;
   slug: string;
   navbarID: Types.ObjectId;
-  userID?: Types.ObjectId;
+  userID: Types.ObjectId;
 }
 
 const SiteSchema: Schema = new Schema({
