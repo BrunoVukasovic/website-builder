@@ -1,19 +1,17 @@
-const mongoose = require("mongoose");
-
-require("dotenv").config();
+import Mongoose from 'mongoose';
 
 const connectDatabase = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
+    await Mongoose.connect(process.env.MONGO_URI as string, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useFindAndModify: false,
       useUnifiedTopology: true,
     });
 
-    console.log("Database connected...");
+    console.log('Database connected...');
   } catch (err) {
-    console.error("Error in config: " + err.message);
+    console.error('Error in config: ' + err.message);
     process.exit(1);
   }
 };
