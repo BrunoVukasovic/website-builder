@@ -1,6 +1,10 @@
-.addPageSegmentWrapper {
-  .addIcon {
-    width: 3rem;
-    height: 3rem;
+.pageContainer {
+  padding: 1rem 1rem 1rem 0;
+
+  .addPageSegmentWrapper {
+    .addIcon {
+      width: 3rem;
+      height: 3rem;
+    }
   }
 }

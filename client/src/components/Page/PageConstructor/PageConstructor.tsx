@@ -3,6 +3,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 
+import { useSnackbar } from 'notistack';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Flex from '../../Flex';
@@ -28,6 +29,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
   const [addTextSegmentOpen, setAddTextSegmentOpen] = useState<boolean>(false);
   const currentPage = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const addNewSegmentBtn = document.getElementById('addNewSegment') as HTMLElement | undefined;
 
   useEffect(() => {
@@ -58,6 +60,10 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
       ...currentSegment,
       shouldEdit: true,
     });
+  };
+
+  const handleNotSupportedClick = () => {
+    enqueueSnackbar('This feature is not implemented yet.', { variant: 'error' });
   };
 
   const onOpenMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -92,11 +98,10 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
 
   if (currentPage) {
     return (
-      <Flex direction="column">
+      <Flex direction="column" className={styles.pageContainer}>
         <Flex direction="column">
           {currentPage.container.map((item) => (
             <Flex key={item.content} alignSelf="flex-start" alignItems="center" className={styles.editableItem}>
-              <Flex className={styles.content} dangerouslySetInnerHTML={{ __html: item.content }} />
               <Flex className={styles.editBtnContainer}>
                 <IconButton
                   id={`${item.position}`}
@@ -108,6 +113,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
                   <EditIcon />
                 </IconButton>
               </Flex>
+              <Flex className={styles.content} dangerouslySetInnerHTML={{ __html: item.content }} />
             </Flex>
           ))}
           <Flex id="addNewSegment" className={styles.addPageSegmentWrapper}>
@@ -120,6 +126,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               anchorEl={addNewSegmentBtn}
               onClose={toggleAddSegmentMenuOpen}
               onAddTextClick={handleAddTextClick}
+              onNotSupportedClick={handleNotSupportedClick}
             />
           )}
           {currentSegment.anchorElement && !currentSegment.shouldEdit && (
@@ -127,6 +134,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               anchorEl={currentSegment.anchorElement}
               onClose={removeCurrentSegment}
               onEditClick={handleEditClick}
+              onNotSupportedClick={handleNotSupportedClick}
             />
           )}
           {currentSegment.shouldEdit && (
