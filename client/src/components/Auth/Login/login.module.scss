@@ -1,0 +1,36 @@
+@import '../../../styles/variables';
+
+.heading {
+  margin: 0;
+}
+
+.input {
+  width: 100%;
+}
+
+.errorMessage {
+  color: red;
+  align-self: center;
+  font-size: 1.1rem;
+}
+
+.buttonContainer {
+  margin-top: 1rem;
+
+  .submitBtn {
+    width: 100%;
+  }
+}
+
+.registerWrapper {
+  margin-top: 3rem;
+  border-top: 0.0625rem solid $grey;
+
+  & > h4 {
+    margin-top: -1rem;
+  }
+
+  .registerBtn {
+    width: 30%;
+  }
+}

@@ -25,6 +25,11 @@ export interface GetSiteRes {
   allSites?: string[];
 }
 
+export interface LoginReq {
+  email: string;
+  password: string;
+}
+
 export interface Navbar {
   logo?: string;
   backgroundColor?: string;
@@ -35,7 +40,7 @@ export interface Page {
   position: number;
   slug: string;
   container: PageSegment[];
-  id?: string;
+  _id?: string;
 }
 
 export interface PageSegment {
@@ -50,14 +55,16 @@ export interface PagesData {
   newPages?: CurrentPage[];
 }
 
-// export interface UpdatedPage extends Page {
-//   updatedElements: {
-//     name?: boolean;
-//     position?: boolean;
-//     slug?: boolean;
-//     container?: boolean;
-//   };
-// }
+export interface RegisterUserReq {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface SiteTitleAndSlug {
+  title: string;
+  slug: string;
+}
 
 export interface UpdateSiteReq {
   siteData?: {
@@ -66,4 +73,17 @@ export interface UpdateSiteReq {
   };
   navbarData?: Navbar;
   pagesData?: PagesData;
+}
+
+export interface UserAuthRes {
+  name: string;
+  email: string;
+  allSites: SiteTitleAndSlug[];
+  token: string;
+}
+
+export interface UserDataRes {
+  name: string;
+  email: string;
+  allSites: SiteTitleAndSlug[];
 }

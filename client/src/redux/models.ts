@@ -16,8 +16,19 @@ export interface CurrentSiteState {
   deletedPages?: DeletedPage[];
 }
 
+export interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
 export interface NavbarState extends Navbar {
   isUpdated?: boolean;
+}
+
+export interface RegisterFormValues {
+  name: string;
+  email: string;
+  password: string;
 }
 
 export interface SegmentContentAndType {

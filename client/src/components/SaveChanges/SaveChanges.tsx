@@ -32,12 +32,10 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite }) => {
     enqueueSnackbar('URL copied to clipboard!', { variant: 'success' });
   }, [enqueueSnackbar]);
 
-  // @TODO if !auth return <Login />
-
   useEffect(() => {
     let payload: UpdateSiteReq = {};
-    const updatedPages = currentSite.pages.filter((page) => page.updatedElements && page.id);
-    const newPages = currentSite.pages.filter((page) => !page.id);
+    const updatedPages = currentSite.pages.filter((page) => page.updatedElements && page._id);
+    const newPages = currentSite.pages.filter((page) => !page._id);
     const { deletedPages } = currentSite;
 
     console.log(updatedPages);
@@ -67,7 +65,6 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite }) => {
 
     const callApi = async () => {
       try {
-        console.log('callApi');
         console.log(payload);
         await SiteService.updateSite(currentSite.oldSlug, payload);
 

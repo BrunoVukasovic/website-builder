@@ -99,7 +99,9 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
             container: true,
           },
           container: state.currentPage.container.map((segment) =>
-            segment.position === payload.position ? { ...segment, content: payload.content } : segment
+            segment.position === payload.position
+              ? { ...segment, content: payload.content, type: payload.type }
+              : segment
           ),
         },
       };
