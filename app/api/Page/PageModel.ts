@@ -2,7 +2,7 @@ import mongoose, { Schema, Document, Types } from 'mongoose';
 
 import { PageSegment } from '../../models';
 
-export interface PageModel extends Document {
+export interface PageDocument extends Document {
   name: string;
   position: number;
   slug: string;
@@ -19,4 +19,4 @@ const PageSchema: Schema = new Schema({
   siteID: { type: Schema.Types.ObjectId, required: true },
 });
 
-export default mongoose.model<PageModel>('Page', PageSchema);
+export default mongoose.model<PageDocument>('Page', PageSchema);

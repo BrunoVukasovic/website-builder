@@ -5,10 +5,12 @@ import NavbarModel from '../Navbar';
 import PageModel from '../Page';
 import PageController from '../Page/PageController';
 
-import { GetSiteRes, UpdateSiteReq, Page } from '../../models';
+import { GetSiteRes, UpdateSiteReq, Page, SiteTitleAndSlug } from '../../models';
+import { DecodedToken } from '../../middleware/decodeToken';
 
 const SiteController = {
   createSite: async (req: Request, res: Response) => {
+    const { user } = (req as unknown) as { user: DecodedToken };
     const { title } = req.body;
     const { slug } = req.params;
 
@@ -20,7 +22,7 @@ const SiteController = {
           res.status(400).send('Site with this title already exist. Please, choose another title.');
         } else {
           const navbar = await NavbarModel.create({});
-          site = await SiteModel.create({ title, slug, navbarID: navbar._id });
+          site = await SiteModel.create({ title, slug, navbarID: navbar._id, userID: user._id });
 
           res.status(201).send();
         }
@@ -32,50 +34,22 @@ const SiteController = {
       res.status(400).json('Title and slug must be provided in the request.');
     }
   },
-  //@TODO ne ovako, nego po uputama iz saveChanges, prvo saljes title i slug i kreiras prazan site, pa pozivas update
-  // createNewSite: async (req: Request, res: Response) => {
-  //   const { title, pages } = req.body as CreateSiteReq;
-  //   const { slug } = req.params;
+  findUsersSites: async (userID: string) =>
+    new Promise<SiteTitleAndSlug[]>((resolve, reject) => {
+      const checkDatabase = async () => {
+        try {
+          const sites: SiteTitleAndSlug[] = await SiteModel.find({ userID }).select(
+            '-siteID -__v -_id -navbarID -userID'
+          );
 
-  //   if (title && pages) {
-  //     try {
-  //       let site = await SiteModel.findOne({ slug });
+          resolve(sites);
+        } catch (error) {
+          reject(error);
+        }
+      };
 
-  //       if (site) {
-  //         res.status(400).send("Site with this slug already exist");
-  //       } else {
-  //         const navbar = await NavbarModel.create({});
-  //         site = await SiteModel.create({ title, slug, navbarID: navbar._id });
-
-  //         if (navbar && site) {
-  //           await Promise.all(
-  //             pages.map(async ({ name, position, slug, container }) => {
-  //               await PageModel.create({
-  //                 name,
-  //                 position,
-  //                 slug,
-  //                 container,
-  //                 //@ts-ignore
-  //                 siteID: site._id,
-  //               });
-  //             })
-  //           );
-
-  //           res.status(200).send(site);
-  //         } else {
-  //           res.status(500).send("Error while creating navbar and site");
-  //         }
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //       res.status(500).send("Server error while creating site");
-  //     }
-  //   } else {
-  //     res.status(400).json({
-  //       msg: "Title, navbar and page data must be provided in the request.",
-  //     });
-  //   }
-  // },
+      checkDatabase();
+    }),
   getSite: async (req: Request, res: Response) => {
     const { slug } = req.params;
     try {
@@ -84,6 +58,9 @@ const SiteController = {
         const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
         const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
 
+        // @TODO
+        // const {user} = req;
+        // shouldAllowEditing: user && user._id === site.userID
         if (navbar && pages) {
           const payload: GetSiteRes = {
             currentSite: {
@@ -94,7 +71,7 @@ const SiteController = {
               navbar,
               shouldAllowEditing: true,
             },
-            allSites: [site.slug], //@TODO ako ima pravo edita zakaci sve slugove i imena
+            allSites: [site.slug], //@TODO izbaci iz ovoga tu
           };
 
           res.status(200).send(payload);
@@ -109,9 +86,6 @@ const SiteController = {
       res.status(500).send("Couldn't fetch site");
     }
   },
-  // updateSite
-  // dohvati Site
-  // PageController: za svaki updatePage provjeri ima li _id, ako nema kreiraj je, ako ima updateaj
   updateSite: async (req: Request, res: Response) => {
     const { siteData, pagesData, navbarData } = req.body as UpdateSiteReq;
     const { slug } = req.params;

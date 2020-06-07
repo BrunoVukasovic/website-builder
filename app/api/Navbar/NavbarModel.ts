@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface NavbarModel extends Document {
+export interface NavbarDocument extends Document {
   logo?: string;
   backgroundColor?: string;
 }
@@ -10,4 +10,4 @@ const NavbarSchema: Schema = new Schema({
   backgroundColor: String,
 });
 
-export default mongoose.model<NavbarModel>('Navbar', NavbarSchema);
+export default mongoose.model<NavbarDocument>('Navbar', NavbarSchema);

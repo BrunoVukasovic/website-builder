@@ -1,13 +1,3 @@
-//@TODO rename u AddNewPagesReq
-// export interface AddNewPagesPayload {
-//   newPages: {
-//     name: string;
-//     position: number;
-//     slug: string;
-//     container: PageSegment[];
-//   }[];
-// }
-
 export interface CurrentPage extends Page {
   updatedElements?: {
     name?: boolean;
@@ -29,7 +19,7 @@ export interface CurrentSite {
 export interface DeletedPage {
   id: string;
 }
-
+// @TODO izbaci allSites
 export interface GetSiteRes {
   currentSite: CurrentSite;
   allSites?: string[];
@@ -45,7 +35,7 @@ export interface Page {
   position: number;
   slug: string;
   container: PageSegment[];
-  _id: string;
+  _id?: string;
 }
 
 export interface PageSegment {
@@ -60,40 +50,16 @@ export interface PagesData {
   newPages?: CurrentPage[];
 }
 
-//@TODO deprecated
-// export interface UpdatePagesPayload {
-//   updatedPages: {
-//     _id: string;
-//     name?: string;
-//     position?: number;
-//     slug?: string;
-//     container?: PageSegment[];
-//   }[];
-// }
+export interface RegisterUserReq {
+  name: string;
+  email: string;
+  password: string;
+}
 
-//@TODO deprecated
-// export interface UpdatePageReq {
-//   name: string;
-//   position: number;
-//   slug: string;
-//   container: PageSegment[];
-//   _id?: string;
-//   updatedElements: {
-//     name?: boolean;
-//     position?: boolean;
-//     slug?: boolean;
-//     container?: boolean;
-//   };
-// }
-
-// export interface UpdatedPage extends Page {
-//   updatedElements: {
-//     name?: boolean;
-//     position?: boolean;
-//     slug?: boolean;
-//     container?: boolean;
-//   };
-// }
+export interface SiteTitleAndSlug {
+  title: string;
+  slug: string;
+}
 
 export interface UpdateSiteReq {
   siteData?: {
@@ -102,4 +68,17 @@ export interface UpdateSiteReq {
   };
   navbarData?: Navbar;
   pagesData?: PagesData;
+}
+
+export interface UserAuthRes {
+  name: string;
+  email: string;
+  allSites: SiteTitleAndSlug[];
+  token: string;
+}
+
+export interface UserDataRes {
+  name: string;
+  email: string;
+  allSites: SiteTitleAndSlug[];
 }
