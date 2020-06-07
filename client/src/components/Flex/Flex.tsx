@@ -12,6 +12,7 @@ export interface FlexProps extends React.HTMLProps<HTMLDivElement> {
   alignSelf?: 'flex-start' | 'flex-end' | 'start' | 'end' | 'center';
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
   paper?: boolean;
+  maxHeight?: boolean;
 }
 
 const Flex: React.FC<FlexProps> = ({
@@ -24,6 +25,7 @@ const Flex: React.FC<FlexProps> = ({
   direction = 'row',
   className,
   paper,
+  maxHeight,
   ...props
 }) => {
   let classes: string[] = [styles.dFlex, styles[`direction--${direction}`]];
@@ -48,6 +50,10 @@ const Flex: React.FC<FlexProps> = ({
   }
   if (paper) {
     classes = [...classes, styles.paper];
+  }
+
+  if (maxHeight) {
+    classes = [...classes, styles.maxHeight];
   }
 
   return <div {...props} className={cx(...classes, className)} />;

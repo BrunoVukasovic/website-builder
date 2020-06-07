@@ -12,12 +12,14 @@ export interface AuthContextValues {
   isAuth: boolean;
   logIn: (payload: UserAuthRes) => void;
   logOut: () => void;
+  initUserData: () => void;
 }
 
 export const initialValues: AuthContextValues = {
   isAuth: false,
   logIn: () => {},
   logOut: () => {},
+  initUserData: () => {},
 };
 
 const AuthContext = React.createContext<AuthContextValues>(initialValues);
@@ -27,8 +29,31 @@ export const useAuth = () => React.useContext(AuthContext);
 export const AuthProvider: React.FC = ({ children }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
+  console.log('AuthProvider');
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   refreshAuthHeader(token);
+  //   console.log('useEFfect od providera');
+  //   if (token) {
+  //     const callApi = async () => {
+  //       try {
+  //         const userData = await UserService.getUserData();
 
-  useEffect(() => {
+  //         dispatch(setUser(userData));
+  //         setIsAuth(true);
+  //       } catch (error) {
+  //         console.log(error);
+  //         // localStorage.removeItem('token');
+  //         // refreshAuthHeader(null);
+  //       }
+  //     };
+
+  //     callApi();
+  //   }
+  // }, []);
+
+  const initUserData = () => {
+    console.log('initUserData');
     const token = localStorage.getItem('token');
     refreshAuthHeader(token);
 
@@ -41,14 +66,14 @@ export const AuthProvider: React.FC = ({ children }) => {
           setIsAuth(true);
         } catch (error) {
           console.log(error);
-          localStorage.removeItem('token');
-          refreshAuthHeader(null);
+          // localStorage.removeItem('token');
+          // refreshAuthHeader(null);
         }
       };
 
       callApi();
     }
-  }, [dispatch]);
+  };
 
   const logIn = ({ name, email, allSites, token }: UserAuthRes) => {
     refreshAuthHeader(token);
@@ -71,7 +96,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       delete axios.defaults.headers.common['x-auth-token'];
     }
   };
-  return <AuthContext.Provider value={{ isAuth, logIn, logOut }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isAuth, logIn, logOut, initUserData }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;

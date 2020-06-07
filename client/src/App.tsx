@@ -12,8 +12,8 @@ import { AuthProvider } from './utils/AuthContext';
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <AuthProvider>
+      <AuthProvider>
+        <BrowserRouter>
           <SnackbarProvider
             maxSnack={2}
             autoHideDuration={4000}
@@ -22,8 +22,8 @@ const App: React.FC = () => {
           >
             <DefaultRouter />
           </SnackbarProvider>
-        </AuthProvider>
-      </BrowserRouter>
+        </BrowserRouter>
+      </AuthProvider>
     </Provider>
   );
 };

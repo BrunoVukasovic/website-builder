@@ -17,12 +17,14 @@ import { NavbarConstructor } from '../../Navbar';
 import Modal from '../../Modal/Modal';
 import SaveChanges from '../../SaveChanges';
 import CreateSite from '../../CreateSite';
+import { useAuth } from '../../../utils/AuthContext';
 
 const SiteConstructor: React.FC = () => {
   const [saveChangesModalOpen, setSaveChangesModalOpen] = useState<boolean>(false);
   const currentSite = useSelector(selectCurrentSite);
   const params = useParams<{ site: string; page: string }>();
   const dispatch = useDispatch();
+  const { initUserData, isAuth } = useAuth();
 
   useEffect(() => {
     if (params.site) {
@@ -32,6 +34,10 @@ const SiteConstructor: React.FC = () => {
         } else {
           const callApi = async () => {
             try {
+              if (!isAuth) {
+                initUserData();
+              }
+
               const site = await SiteService.getSite(params.site);
 
               dispatch(setSite({ ...site, currentPage: emptyPage }));
@@ -81,7 +87,7 @@ const SiteConstructor: React.FC = () => {
 
   if (currentPage && currentSite.shouldAllowEditing) {
     return (
-      <Flex direction="column" alignItems="center">
+      <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer>
           <NavbarConstructor slugsAndNames={slugsAndNames} activePageName={currentPage.name} siteSlug={params.site} />
           <PageConstructor page={currentPage} />
