@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import Flex from '../Flex';
 
 import { updateCurrentPageSegment, addNewPage, addPageSegment } from '../../redux/actions/site';
+import { modules, formats } from './EditText.helpers';
 
 import 'react-quill/dist/quill.snow.css';
 import styles from './edit_text.module.scss';
@@ -66,13 +67,20 @@ const EditText: React.FC<EditTextProps> = ({ initialValue, itemPosition, onClose
     onCloseEditor();
   };
 
+  // @TOOD ubaci prop headeText isto ko modal, npr Page name:
   return (
     <Popover open anchorEl={anchorElement} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
       <Flex direction="column" alignItems="flex-start" paper className={styles.editorWrapper}>
         <IconButton aria-label="close" onClick={onCloseEditor} className={styles.closeButton}>
           <CloseIcon />
         </IconButton>
-        <ReactQuill value={text} onChange={onTextValueChange} />
+        <ReactQuill
+          value={text}
+          onChange={onTextValueChange}
+          modules={modules}
+          formats={formats}
+          className={styles.quill}
+        />
         <Flex justifyContent="space-between" className={styles.buttonWrapper} fluid>
           <Button color="primary" variant="outlined" onClick={onCloseEditor}>
             Close

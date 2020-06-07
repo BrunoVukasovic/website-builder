@@ -7,6 +7,22 @@
     margin-bottom: 0.5rem;
   }
 
+  .quill {
+    // .ql-editor {
+    //   white-space: normal !important;
+    // }
+    & > div {
+      &:last-of-type {
+        & > div {
+          &:last-of-type {
+            z-index: 1;
+            left: auto !important;
+          }
+        }
+      }
+    }
+  }
+
   .buttonWrapper {
     margin-top: 1.5rem;
   }
