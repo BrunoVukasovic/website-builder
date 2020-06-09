@@ -27,6 +27,10 @@ const SiteConstructor: React.FC = () => {
   const { initUserData, isAuth } = useAuth();
 
   useEffect(() => {
+    if (!isAuth) {
+      initUserData();
+    }
+
     if (params.site) {
       if (params.site !== currentSite.slug) {
         if (params.site === 'new-website') {
@@ -34,10 +38,6 @@ const SiteConstructor: React.FC = () => {
         } else {
           const callApi = async () => {
             try {
-              if (!isAuth) {
-                initUserData();
-              }
-
               const site = await SiteService.getSite(params.site);
 
               dispatch(setSite({ ...site, currentPage: emptyPage }));
@@ -95,7 +95,9 @@ const SiteConstructor: React.FC = () => {
         {saveChangesModalOpen && (
           <Modal onClose={toggleSaveChangesModalOpen}>
             {currentSite.slug === 'new-website' && <CreateSite onCancelClick={toggleSaveChangesModalOpen} />}
-            {currentSite.slug !== 'new-website' && <SaveChanges currentSite={currentSite} />}
+            {currentSite.slug !== 'new-website' && (
+              <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModalOpen} />
+            )}
           </Modal>
         )}
         <Footer onPrimaryBtnClick={handleSaveChangesClick} />

@@ -18,9 +18,10 @@ import { setSite, setCurrentSite } from '../../redux/actions/site';
 
 export interface SaveChangesProps {
   currentSite: CurrentSiteState;
+  onCloseClick: () => void;
 }
 
-const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite }) => {
+const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onCloseClick }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isSiteUpdated, setIsSiteUpdated] = useState<boolean>(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -109,7 +110,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite }) => {
           >
             Copy Link
           </Button>
-          <Button size="large" type="submit" variant="contained" color="primary">
+          <Button size="large" type="submit" variant="contained" color="primary" onClick={onCloseClick}>
             Close
           </Button>
         </Flex>
@@ -122,7 +123,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite }) => {
       <Flex direction="column" alignItems="center">
         <MoodBadIcon color="primary" className={styles.successIcon} />
         <h2 className={styles.errorText}>{errorMessage}</h2>
-        <Button size="large" type="submit" variant="contained" color="primary">
+        <Button size="large" type="submit" variant="contained" color="primary" onClick={onCloseClick}>
           Close
         </Button>
       </Flex>
