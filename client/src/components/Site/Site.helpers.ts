@@ -23,12 +23,12 @@ export const defaultSite: SiteReducerState = {
         container: [
           {
             position: 1,
-            content: '<p>Prvi content</p>',
+            content: '<p>Feel free to edit anything!</p>',
             type: 'text',
           },
           {
             position: 2,
-            content: '<p>Drugi content</p>',
+            content: '<p>Some content</p>',
             type: 'text',
           },
         ],
@@ -40,12 +40,12 @@ export const defaultSite: SiteReducerState = {
         container: [
           {
             position: 1,
-            content: '<p>Prvi content na drugoj stranici</p>',
+            content: '<p>First content on the second page</p>',
             type: 'text',
           },
           {
             position: 2,
-            content: '<p>Drugi content na drugoj stranici</p>',
+            content: '<p>Second content on the second page</p>',
             type: 'text',
           },
         ],
