@@ -47,7 +47,7 @@ const SiteConstructor: React.FC = () => {
     } else {
       dispatch(setSite(defaultSite));
     }
-  }, [params.site]);
+  }, [params.site, dispatch, initUserData, isAuth]);
 
   const slugsAndNames = React.useMemo(() => {
     return currentSite.pages.map((page) => {
