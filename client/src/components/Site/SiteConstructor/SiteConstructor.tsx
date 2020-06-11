@@ -8,19 +8,23 @@ import Flex from '../../Flex';
 import NotFound from '../../../views/NotFound';
 import SiteContainer from '../../SiteContainer';
 import Footer from '../../Footer';
+import MainMenu from '../partials/MainMenu';
+import Auth from '../../Auth/Auth';
+import PageConstructor from '../../Page/PageConstructor';
+import Modal from '../../Modal/Modal';
+import SaveChanges from '../../SaveChanges';
+import CreateSite from '../../CreateSite';
 
 import { setSite, setCurrentPageToCurrentSite } from '../../../redux/actions/site';
 import { selectCurrentSite } from '../../../redux/selectors/site';
 import { defaultSite, emptyPage } from '../Site.helpers';
-import PageConstructor from '../../Page/PageConstructor';
 import { NavbarConstructor } from '../../Navbar';
-import Modal from '../../Modal/Modal';
-import SaveChanges from '../../SaveChanges';
-import CreateSite from '../../CreateSite';
 import { useAuth } from '../../../utils/AuthContext';
 
 const SiteConstructor: React.FC = () => {
   const [saveChangesModalOpen, setSaveChangesModalOpen] = useState<boolean>(false);
+  const [mainMenuOpen, setMainMenuOpen] = useState<boolean>(false);
+  const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
   const currentSite = useSelector(selectCurrentSite);
   const params = useParams<{ site: string; page: string }>();
   const dispatch = useDispatch();
@@ -53,7 +57,7 @@ const SiteConstructor: React.FC = () => {
     } else {
       dispatch(setSite(defaultSite));
     }
-  }, [params.site]);
+  }, [params.site, currentSite.slug, dispatch, initUserData, isAuth]);
 
   const slugsAndNames = React.useMemo(
     () =>
@@ -76,6 +80,19 @@ const SiteConstructor: React.FC = () => {
     return wantedPage;
   }, [currentSite.pages, params.page]);
 
+  const handleLoginClick = () => {
+    toggleAuthModalOpen();
+    toggleMainMenuOpen();
+  };
+
+  const toggleAuthModalOpen = () => {
+    setAuthModalOpen(!authModalOpen);
+  };
+
+  const toggleMainMenuOpen = () => {
+    setMainMenuOpen(!mainMenuOpen);
+  };
+
   const toggleSaveChangesModalOpen = () => {
     setSaveChangesModalOpen(!saveChangesModalOpen);
   };
@@ -92,15 +109,23 @@ const SiteConstructor: React.FC = () => {
           <NavbarConstructor slugsAndNames={slugsAndNames} activePageName={currentPage.name} siteSlug={params.site} />
           <PageConstructor page={currentPage} />
         </SiteContainer>
+        <Footer onMenuClick={toggleMainMenuOpen} onPrimaryBtnClick={handleSaveChangesClick} />
         {saveChangesModalOpen && (
           <Modal onClose={toggleSaveChangesModalOpen}>
-            {currentSite.slug === 'new-website' && <CreateSite onCancelClick={toggleSaveChangesModalOpen} />}
+            {currentSite.slug === 'new-website' && (
+              <CreateSite closeModal={toggleSaveChangesModalOpen} onCancelClick={toggleSaveChangesModalOpen} />
+            )}
             {currentSite.slug !== 'new-website' && (
               <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModalOpen} />
             )}
           </Modal>
         )}
-        <Footer onPrimaryBtnClick={handleSaveChangesClick} />
+        {mainMenuOpen && <MainMenu onLoginClick={handleLoginClick} onClose={toggleMainMenuOpen} />}
+        {authModalOpen && (
+          <Modal onClose={toggleAuthModalOpen}>
+            <Auth closeModal={toggleAuthModalOpen} />
+          </Modal>
+        )}
       </Flex>
     );
   }
