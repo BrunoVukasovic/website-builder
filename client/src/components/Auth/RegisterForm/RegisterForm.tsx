@@ -21,7 +21,7 @@ export interface RegisterProps {
 
 type WithInjectedFormProps = InjectedFormProps<RegisterFormValues, RegisterProps> & RegisterProps;
 
-const Register: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick, closeModal }) => {
+const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick, closeModal }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
 
@@ -54,6 +54,7 @@ const Register: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick
 
   return (
     <Flex direction="column">
+      <h2>Register:</h2>
       <Form<RegisterFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>
         <Flex direction="column" alignItems="flex-start">
           <Field
@@ -100,6 +101,6 @@ const Register: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick
   );
 };
 
-export default reduxForm<RegisterFormValues, RegisterProps>({ form: 'registerForm' })(Register) as React.ComponentType<
-  RegisterProps
->;
+export default reduxForm<RegisterFormValues, RegisterProps>({ form: 'registerForm' })(
+  RegisterForm
+) as React.ComponentType<RegisterProps>;

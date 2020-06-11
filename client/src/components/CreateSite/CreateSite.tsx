@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
 import { reduxForm, Form, Field, InjectedFormProps, change, SubmissionError } from 'redux-form';
 
+import Auth from '../Auth';
 import Flex from '../Flex';
 import Input from '../Input/Input';
 import Validator from '../../utils/validation';
 import SiteService from '../../services/SiteService';
-import Login from '../Auth/Login/Login';
-import Register from '../Auth/Register/Register';
 
 import { CreateSiteFormValues } from '../../redux/models';
 import { updateTitleAndSlug } from '../../redux/actions/site';
@@ -19,15 +18,15 @@ import { useAuth } from '../../utils/AuthContext';
 import styles from './create_site.module.scss';
 
 export interface CreateSiteProps {
+  closeModal?: () => void;
   onCancelClick: () => void;
 }
 
 type WithInjectedFormProps = InjectedFormProps<CreateSiteFormValues, CreateSiteProps> & CreateSiteProps;
 
-const CreateSite: React.FC<WithInjectedFormProps> = ({ handleSubmit, onCancelClick }) => {
+const CreateSite: React.FC<WithInjectedFormProps> = ({ handleSubmit, onCancelClick, closeModal }) => {
   const dispatch = useDispatch();
   const { isAuth } = useAuth();
-  const [authModal, setAuthModal] = useState<'Login' | 'Register' | undefined>(undefined);
   const { enqueueSnackbar } = useSnackbar();
 
   const origin = React.useMemo(() => window.location.origin, []);
@@ -54,19 +53,8 @@ const CreateSite: React.FC<WithInjectedFormProps> = ({ handleSubmit, onCancelCli
     [dispatch, enqueueSnackbar]
   );
 
-  const openLoginForm = () => {
-    setAuthModal('Login');
-  };
-
-  const openRegisterForm = () => {
-    setAuthModal('Register');
-  };
-
   if (!isAuth) {
-    if (authModal === 'Register') {
-      return <Register onGoBackClick={openLoginForm} />;
-    }
-    return <Login onRegisterClick={openRegisterForm} />;
+    return <Auth closeModal={closeModal} />;
   }
 
   return (

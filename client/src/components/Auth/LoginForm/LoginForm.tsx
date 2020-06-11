@@ -20,7 +20,7 @@ export interface LoginProps {
 }
 type WithInjectedFormProps = InjectedFormProps<LoginFormValues, LoginProps> & LoginProps;
 
-const Login: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegisterClick, closeModal }) => {
+const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegisterClick, closeModal }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
 
@@ -51,6 +51,7 @@ const Login: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegiste
 
   return (
     <Flex direction="column">
+      <h2>Login:</h2>
       <Form<LoginFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>
         <Flex direction="column" alignItems="flex-start">
           <Field
@@ -95,4 +96,6 @@ const Login: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegiste
   );
 };
 
-export default reduxForm<LoginFormValues, LoginProps>({ form: 'loginForm' })(Login) as React.ComponentType<LoginProps>;
+export default reduxForm<LoginFormValues, LoginProps>({ form: 'loginForm' })(LoginForm) as React.ComponentType<
+  LoginProps
+>;
