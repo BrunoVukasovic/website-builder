@@ -50,8 +50,8 @@ const PageController = {
             if (updatedElements) {
               await PageModel.findByIdAndUpdate(_id, {
                 ...(updatedElements.name && { name }),
+                ...(updatedElements.name && { slug }),
                 ...(updatedElements.position && { position }),
-                ...(updatedElements.slug && { slug }),
                 ...(updatedElements.container && { container }),
               });
             }

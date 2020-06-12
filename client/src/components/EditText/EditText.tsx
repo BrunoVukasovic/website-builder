@@ -7,7 +7,13 @@ import { useDispatch } from 'react-redux';
 
 import Flex from '../Flex';
 
-import { updateCurrentPageSegment, addNewPage, addPageSegment } from '../../redux/actions/site';
+import {
+  updateCurrentPageSegment,
+  addNewPage,
+  addPageSegment,
+  updatePageName,
+  updateCurrentPageName,
+} from '../../redux/actions/site';
 import { modules, formats } from './EditText.helpers';
 
 import 'react-quill/dist/quill.snow.css';
@@ -15,11 +21,13 @@ import styles from './edit_text.module.scss';
 
 export interface EditTextProps {
   onCloseEditor: () => void;
-  action: 'updateSegment' | 'addSegment' | 'updateNavbar' | 'addPage';
+  action: 'updateSegment' | 'addSegment' | 'updatePageName' | 'addPage';
   anchorElement?: HTMLElement;
   itemPosition?: number;
   initialValue?: string;
   headerText?: string;
+  oldSlug?: string;
+  activePageSlug?: string;
 }
 
 const EditText: React.FC<EditTextProps> = ({
@@ -29,6 +37,8 @@ const EditText: React.FC<EditTextProps> = ({
   action,
   anchorElement,
   headerText,
+  oldSlug,
+  activePageSlug,
 }) => {
   const [text, setText] = useState<string>(initialValue || '');
   const dispatch = useDispatch();
@@ -49,6 +59,31 @@ const EditText: React.FC<EditTextProps> = ({
               .toLowerCase(),
           })
         );
+        break;
+      case 'updatePageName':
+        if (activePageSlug === oldSlug) {
+          dispatch(
+            updateCurrentPageName({
+              title: text,
+              slug: text
+                .replace(/(<([^>]+)>)/gi, '')
+                .replace(/[^a-zA-Z0-9]/g, '-')
+                .toLowerCase(),
+            })
+          );
+        } else {
+          dispatch(
+            updatePageName({
+              name: text,
+              slug: text
+                .replace(/(<([^>]+)>)/gi, '')
+                .replace(/[^a-zA-Z0-9]/g, '-')
+                .toLowerCase(),
+              //@ts-ignore
+              oldSlug,
+            })
+          );
+        }
         break;
       case 'addSegment':
         dispatch(

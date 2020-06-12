@@ -9,9 +9,11 @@ import {
   ADD_NEW_PAGE,
   ADD_PAGE_SEGMENT,
   SET_CURRENT_SITE,
+  UPDATE_PAGE_NAME,
+  UPDATE_CURRENT_PAGE_NAME,
 } from '../types/site';
 import { SiteReducerState } from '../reducers/site';
-import { TitleAndSlug, SegmentContentAndType, CurrentSiteState } from '../models';
+import { TitleAndSlug, SegmentContentAndType, CurrentSiteState, UpdatePageNamePayload } from '../models';
 
 export const addNewPage = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
   type: ADD_NEW_PAGE,
@@ -45,6 +47,16 @@ export const setCurrentPageToCurrentSite = (): Action => ({
 export const updateCurrentPageSegment = (segment: PageSegment): Action<PageSegment> => ({
   type: UPDATE_CURRENT_PAGE_SEGMENT,
   payload: segment,
+});
+
+export const updatePageName = (payload: UpdatePageNamePayload): Action<UpdatePageNamePayload> => ({
+  type: UPDATE_PAGE_NAME,
+  payload,
+});
+
+export const updateCurrentPageName = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
+  type: UPDATE_CURRENT_PAGE_NAME,
+  payload,
 });
 
 export const updateTitleAndSlug = (payload: TitleAndSlug): Action<TitleAndSlug> => ({

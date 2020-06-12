@@ -14,12 +14,12 @@ import styles from './navbar_viewer.module.scss';
 
 export interface NavbarViewerProps {
   slugsAndNames: { slug: string; name: string }[];
-  activePageName: string;
+  activePageSlug: string;
   siteSlug: string;
   style?: Navbar;
 }
 
-const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, style, activePageName }) => {
+const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, style, activePageSlug }) => {
   const [createdMenuOpen, setCreatedMenuOpen] = useState<boolean>(false);
 
   const toggleCreatedMenuOpen = () => {
@@ -33,7 +33,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
           <NavLink key={item.slug} to={`/${siteSlug}/${item.slug}`} className={styles.link}>
             <Button color="primary" className={styles.navbarButton}>
               <Flex
-                className={item.name === activePageName ? cx(styles.textWrapper, styles.active) : styles.textWrapper}
+                className={item.slug === activePageSlug ? cx(styles.textWrapper, styles.active) : styles.textWrapper}
                 dangerouslySetInnerHTML={{ __html: item.name }}
               />
             </Button>
@@ -46,7 +46,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
       {createdMenuOpen && (
         <CreatedMenu
           slugsAndNames={slugsAndNames}
-          activePageName={activePageName}
+          activePageSlug={activePageSlug}
           siteSlug={siteSlug}
           onClose={toggleCreatedMenuOpen}
         />

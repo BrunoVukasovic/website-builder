@@ -11,6 +11,8 @@ import {
   ADD_NEW_PAGE,
   ADD_PAGE_SEGMENT,
   SET_CURRENT_SITE,
+  UPDATE_PAGE_NAME,
+  UPDATE_CURRENT_PAGE_NAME,
 } from '../types/site';
 
 export interface SiteReducerState {
@@ -104,6 +106,36 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
               ? { ...segment, content: payload.content, type: payload.type }
               : segment
           ),
+        },
+      };
+    case UPDATE_PAGE_NAME:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          pages: state.currentSite.pages.map((page) =>
+            page.slug === payload.oldSlug
+              ? {
+                  ...page,
+                  name: payload.name,
+                  slug: payload.slug,
+                  updatedElements: { ...page.updatedElements, name: true },
+                }
+              : page
+          ),
+        },
+      };
+    case UPDATE_CURRENT_PAGE_NAME:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            name: true,
+          },
+          name: payload.title,
+          slug: payload.slug,
         },
       };
     case UPDATE_TITLE_AND_SLUG:

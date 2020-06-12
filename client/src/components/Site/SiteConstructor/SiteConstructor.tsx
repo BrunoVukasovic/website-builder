@@ -106,7 +106,7 @@ const SiteConstructor: React.FC = () => {
     return (
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer>
-          <NavbarConstructor slugsAndNames={slugsAndNames} activePageName={currentPage.name} siteSlug={params.site} />
+          <NavbarConstructor slugsAndNames={slugsAndNames} activePageSlug={currentPage.slug} siteSlug={params.site} />
           <PageConstructor page={currentPage} />
         </SiteContainer>
         <Footer onMenuClick={toggleMainMenuOpen} onPrimaryBtnClick={handleSaveChangesClick} />

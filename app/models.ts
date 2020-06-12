@@ -2,7 +2,6 @@ export interface CurrentPage extends Page {
   updatedElements?: {
     name?: boolean;
     position?: boolean;
-    slug?: boolean;
     container?: boolean;
   };
 }

@@ -40,3 +40,9 @@ export interface TitleAndSlug {
   title: string;
   slug: string;
 }
+
+export interface UpdatePageNamePayload {
+  name: string;
+  slug: string;
+  oldSlug: string;
+}

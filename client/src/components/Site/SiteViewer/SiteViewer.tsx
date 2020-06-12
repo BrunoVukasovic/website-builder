@@ -78,7 +78,7 @@ const SiteConstructor: React.FC = () => {
     return (
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer>
-          <NavbarViewer slugsAndNames={slugsAndNames} activePageName={currentPage.name} siteSlug={params.site} />
+          <NavbarViewer slugsAndNames={slugsAndNames} activePageSlug={currentPage.slug} siteSlug={params.site} />
           <PageViewer pageContainer={currentPage.container} />
         </SiteContainer>
         {currentSite.shouldAllowEditing && <Footer primaryBtnText="Edit" onPrimaryBtnClick={handleEditClick} />}
