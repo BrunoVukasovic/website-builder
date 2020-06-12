@@ -65,7 +65,12 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
       </Flex>
       {addPageEditorOpen && (
         <Flex>
-          <EditText onCloseEditor={toggleAddPageEditorOpen} action="addPage" anchorElement={anchorElement} />
+          <EditText
+            headerText="Enter page name: "
+            onCloseEditor={toggleAddPageEditorOpen}
+            action="addPage"
+            anchorElement={anchorElement}
+          />
         </Flex>
       )}
       {createdMenuOpen && (

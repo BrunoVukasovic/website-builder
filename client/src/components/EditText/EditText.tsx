@@ -19,9 +19,17 @@ export interface EditTextProps {
   anchorElement?: HTMLElement;
   itemPosition?: number;
   initialValue?: string;
+  headerText?: string;
 }
 
-const EditText: React.FC<EditTextProps> = ({ initialValue, itemPosition, onCloseEditor, action, anchorElement }) => {
+const EditText: React.FC<EditTextProps> = ({
+  initialValue,
+  itemPosition,
+  onCloseEditor,
+  action,
+  anchorElement,
+  headerText,
+}) => {
   const [text, setText] = useState<string>(initialValue || '');
   const dispatch = useDispatch();
 
@@ -67,13 +75,15 @@ const EditText: React.FC<EditTextProps> = ({ initialValue, itemPosition, onClose
     onCloseEditor();
   };
 
-  // @TOOD ubaci prop headeText isto ko modal, npr Page name:
   return (
     <Popover open anchorEl={anchorElement} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
       <Flex direction="column" alignItems="flex-start" paper className={styles.editorWrapper}>
-        <IconButton aria-label="close" onClick={onCloseEditor} className={styles.closeButton}>
-          <CloseIcon />
-        </IconButton>
+        <Flex fluid>
+          {headerText && <h3>{`${headerText}`}</h3>}
+          <IconButton aria-label="close" onClick={onCloseEditor} className={styles.closeButton}>
+            <CloseIcon />
+          </IconButton>
+        </Flex>
         <ReactQuill
           value={text}
           onChange={onTextValueChange}
