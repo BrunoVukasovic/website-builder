@@ -1,0 +1,56 @@
+@import '../../../../styles/variables';
+
+.root {
+  z-index: 0 !important;
+
+  .header {
+    background-color: $grey !important;
+  }
+
+  .modalBody {
+    padding: 0 !important;
+  }
+
+  .container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    margin: 0 !important;
+    border-radius: 0;
+    background-color: $grey !important;
+
+    .navbar {
+      .link {
+        text-decoration: none;
+
+        &.activeNavLink {
+          background-color: darken($grey, 5%) !important;
+        }
+
+        .navbarButton {
+          text-transform: none;
+          width: 100%;
+          justify-content: flex-start;
+          padding: 0.3rem 1.5rem;
+        }
+
+        .textWrapper {
+          white-space: nowrap;
+
+          &.active {
+            font-weight: bold;
+          }
+        }
+      }
+
+      .addPageWrapper {
+        padding: 0.3rem 1.5rem;
+        .addIcon {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+    }
+  }
+}

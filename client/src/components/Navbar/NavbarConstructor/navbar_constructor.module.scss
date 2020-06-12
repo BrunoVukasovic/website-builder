@@ -4,25 +4,40 @@
   border-bottom: 0.0625rem solid $grey;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 
-  .link {
-    text-decoration: none;
-    margin-right: 1rem;
+  .navbarItemsWrapper {
+    overflow-x: scroll;
 
-    .navbarButton {
-      text-transform: none;
-    }
+    .link {
+      text-decoration: none;
+      margin-right: 1rem;
 
-    .active {
+      .navbarButton {
+        text-transform: none;
+      }
+
       .textWrapper {
-        & > p {
+        white-space: nowrap;
+
+        &.active {
           font-weight: bold;
         }
       }
     }
+
+    .addIcon {
+      width: 2rem;
+      height: 2rem;
+    }
   }
 
-  .addIcon {
-    width: 2rem;
-    height: 2rem;
+  .menuIconWrapper {
+    margin-left: auto;
+    padding: 0 1rem;
+    box-shadow: -7px -6px 10px 7px #f5f4f4;
+
+    .menuIcon {
+      width: 2rem;
+      height: 2rem;
+    }
   }
 }
