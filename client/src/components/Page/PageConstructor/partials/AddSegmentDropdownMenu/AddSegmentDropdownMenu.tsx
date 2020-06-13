@@ -10,6 +10,7 @@ import styles from './add_segment_dropdown_menu.module.scss';
 export interface AddSegmentDropdownMenuProps {
   onClose: () => void;
   onAddTextClick: () => void;
+  onImageInputChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   onNotSupportedClick?: () => void;
   anchorEl?: HTMLElement;
   MenuProps?: Partial<MUIMenuProps>;
@@ -19,6 +20,7 @@ const AddSegmentDropdownMenu: React.FC<AddSegmentDropdownMenuProps> = ({
   anchorEl,
   onClose,
   onNotSupportedClick,
+  onImageInputChange,
   onAddTextClick,
   MenuProps,
 }) => {
@@ -37,8 +39,17 @@ const AddSegmentDropdownMenu: React.FC<AddSegmentDropdownMenuProps> = ({
           <Button onClick={onAddTextClick} className={styles.dropdownMenuBtn} color="primary" size="medium">
             Add text
           </Button>
-          <Button color="primary" size="medium" onClick={onNotSupportedClick} className={styles.dropdownMenuBtn}>
-            Add image
+          <input
+            id="addImageInput"
+            type="file"
+            accept="image/*"
+            onChange={onImageInputChange}
+            className={styles.imageInput}
+          />
+          <Button color="primary" size="medium" className={styles.imageInputBtn}>
+            <label htmlFor="addImageInput" className={styles.addImageLabel}>
+              Add image
+            </label>
           </Button>
           <Button color="primary" size="medium" onClick={onNotSupportedClick} className={styles.dropdownMenuBtn}>
             Add form

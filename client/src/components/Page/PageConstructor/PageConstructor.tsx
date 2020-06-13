@@ -12,10 +12,11 @@ import AddSegmentDropdownMenu from './partials/AddSegmentDropdownMenu';
 import EditSegmentDropdownMenu from './partials/EditSegmentDropdownMenu';
 
 import { selectCurrentPage } from '../../../redux/selectors/site';
-import { setCurrentPageToCurrentSite } from '../../../redux/actions/site';
+import { setCurrentPageToCurrentSite, addPageSegment } from '../../../redux/actions/site';
 import { setCurrentPage } from '../../../redux/actions/site';
 import { CurrentPage } from '../../../models';
-import { initialCurrentSegment, CurrentSegment } from './PageConstructor.helpers';
+import { initialCurrentSegment, CurrentSegment, SegmentContent } from './PageConstructor.helpers';
+import { fileToBase64String } from '../../../utils/shared';
 
 import styles from './page_constructor.module.scss';
 
@@ -66,6 +67,21 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     enqueueSnackbar('This feature is not implemented yet.', { variant: 'error' });
   };
 
+  const handleAddImageClick = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+
+    if (files) {
+      try {
+        const image = await fileToBase64String(files[0]);
+        console.log(image);
+        dispatch(addPageSegment({ content: image, type: 'image' }));
+        toggleAddSegmentMenuOpen();
+      } catch {
+        enqueueSnackbar('Something went wrong while processing image. Please, try again.', { variant: 'error' });
+      }
+    }
+  };
+
   const onOpenMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { currentTarget } = e;
     const clickedSegmentPosition = parseInt(currentTarget.id, 10);
@@ -113,7 +129,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
                   <EditIcon />
                 </IconButton>
               </Flex>
-              <Flex className={styles.content} dangerouslySetInnerHTML={{ __html: item.content }} />
+              <SegmentContent segment={item} />
             </Flex>
           ))}
           <Flex id="addNewSegment" className={styles.addPageSegmentWrapper}>
@@ -127,6 +143,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               onClose={toggleAddSegmentMenuOpen}
               onAddTextClick={handleAddTextClick}
               onNotSupportedClick={handleNotSupportedClick}
+              onImageInputChange={handleAddImageClick}
             />
           )}
           {currentSegment.anchorElement && !currentSegment.shouldEdit && (
