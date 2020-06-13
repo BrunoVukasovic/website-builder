@@ -16,7 +16,6 @@ import {
 } from '../../redux/actions/site';
 import { modules, formats } from './EditText.helpers';
 
-import 'react-quill/dist/quill.snow.css';
 import styles from './edit_text.module.scss';
 
 export interface EditTextProps {

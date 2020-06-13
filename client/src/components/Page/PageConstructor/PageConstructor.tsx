@@ -15,7 +15,7 @@ import { selectCurrentPage } from '../../../redux/selectors/site';
 import { setCurrentPageToCurrentSite, addPageSegment } from '../../../redux/actions/site';
 import { setCurrentPage } from '../../../redux/actions/site';
 import { CurrentPage } from '../../../models';
-import { initialCurrentSegment, CurrentSegment, SegmentContent } from './PageConstructor.helpers';
+import { initialCurrentSegment, CurrentSegment, DisplaySegment } from './PageConstructor.helpers';
 import { fileToBase64String } from '../../../utils/shared';
 
 import styles from './page_constructor.module.scss';
@@ -117,7 +117,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
       <Flex direction="column" className={styles.pageContainer}>
         <Flex direction="column">
           {currentPage.container.map((item) => (
-            <Flex key={item.content} alignSelf="flex-start" alignItems="center" className={styles.editableItem}>
+            <Flex key={item.content} alignSelf="flex-start" alignItems="center" className={styles.editableItem} fluid>
               <Flex className={styles.editBtnContainer}>
                 <IconButton
                   id={`${item.position}`}
@@ -129,7 +129,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
                   <EditIcon />
                 </IconButton>
               </Flex>
-              <SegmentContent segment={item} />
+              <DisplaySegment segment={item} />
             </Flex>
           ))}
           <Flex id="addNewSegment" className={styles.addPageSegmentWrapper}>

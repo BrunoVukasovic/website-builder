@@ -1,7 +1,15 @@
 .pageContainer {
   padding: 1rem 1rem 1rem 0;
 
-  .content {
+  .textSegmentWrapper {
+    & > div {
+      &:first-of-type {
+        width: 100%;
+      }
+    }
+  }
+
+  .imageSegment {
     max-width: 60rem;
   }
 

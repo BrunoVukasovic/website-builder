@@ -1,10 +1,11 @@
 import React from 'react';
-import { Menu, Switch } from '@material-ui/core';
-import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
+import ReactQuill from 'react-quill';
 
-import { PageSegment } from '../../../models';
 import Flex from '../../Flex';
 
+import { PageSegment } from '../../../models';
+
+import 'react-quill/dist/quill.bubble.css';
 import styles from './page_constructor.module.scss';
 
 export interface CurrentSegment extends PageSegment {
@@ -25,16 +26,23 @@ export const initialCurrentSegment: CurrentSegment = {
   anchorElement: undefined,
 };
 
-export interface SegmentContentProps {
+export interface DisplaySegmentProps {
   segment: PageSegment;
 }
 
-export const SegmentContent: React.FC<SegmentContentProps> = ({ segment }) => {
+export const DisplaySegment: React.FC<DisplaySegmentProps> = ({ segment }) => {
+  const imageStyle = {
+    marginBottom: '2rem',
+  };
   switch (segment.type) {
     case 'text':
-      return <Flex className={styles.content} dangerouslySetInnerHTML={{ __html: segment.content }} />;
+      return (
+        <Flex className={styles.textSegmentWrapper} flexOut>
+          <ReactQuill value={segment.content} readOnly={true} theme={'bubble'} />
+        </Flex>
+      );
     case 'image':
-      return <img className={styles.content} src={segment.content} />;
+      return <img style={imageStyle} className={styles.imageSegment} src={segment.content} />;
     default:
       return <p>Content not supported!</p>;
   }
