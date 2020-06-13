@@ -12,17 +12,19 @@ import Flex from '../../../../Flex';
 import styles from '../AddSegmentDropdownMenu/add_segment_dropdown_menu.module.scss';
 
 export interface EditSegmentDropdownMenuProps {
-  anchorEl: HTMLElement | null;
+  segmentType: 'text' | 'image';
   onClose: () => void;
-  onEditClick: () => void;
+  onEditTextClick: () => void;
+  anchorEl?: HTMLElement;
   MenuProps?: Partial<MUIMenuProps>;
   onNotSupportedClick?: () => void;
 }
 
 const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
   anchorEl,
+  segmentType,
   onClose,
-  onEditClick,
+  onEditTextClick,
   MenuProps,
   onNotSupportedClick,
 }) => {
@@ -38,15 +40,28 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
     >
       <li>
         <Flex fluid direction="column" className={styles.buttonWrapper}>
-          <Button
-            onClick={onEditClick}
-            color="primary"
-            size="small"
-            startIcon={<EditIcon />}
-            className={styles.dropdownMenuBtn}
-          >
-            Edit
-          </Button>
+          {segmentType === 'text' ? (
+            <Button
+              onClick={onEditTextClick}
+              color="primary"
+              size="small"
+              startIcon={<EditIcon />}
+              className={styles.dropdownMenuBtn}
+            >
+              Edit content
+            </Button>
+          ) : (
+            <Button
+              // onClick={onEditClick}
+              color="primary"
+              size="small"
+              startIcon={<EditIcon />}
+              className={styles.dropdownMenuBtn}
+            >
+              Change image
+            </Button>
+          )}
+
           <Button
             onClick={onNotSupportedClick}
             color="primary"

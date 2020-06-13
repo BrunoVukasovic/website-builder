@@ -16,14 +16,14 @@ export interface CurrentSegment extends PageSegment {
   shouldMoveUp?: boolean;
   shouldMoveDown?: boolean;
   shouldDelete?: boolean;
-  anchorElement?: HTMLElement;
+  // anchorElement?: HTMLElement;
 }
 
 export const initialCurrentSegment: CurrentSegment = {
   position: 0,
   content: '',
   type: 'text',
-  anchorElement: undefined,
+  // anchorElement: undefined,
 };
 
 export interface DisplaySegmentProps {

@@ -15,7 +15,7 @@ import { selectCurrentPage } from '../../../redux/selectors/site';
 import { setCurrentPageToCurrentSite, addPageSegment } from '../../../redux/actions/site';
 import { setCurrentPage } from '../../../redux/actions/site';
 import { CurrentPage } from '../../../models';
-import { initialCurrentSegment, CurrentSegment, DisplaySegment } from './PageConstructor.helpers';
+import { CurrentSegment, DisplaySegment } from './PageConstructor.helpers';
 import { fileToBase64String } from '../../../utils/shared';
 
 import styles from './page_constructor.module.scss';
@@ -25,9 +25,10 @@ export interface PageConstructorProps {
 }
 
 const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
-  const [currentSegment, setCurrentSegment] = useState<CurrentSegment>(initialCurrentSegment);
+  const [currentSegment, setCurrentSegment] = useState<CurrentSegment | undefined>(undefined);
+  const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
   const [addSegmentMenuOpen, setAddSegmentMenuOpen] = useState<boolean>(false);
-  const [addTextSegmentOpen, setAddTextSegmentOpen] = useState<boolean>(false);
+  const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
   const currentPage = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -38,30 +39,15 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
       if (currentPage.slug !== page.slug) {
         dispatch(setCurrentPageToCurrentSite());
         dispatch(setCurrentPage(page));
-
-        if (currentSegment.content) {
-          setCurrentSegment(initialCurrentSegment);
-        }
       }
     } else {
       dispatch(setCurrentPage(page));
-
-      if (currentSegment.content) {
-        setCurrentSegment(initialCurrentSegment);
-      }
     }
 
     return () => {
       dispatch(setCurrentPageToCurrentSite());
     };
   }, [page, currentPage, dispatch]);
-
-  const handleEditClick = () => {
-    setCurrentSegment({
-      ...currentSegment,
-      shouldEdit: true,
-    });
-  };
 
   const handleNotSupportedClick = () => {
     enqueueSnackbar('This feature is not implemented yet.', { variant: 'error' });
@@ -82,7 +68,12 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     }
   };
 
-  const onOpenMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleAddSegmentMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setAnchorElement(e.currentTarget);
+    toggleAddSegmentMenuOpen();
+  };
+
+  const handleEditSegmentMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { currentTarget } = e;
     const clickedSegmentPosition = parseInt(currentTarget.id, 10);
     const clickedSegment = currentPage.container.find((segment) => segment.position === clickedSegmentPosition);
@@ -90,26 +81,29 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     if (clickedSegment) {
       setCurrentSegment({
         ...clickedSegment,
-        anchorElement: currentTarget,
       });
+      setAnchorElement(currentTarget);
     }
   };
 
+  const handleTextEditorClose = () => {
+    if (currentSegment) {
+      removeCurrentSegment();
+    }
+
+    toggleTextEditorOpen();
+  };
+
   const removeCurrentSegment = () => {
-    setCurrentSegment(initialCurrentSegment);
-  };
-
-  const toggleAddTextSegmentOpen = () => {
-    setAddTextSegmentOpen(!addTextSegmentOpen);
-  };
-
-  const handleAddTextClick = () => {
-    toggleAddTextSegmentOpen();
-    setAddSegmentMenuOpen(false);
+    setCurrentSegment(undefined);
   };
 
   const toggleAddSegmentMenuOpen = () => {
     setAddSegmentMenuOpen(!addSegmentMenuOpen);
+  };
+
+  const toggleTextEditorOpen = () => {
+    setTextEditorOpen(!textEditorOpen);
   };
 
   if (currentPage) {
@@ -121,7 +115,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               <Flex className={styles.editBtnContainer}>
                 <IconButton
                   id={`${item.position}`}
-                  onClick={onOpenMenuClick}
+                  onClick={handleEditSegmentMenuClick}
                   color="primary"
                   aria-label="edit"
                   className={styles.expandEditMenuBtn}
@@ -133,38 +127,36 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
             </Flex>
           ))}
           <Flex id="addNewSegment" className={styles.addPageSegmentWrapper}>
-            <IconButton aria-label="add-page" onClick={toggleAddSegmentMenuOpen}>
+            <IconButton aria-label="add-page" onClick={handleAddSegmentMenuClick}>
               <AddCircleIcon color="primary" className={styles.addIcon} />
             </IconButton>
           </Flex>
           {addSegmentMenuOpen && (
             <AddSegmentDropdownMenu
-              anchorEl={addNewSegmentBtn}
+              anchorEl={anchorElement}
               onClose={toggleAddSegmentMenuOpen}
-              onAddTextClick={handleAddTextClick}
+              onAddTextClick={toggleTextEditorOpen}
               onNotSupportedClick={handleNotSupportedClick}
               onImageInputChange={handleAddImageClick}
             />
           )}
-          {currentSegment.anchorElement && !currentSegment.shouldEdit && (
+          {currentSegment && (
             <EditSegmentDropdownMenu
-              anchorEl={currentSegment.anchorElement}
+              segmentType={currentSegment.type}
+              anchorEl={anchorElement}
               onClose={removeCurrentSegment}
-              onEditClick={handleEditClick}
+              onEditTextClick={toggleTextEditorOpen}
               onNotSupportedClick={handleNotSupportedClick}
             />
           )}
-          {currentSegment.shouldEdit && (
+          {textEditorOpen && (
             <EditText
-              anchorElement={currentSegment.anchorElement}
-              initialValue={currentSegment.content}
-              itemPosition={currentSegment.position}
-              action="updateSegment"
-              onCloseEditor={removeCurrentSegment}
+              anchorElement={anchorElement}
+              initialValue={currentSegment && currentSegment.content}
+              itemPosition={currentSegment && currentSegment.position}
+              action={currentSegment ? 'updateSegment' : 'addSegment'}
+              onCloseEditor={handleTextEditorClose}
             />
-          )}
-          {addTextSegmentOpen && (
-            <EditText anchorElement={addNewSegmentBtn} action="addSegment" onCloseEditor={toggleAddTextSegmentOpen} />
           )}
         </Flex>
       </Flex>

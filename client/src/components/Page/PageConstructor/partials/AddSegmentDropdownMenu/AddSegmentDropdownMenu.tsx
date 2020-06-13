@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Menu, Button } from '@material-ui/core';
 import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
