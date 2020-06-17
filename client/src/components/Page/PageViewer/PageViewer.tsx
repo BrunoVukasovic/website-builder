@@ -13,26 +13,28 @@ export interface PageViewerProps {
 
 const PageViewer: React.FC<PageViewerProps> = ({ pageContainer }) => (
   <Flex direction="column" className={styles.pageContainer}>
-    {pageContainer.map((segment) => {
-      const { content, type } = segment;
+    <Flex direction="column">
+      {pageContainer.map((segment) => {
+        const { content, type, style } = segment;
 
-      switch (type) {
-        case 'text':
-          return (
-            <Flex className={styles.textSegmentWrapper} flexOut>
-              <ReactQuill value={segment.content} readOnly={true} theme={'bubble'} />
-            </Flex>
-          );
-        case 'image':
-          return (
-            <Flex className={styles.imageSegmentWrapper} flexOut>
-              <img className={styles.imageSegment} src={segment.content} />
-            </Flex>
-          );
-        default:
-          return undefined;
-      }
-    })}
+        switch (type) {
+          case 'text':
+            return (
+              <Flex key={content} className={styles.textSegmentWrapper} flexOut>
+                <ReactQuill value={segment.content} readOnly={true} theme={'bubble'} />
+              </Flex>
+            );
+          case 'image':
+            return (
+              <Flex key={content} alignSelf="flex-start" alignItems="center" fluid>
+                <img style={style ? style.content : {}} className={styles.imageSegment} src={segment.content} />{' '}
+              </Flex>
+            );
+          default:
+            return undefined;
+        }
+      })}
+    </Flex>
   </Flex>
 );
 

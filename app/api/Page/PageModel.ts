@@ -15,7 +15,14 @@ const PageSchema: Schema = new Schema({
   name: { type: String, required: true },
   position: { type: Number, required: true },
   slug: { type: String, required: true },
-  container: [{ position: Number, content: String, type: { type: String } }],
+  container: [
+    {
+      position: Number,
+      content: String,
+      type: { type: String },
+      style: { wrapper: { position: String }, content: { width: String, height: String } },
+    },
+  ],
   siteID: { type: Schema.Types.ObjectId, required: true },
 });
 

@@ -10,11 +10,12 @@ import Flex from '../../Flex';
 import EditText from '../../EditText';
 import AddSegmentDropdownMenu from './partials/AddSegmentDropdownMenu';
 import EditSegmentDropdownMenu from './partials/EditSegmentDropdownMenu';
+import ImageSizePopover from './partials/ImageSizePopover';
 
 import { selectCurrentPage } from '../../../redux/selectors/site';
 import { setCurrentPageToCurrentSite, addPageSegment } from '../../../redux/actions/site';
 import { setCurrentPage } from '../../../redux/actions/site';
-import { CurrentPage } from '../../../models';
+import { CurrentPage, PageSegment } from '../../../models';
 import { CurrentSegment, DisplaySegment } from './PageConstructor.helpers';
 import { fileToBase64String } from '../../../utils/shared';
 
@@ -25,14 +26,14 @@ export interface PageConstructorProps {
 }
 
 const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
-  const [currentSegment, setCurrentSegment] = useState<CurrentSegment | undefined>(undefined);
+  const [currentSegment, setCurrentSegment] = useState<PageSegment | undefined>(undefined);
   const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
   const [addSegmentMenuOpen, setAddSegmentMenuOpen] = useState<boolean>(false);
   const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
+  const [imageSizePopoverOpen, setImageSizePopoverOpen] = useState<boolean>(false);
   const currentPage = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const addNewSegmentBtn = document.getElementById('addNewSegment') as HTMLElement | undefined;
 
   useEffect(() => {
     if (currentPage && currentPage.slug) {
@@ -102,6 +103,10 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     setAddSegmentMenuOpen(!addSegmentMenuOpen);
   };
 
+  const toggleImageSizePopoverOpen = () => {
+    setImageSizePopoverOpen(!imageSizePopoverOpen);
+  };
+
   const toggleTextEditorOpen = () => {
     setTextEditorOpen(!textEditorOpen);
   };
@@ -146,6 +151,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               anchorEl={anchorElement}
               onClose={removeCurrentSegment}
               onEditTextClick={toggleTextEditorOpen}
+              onChangeImageSizeClick={toggleImageSizePopoverOpen}
               onNotSupportedClick={handleNotSupportedClick}
             />
           )}
@@ -156,6 +162,17 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               itemPosition={currentSegment && currentSegment.position}
               action={currentSegment ? 'updateSegment' : 'addSegment'}
               onCloseEditor={handleTextEditorClose}
+            />
+          )}
+          {imageSizePopoverOpen && currentSegment && (
+            <ImageSizePopover
+              onClose={toggleImageSizePopoverOpen}
+              anchorElement={anchorElement}
+              segment={{
+                position: currentSegment.position,
+                width: currentSegment.style && currentSegment.style.content?.width,
+                height: currentSegment.style && currentSegment.style.content?.height,
+              }}
             />
           )}
         </Flex>

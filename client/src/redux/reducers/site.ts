@@ -13,6 +13,8 @@ import {
   SET_CURRENT_SITE,
   UPDATE_PAGE_NAME,
   UPDATE_CURRENT_PAGE_NAME,
+  UPDATE_IMAGE_WIDTH,
+  UPDATE_IMAGE_HEIGHT,
 } from '../types/site';
 
 export interface SiteReducerState {
@@ -136,6 +138,44 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           },
           name: payload.title,
           slug: payload.slug,
+        },
+      };
+    case UPDATE_IMAGE_HEIGHT:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          container: state.currentPage.container.map((segment) =>
+            segment.position === payload.position
+              ? {
+                  ...segment,
+                  style: { ...segment.style, content: { ...segment.style?.content, height: payload.height } },
+                }
+              : segment
+          ),
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            container: true,
+          },
+        },
+      };
+    case UPDATE_IMAGE_WIDTH:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          container: state.currentPage.container.map((segment) =>
+            segment.position === payload.position
+              ? {
+                  ...segment,
+                  style: { ...segment.style, content: { ...segment.style?.content, width: payload.width } },
+                }
+              : segment
+          ),
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            container: true,
+          },
         },
       };
     case UPDATE_TITLE_AND_SLUG:

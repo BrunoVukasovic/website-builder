@@ -11,9 +11,19 @@ export interface CurrentSiteState {
   slug: string; // odma se update-a skupa sa title
   oldSlug: string;
   navbar: NavbarState; // samo jedan elements isSaved
-  pages: CurrentPage[]; // pages.filter(page => page.hasOwnProperty(updatedElements) => switch po onome sta imaju updateano)
+  pages: CurrentPage[];
   shouldAllowEditing?: boolean;
   deletedPages?: DeletedPage[];
+}
+
+export interface HeightAndPosition {
+  height: string;
+  position: number;
+}
+
+export interface ImageSizeFormValues {
+  width: string;
+  height: string;
 }
 
 export interface LoginFormValues {
@@ -45,4 +55,9 @@ export interface UpdatePageNamePayload {
   name: string;
   slug: string;
   oldSlug: string;
+}
+
+export interface WidthAndPosition {
+  width: string;
+  position: number;
 }

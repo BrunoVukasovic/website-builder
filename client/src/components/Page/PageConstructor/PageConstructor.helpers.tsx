@@ -12,10 +12,10 @@ export interface CurrentSegment extends PageSegment {
   position: number;
   content: string;
   type: 'text' | 'image';
-  shouldEdit?: boolean;
-  shouldMoveUp?: boolean;
-  shouldMoveDown?: boolean;
-  shouldDelete?: boolean;
+  // shouldEdit?: boolean;
+  // shouldMoveUp?: boolean;
+  // shouldMoveDown?: boolean;
+  // shouldDelete?: boolean;k
   // anchorElement?: HTMLElement;
 }
 
@@ -31,9 +31,8 @@ export interface DisplaySegmentProps {
 }
 
 export const DisplaySegment: React.FC<DisplaySegmentProps> = ({ segment }) => {
-  const imageStyle = {
-    marginBottom: '2rem',
-  };
+  console.log(segment.position);
+  console.log(segment.style?.content);
   switch (segment.type) {
     case 'text':
       return (
@@ -42,7 +41,7 @@ export const DisplaySegment: React.FC<DisplaySegmentProps> = ({ segment }) => {
         </Flex>
       );
     case 'image':
-      return <img style={imageStyle} className={styles.imageSegment} src={segment.content} />;
+      return <img style={segment.style?.content} className={styles.imageSegment} src={segment.content} />;
     default:
       return <p>Content not supported!</p>;
   }

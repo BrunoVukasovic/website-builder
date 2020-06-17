@@ -41,6 +41,15 @@ export interface PageSegment {
   position: number;
   content: string;
   type: 'text' | 'image';
+  style?: {
+    wrapper?: {
+      position?: string;
+    };
+    content?: {
+      width?: string;
+      height?: string;
+    };
+  };
 }
 
 export interface PagesData {

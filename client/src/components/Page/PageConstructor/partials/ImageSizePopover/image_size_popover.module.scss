@@ -1,0 +1,27 @@
+.container {
+  max-width: 40rem;
+  padding: 0rem 1rem 1rem;
+
+  .closeButton {
+    margin-left: auto;
+  }
+
+  .rowTitleWrapper {
+    min-width: 3rem;
+  }
+
+  .inputWrapper {
+    max-width: 8rem;
+    padding: 0 2rem;
+  }
+
+  .autoWrapper {
+    & > p {
+      margin: 0;
+    }
+  }
+
+  .buttonWrapper {
+    margin-top: 1.5rem;
+  }
+}

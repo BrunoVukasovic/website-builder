@@ -11,9 +11,18 @@ import {
   SET_CURRENT_SITE,
   UPDATE_PAGE_NAME,
   UPDATE_CURRENT_PAGE_NAME,
+  UPDATE_IMAGE_WIDTH,
+  UPDATE_IMAGE_HEIGHT,
 } from '../types/site';
 import { SiteReducerState } from '../reducers/site';
-import { TitleAndSlug, SegmentContentAndType, CurrentSiteState, UpdatePageNamePayload } from '../models';
+import {
+  TitleAndSlug,
+  SegmentContentAndType,
+  CurrentSiteState,
+  UpdatePageNamePayload,
+  WidthAndPosition,
+  HeightAndPosition,
+} from '../models';
 
 export const addNewPage = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
   type: ADD_NEW_PAGE,
@@ -56,6 +65,16 @@ export const updatePageName = (payload: UpdatePageNamePayload): Action<UpdatePag
 
 export const updateCurrentPageName = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
   type: UPDATE_CURRENT_PAGE_NAME,
+  payload,
+});
+
+export const updateImageHeight = (payload: HeightAndPosition): Action<HeightAndPosition> => ({
+  type: UPDATE_IMAGE_HEIGHT,
+  payload,
+});
+
+export const updateImageWidth = (payload: WidthAndPosition): Action<WidthAndPosition> => ({
+  type: UPDATE_IMAGE_WIDTH,
   payload,
 });
 

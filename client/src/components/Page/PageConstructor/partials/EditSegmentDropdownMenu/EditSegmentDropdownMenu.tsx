@@ -18,6 +18,7 @@ export interface EditSegmentDropdownMenuProps {
   anchorEl?: HTMLElement;
   MenuProps?: Partial<MUIMenuProps>;
   onNotSupportedClick?: () => void;
+  onChangeImageSizeClick?: () => void;
 }
 
 const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
@@ -27,6 +28,7 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
   onEditTextClick,
   MenuProps,
   onNotSupportedClick,
+  onChangeImageSizeClick,
 }) => {
   return (
     <Menu
@@ -51,15 +53,26 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
               Edit content
             </Button>
           ) : (
-            <Button
-              // onClick={onEditClick}
-              color="primary"
-              size="small"
-              startIcon={<EditIcon />}
-              className={styles.dropdownMenuBtn}
-            >
-              Change image
-            </Button>
+            <>
+              <Button
+                // onClick={onEditClick}
+                color="primary"
+                size="small"
+                startIcon={<EditIcon />}
+                className={styles.dropdownMenuBtn}
+              >
+                Change image
+              </Button>
+              <Button
+                onClick={onChangeImageSizeClick}
+                color="primary"
+                size="small"
+                startIcon={<EditIcon />}
+                className={styles.dropdownMenuBtn}
+              >
+                Change size
+              </Button>
+            </>
           )}
 
           <Button
