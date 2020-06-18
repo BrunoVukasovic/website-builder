@@ -164,17 +164,6 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               onCloseEditor={handleTextEditorClose}
             />
           )}
-          {imageSizePopoverOpen && currentSegment && (
-            <ImageSizePopover
-              onClose={toggleImageSizePopoverOpen}
-              anchorElement={anchorElement}
-              segment={{
-                position: currentSegment.position,
-                width: currentSegment.style && currentSegment.style.content?.width,
-                height: currentSegment.style && currentSegment.style.content?.height,
-              }}
-            />
-          )}
         </Flex>
       </Flex>
     );
