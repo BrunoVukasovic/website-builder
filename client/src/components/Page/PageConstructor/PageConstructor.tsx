@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { useSnackbar } from 'notistack';
 import { useSelector, useDispatch } from 'react-redux';
@@ -125,7 +126,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
                   aria-label="edit"
                   className={styles.expandEditMenuBtn}
                 >
-                  <AddCircleIcon />
+                  <CloseIcon />
                 </IconButton>
               </Flex>
               <DisplaySegment segment={item} />
