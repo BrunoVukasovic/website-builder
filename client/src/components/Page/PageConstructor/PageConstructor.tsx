@@ -125,7 +125,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
                   aria-label="edit"
                   className={styles.expandEditMenuBtn}
                 >
-                  <EditIcon />
+                  <AddCircleIcon />
                 </IconButton>
               </Flex>
               <DisplaySegment segment={item} />
