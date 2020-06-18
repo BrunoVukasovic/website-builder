@@ -82,11 +82,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
             </NavLink>
           </>
         ))}
-        <Flex className={styles.addPageWrapper}>
-          <IconButton aria-label="add-page" onClick={handleAddPageBtnClick}>
-            <AddCircleIcon color="primary" className={styles.addIcon} />
-          </IconButton>
-        </Flex>
+        <Flex className={styles.addPageWrapper}></Flex>
       </Flex>
       <Flex alignItems="center" className={styles.menuIconWrapper} onClick={toggleCreatedMenuOpen}>
         <MenuIcon color="primary" className={styles.menuIcon} />
