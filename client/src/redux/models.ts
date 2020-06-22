@@ -21,6 +21,11 @@ export interface HeightAndPosition {
   position: number;
 }
 
+export interface HorizontalPosition {
+  horizontalPosition: string;
+  position: number;
+}
+
 export interface ImageSizeFormValues {
   width: string;
   height: string;

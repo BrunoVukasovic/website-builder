@@ -43,7 +43,7 @@ export interface PageSegment {
   type: 'text' | 'image';
   style?: {
     wrapper?: {
-      position?: string;
+      position?: 'flex-start' | 'center' | 'flex-end';
     };
     content?: {
       width?: string;

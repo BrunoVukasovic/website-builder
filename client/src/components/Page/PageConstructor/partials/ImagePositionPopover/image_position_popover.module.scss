@@ -1,0 +1,29 @@
+@import '../../../../../styles/variables';
+
+.container {
+  max-width: 40rem;
+  padding: 0rem 1rem 1rem;
+
+  .closeButton {
+    margin-left: auto;
+  }
+
+  .positionButtonWrapper {
+    .middleButton {
+      margin: 0 2rem;
+    }
+    & > button {
+      padding: 0.75rem 1rem;
+      border: 0.0625rem solid $grey;
+
+      & > span {
+        justify-content: flex-start;
+        align-items: center;
+      }
+    }
+  }
+
+  .footer {
+    margin-top: 1.5rem;
+  }
+}

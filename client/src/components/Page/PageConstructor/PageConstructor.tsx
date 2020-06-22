@@ -11,6 +11,7 @@ import EditText from '../../EditText';
 import AddSegmentDropdownMenu from './partials/AddSegmentDropdownMenu';
 import EditSegmentDropdownMenu from './partials/EditSegmentDropdownMenu';
 import ImageSizePopover from './partials/ImageSizePopover';
+import ImagePositionPopover from './partials/ImagePositionPopover';
 
 import { selectCurrentPage } from '../../../redux/selectors/site';
 import { setCurrentPageToCurrentSite, addPageSegment } from '../../../redux/actions/site';
@@ -30,6 +31,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
   const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
   const [addSegmentMenuOpen, setAddSegmentMenuOpen] = useState<boolean>(false);
   const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
+  const [imagePositionPopoverOpen, setImagePositionPopoverOpen] = useState<boolean>(false);
   const [imageSizePopoverOpen, setImageSizePopoverOpen] = useState<boolean>(false);
   const currentPage = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
@@ -80,6 +82,10 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     toggleAddSegmentMenuOpen();
   };
 
+  const handleChangeImageSize = () => {
+    toggleImageSizePopoverOpen();
+  };
+
   const handleEditSegmentMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { currentTarget } = e;
     const clickedSegmentPosition = parseInt(currentTarget.id, 10);
@@ -109,6 +115,10 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     setAddSegmentMenuOpen(!addSegmentMenuOpen);
   };
 
+  const toggleImagePositionPopoverOpen = () => {
+    setImagePositionPopoverOpen(!imagePositionPopoverOpen);
+  };
+
   const toggleImageSizePopoverOpen = () => {
     setImageSizePopoverOpen(!imageSizePopoverOpen);
   };
@@ -123,7 +133,9 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
         <Flex direction="column">
           {currentPage.container.map((item) => (
             <Flex key={item.content} alignSelf="flex-start" alignItems="center" className={styles.editableItem} fluid>
-              <Flex className={styles.editBtnContainer}>
+              <Flex
+                className={currentSegment && currentSegment.position === item.position ? styles.transparent : undefined}
+              >
                 <IconButton
                   id={`${item.position}`}
                   onClick={handleEditSegmentMenuClick}
@@ -155,8 +167,10 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
             <EditSegmentDropdownMenu
               segmentType={currentSegment.type}
               anchorEl={anchorElement}
+              transparent={imageSizePopoverOpen || imagePositionPopoverOpen}
               onClose={removeCurrentSegment}
               onEditTextClick={toggleTextEditorOpen}
+              onChangeImagePositionClick={toggleImagePositionPopoverOpen}
               onChangeImageSizeClick={toggleImageSizePopoverOpen}
               onNotSupportedClick={handleNotSupportedClick}
             />
@@ -178,6 +192,16 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
                 position: currentSegment.position,
                 width: currentSegment.style && currentSegment.style.content?.width,
                 height: currentSegment.style && currentSegment.style.content?.height,
+              }}
+            />
+          )}
+          {imagePositionPopoverOpen && currentSegment && (
+            <ImagePositionPopover
+              onClose={toggleImagePositionPopoverOpen}
+              anchorElement={anchorElement}
+              segment={{
+                position: currentSegment.position,
+                horizontalPosition: currentSegment.style && currentSegment.style.wrapper?.position,
               }}
             />
           )}

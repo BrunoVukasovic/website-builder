@@ -26,8 +26,14 @@ const PageViewer: React.FC<PageViewerProps> = ({ pageContainer }) => (
             );
           case 'image':
             return (
-              <Flex key={content} alignSelf="flex-start" alignItems="center" fluid>
-                <img style={style ? style.content : {}} className={styles.imageSegment} src={segment.content} />{' '}
+              <Flex
+                key={content}
+                justifyContent={style?.wrapper?.position}
+                alignSelf="flex-start"
+                alignItems="center"
+                fluid
+              >
+                <img style={style ? style.content : {}} className={styles.imageSegment} src={content} />
               </Flex>
             );
           default:

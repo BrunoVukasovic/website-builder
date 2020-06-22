@@ -15,6 +15,7 @@ import {
   UPDATE_CURRENT_PAGE_NAME,
   UPDATE_IMAGE_WIDTH,
   UPDATE_IMAGE_HEIGHT,
+  UPDATE_SEGMENT_HORIZONTAL_POSITION,
 } from '../types/site';
 
 export interface SiteReducerState {
@@ -169,6 +170,25 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
               ? {
                   ...segment,
                   style: { ...segment.style, content: { ...segment.style?.content, width: payload.width } },
+                }
+              : segment
+          ),
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            container: true,
+          },
+        },
+      };
+    case UPDATE_SEGMENT_HORIZONTAL_POSITION:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          container: state.currentPage.container.map((segment) =>
+            segment.position === payload.position
+              ? {
+                  ...segment,
+                  style: { ...segment.style, wrapper: { position: payload.horizontalPosition } },
                 }
               : segment
           ),

@@ -13,6 +13,7 @@ import {
   UPDATE_CURRENT_PAGE_NAME,
   UPDATE_IMAGE_WIDTH,
   UPDATE_IMAGE_HEIGHT,
+  UPDATE_SEGMENT_HORIZONTAL_POSITION,
 } from '../types/site';
 import { SiteReducerState } from '../reducers/site';
 import {
@@ -22,6 +23,7 @@ import {
   UpdatePageNamePayload,
   WidthAndPosition,
   HeightAndPosition,
+  HorizontalPosition,
 } from '../models';
 
 export const addNewPage = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
@@ -75,6 +77,11 @@ export const updateImageHeight = (payload: HeightAndPosition): Action<HeightAndP
 
 export const updateImageWidth = (payload: WidthAndPosition): Action<WidthAndPosition> => ({
   type: UPDATE_IMAGE_WIDTH,
+  payload,
+});
+
+export const updateSegmentHorizontalPosition = (payload: HorizontalPosition): Action<HorizontalPosition> => ({
+  type: UPDATE_SEGMENT_HORIZONTAL_POSITION,
   payload,
 });
 

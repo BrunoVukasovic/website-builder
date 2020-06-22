@@ -41,7 +41,11 @@ export const DisplaySegment: React.FC<DisplaySegmentProps> = ({ segment }) => {
         </Flex>
       );
     case 'image':
-      return <img style={segment.style?.content} className={styles.imageSegment} src={segment.content} />;
+      return (
+        <Flex justifyContent={segment.style?.wrapper?.position} flexOut>
+          <img style={segment.style?.content} className={styles.imageSegment} src={segment.content} />
+        </Flex>
+      );
     default:
       return <p>Content not supported!</p>;
   }

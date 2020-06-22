@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
@@ -15,29 +16,33 @@ export interface EditSegmentDropdownMenuProps {
   segmentType: 'text' | 'image';
   onClose: () => void;
   onEditTextClick: () => void;
+  transparent?: boolean;
   anchorEl?: HTMLElement;
   MenuProps?: Partial<MUIMenuProps>;
   onNotSupportedClick?: () => void;
   onChangeImageSizeClick?: () => void;
+  onChangeImagePositionClick?: () => void;
 }
 
 const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
   anchorEl,
+  transparent,
   segmentType,
   onClose,
   onEditTextClick,
   MenuProps,
   onNotSupportedClick,
   onChangeImageSizeClick,
+  onChangeImagePositionClick,
 }) => {
   return (
     <Menu
       anchorEl={anchorEl}
       getContentAnchorEl={null}
-      PaperProps={{ className: styles.dropdownMenu }}
+      PaperProps={{ className: transparent ? cx(styles.dropdownMenu, styles.transparent) : styles.dropdownMenu }}
       onClose={onClose}
       open
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
       {...MenuProps}
     >
       <li>
@@ -71,6 +76,15 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
                 className={styles.dropdownMenuBtn}
               >
                 Change size
+              </Button>
+              <Button
+                onClick={onChangeImagePositionClick}
+                color="primary"
+                size="small"
+                startIcon={<EditIcon />}
+                className={styles.dropdownMenuBtn}
+              >
+                Change position
               </Button>
             </>
           )}
