@@ -57,15 +57,21 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
   const handleAddImageClick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
 
-    if (files) {
+    if (files && files[0].size < 500000) {
       try {
         const image = await fileToBase64String(files[0]);
-        console.log(image);
         dispatch(addPageSegment({ content: image, type: 'image' }));
         toggleAddSegmentMenuOpen();
       } catch {
         enqueueSnackbar('Something went wrong while processing image. Please, try again.', { variant: 'error' });
       }
+    } else {
+      enqueueSnackbar(
+        `Maximum size per image is 500 KB. This image has ${files && Math.round(files[0].size / 100)} KB`,
+        {
+          variant: 'error',
+        }
+      );
     }
   };
 

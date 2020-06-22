@@ -27,7 +27,7 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
   const [autoWidth, setAutoWidth] = useState<boolean | undefined>(!segment.width || segment.width === 'auto');
   const [lastNonAutoWidth, setLastNonAutoWidth] = useState<string>(segment.width || '50');
   const [lastNonAutoHeight, setLastNonAutoHeight] = useState<string>(segment.width || '50');
-  // const [errorMessage, setErrorMessage] = useState<string>('');
+  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
   const [autoHeight, setAutoHeight] = useState<boolean | undefined>(!segment.height) || segment.height == 'auto';
   const dispatch = useDispatch();
 
@@ -38,6 +38,10 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
       dispatch(updateImageHeight({ height: `${heightInRem}rem`, position: segment.position }));
     } else {
       dispatch(updateImageHeight({ height: 'auto', position: segment.position }));
+
+      if (showErrorMessage) {
+        setShowErrorMessage(false);
+      }
     }
     setAutoHeight(!autoHeight);
   };
@@ -47,25 +51,58 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
       dispatch(updateImageWidth({ width: `${lastNonAutoWidth}%`, position: segment.position }));
     } else {
       dispatch(updateImageWidth({ width: 'auto', position: segment.position }));
+
+      if (showErrorMessage) {
+        setShowErrorMessage(false);
+      }
     }
     setAutoWidth(!autoWidth);
   };
 
   const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    //@NOTE % of maxContentWidht = 68rem
-    const heightInRem = (parseInt(e.currentTarget.value, 10) / 100) * 68;
-    dispatch(updateImageHeight({ height: `${heightInRem}rem`, position: segment.position }));
-    setLastNonAutoHeight(e.currentTarget.value);
+    const currentValue = parseInt(e.currentTarget.value, 10);
+
+    if (currentValue < 101 && currentValue > 0) {
+      //@NOTE % of maxContentWidht = 68rem
+      const heightInRem = (currentValue / 100) * 68;
+      dispatch(updateImageHeight({ height: `${heightInRem}rem`, position: segment.position }));
+      setLastNonAutoHeight(e.currentTarget.value);
+
+      if (showErrorMessage) {
+        const widthInput = document.getElementById('widthInput') as HTMLInputElement | null;
+        if (widthInput) {
+          const currentWidth = parseInt(widthInput.value, 10);
+
+          if (currentWidth > 0 && currentWidth < 101) {
+            setShowErrorMessage(false);
+          }
+        }
+      }
+    } else {
+      setShowErrorMessage(true);
+    }
   };
 
   const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const currentValue = parseInt(e.currentTarget.value, 10);
-    // if (currentValue < 101 || currentValue > 0) {
-    dispatch(updateImageWidth({ width: `${e.currentTarget.value}%`, position: segment.position }));
-    setLastNonAutoWidth(e.currentTarget.value);
-    // } else {
-    // setErrorMessage('Value must be between 1 and 100');
-    // }
+
+    if (currentValue < 101 && currentValue > 0) {
+      dispatch(updateImageWidth({ width: `${currentValue}%`, position: segment.position }));
+      setLastNonAutoWidth(e.currentTarget.value);
+
+      if (showErrorMessage) {
+        const heightInput = document.getElementById('heightInput') as HTMLInputElement | null;
+        if (heightInput) {
+          const currentHeight = parseInt(heightInput.value, 10);
+
+          if (currentHeight > 0 && currentHeight < 101) {
+            setShowErrorMessage(false);
+          }
+        }
+      }
+    } else {
+      setShowErrorMessage(true);
+    }
   };
 
   return (
@@ -83,6 +120,7 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
           </Flex>
           <Flex className={styles.inputWrapper}>
             <Input
+              id="widthInput"
               onChange={handleWidthChange}
               variant={autoWidth ? 'filled' : 'outlined'}
               readOnly={autoWidth}
@@ -92,8 +130,7 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
                 type: 'number',
               }}
               defaultValue={!autoWidth ? parseInt(lastNonAutoWidth, 10) : undefined}
-              // error={errorMessage.length > 0}
-              // helperText={errorMessage}
+              error={showErrorMessage}
             />
           </Flex>
           <Flex direction="column" alignItems="center" className={styles.autoWrapper}>
@@ -112,6 +149,7 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
           </Flex>
           <Flex className={styles.inputWrapper}>
             <Input
+              id="heightInput"
               onChange={handleHeightChange}
               variant={autoHeight ? 'filled' : 'outlined'}
               readOnly={autoHeight}
@@ -121,6 +159,7 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
                 type: 'number',
               }}
               defaultValue={!autoHeight ? parseInt(lastNonAutoHeight, 10) : undefined}
+              error={showErrorMessage}
             />
           </Flex>
           <Flex direction="column" alignItems="center" className={styles.autoWrapper}>
@@ -128,7 +167,8 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
             <p>Automatic</p>
           </Flex>
         </Flex>
-        <Flex alignItems="flex-end" className={styles.buttonWrapper} fluid>
+        {showErrorMessage && <p className={styles.errorMessage}>Width and height value must be between 1 and 100</p>}
+        <Flex justifyContent="flex-end" className={styles.buttonWrapper} fluid>
           <Button color="primary" variant="contained" onClick={onClose}>
             Close
           </Button>
