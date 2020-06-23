@@ -18,6 +18,21 @@ class SiteService {
       callApi();
     });
 
+  public deleteSite = (slug: string) =>
+    new Promise((resolve, reject) => {
+      const callApi = async () => {
+        try {
+          await axios.delete(`/site/delete/${slug}`);
+
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      callApi();
+    });
+
   public getSite = (slug: string) =>
     new Promise<GetSiteRes>((resolve, reject) => {
       const callApi = async () => {

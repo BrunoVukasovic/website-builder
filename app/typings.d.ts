@@ -1,9 +1,18 @@
 // import { UserDocument } from './api/User';
 
+import { SiteDocument } from './api/Site';
+
 declare namespace NodeJS {
   export interface ProcessEnv {
     SECRET: string;
     MONGO_URI: string;
+  }
+}
+
+declare namespace Express {
+  interface Request {
+    customProperties: string[];
+    site: SiteDocument;
   }
 }
 

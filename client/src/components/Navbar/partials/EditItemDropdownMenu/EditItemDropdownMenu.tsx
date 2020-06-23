@@ -15,6 +15,7 @@ export interface EditItemDropdownMenuProps {
   anchorEl: HTMLElement | null | undefined;
   onClose: () => void;
   onEditClick: () => void;
+  onDeletePageClick: () => void;
   isRow?: boolean;
   MenuProps?: Partial<MUIMenuProps>;
   onNotSupportedClick?: () => void;
@@ -24,6 +25,7 @@ const EditItemDropdownMenu: React.FC<EditItemDropdownMenuProps> = ({
   anchorEl,
   onClose,
   onEditClick,
+  onDeletePageClick,
   MenuProps,
   onNotSupportedClick,
   isRow,
@@ -68,7 +70,7 @@ const EditItemDropdownMenu: React.FC<EditItemDropdownMenuProps> = ({
             {isRow ? `Move right` : `Move down`}
           </Button>
           <Button
-            onClick={onNotSupportedClick}
+            onClick={onDeletePageClick}
             color="secondary"
             size="small"
             startIcon={<DeleteForeverIcon />}

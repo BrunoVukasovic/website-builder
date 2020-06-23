@@ -1,7 +1,9 @@
 import React from 'react';
+import cx from 'classnames';
 import Button from '@material-ui/core/Button';
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
@@ -19,10 +21,11 @@ import styles from './main_menu.module.scss';
 export interface MainMenuProps {
   onClose: () => void;
   onLoginClick: () => void;
+  onDeleteSiteClick?: () => void;
   className?: string;
 }
 
-const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLoginClick }) => {
+const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLoginClick, onDeleteSiteClick }) => {
   const user = useSelector(selectUserReducerValues);
   const currentSite = useSelector(selectCurrentSite);
   const { isAuth, logOut } = useAuth();
@@ -51,7 +54,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
       BodyClassName={styles.modalBody}
     >
       {isAuth ? (
-        <Flex direction="column">
+        <Flex direction="column" flexOut>
           <Flex className={styles.menuItem}>
             <Button color="primary" startIcon={<SpellcheckIcon />} className={styles.menuButton}>
               <p className={styles.menuItemText}>{`Rename ${currentSite.title}`}</p>
@@ -73,7 +76,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
                         onClick={handleSiteSelectClick}
                         className={styles.siteNameBtn}
                       >
-                        <p>{site.title}</p>
+                        <p className={site.title === currentSite.title ? styles.selectedSite : ''}>{site.title}</p>
                       </Button>
                     );
                   })}
@@ -99,6 +102,18 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
               <p className={styles.menuItemText}>Logout</p>
             </Button>
           </Flex>
+          {currentSite.slug !== 'new-website' && (
+            <Flex className={cx(styles.menuItem, styles.deleteWrapper)}>
+              <Button
+                color="secondary"
+                startIcon={<DeleteForeverIcon />}
+                className={styles.menuButton}
+                onClick={onDeleteSiteClick}
+              >
+                <p className={styles.deleteText}>{`Delete ${currentSite.title}`}</p>
+              </Button>
+            </Flex>
+          )}
         </Flex>
       ) : (
         <Flex className={styles.menuItem}>

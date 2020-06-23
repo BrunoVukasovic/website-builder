@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { useSnackbar } from 'notistack';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,14 +21,18 @@ import { selectCurrentSite } from '../../../redux/selectors/site';
 import { defaultSite, emptyPage } from '../Site.helpers';
 import { NavbarConstructor } from '../../Navbar';
 import { useAuth } from '../../../utils/AuthContext';
+import { selectUserReducerValues } from '../../../redux/selectors/user';
 
 const SiteConstructor: React.FC = () => {
   const [saveChangesModalOpen, setSaveChangesModalOpen] = useState<boolean>(false);
   const [mainMenuOpen, setMainMenuOpen] = useState<boolean>(false);
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
+  const [deleteSiteModalOpen, setDeleteSiteModalOpen] = useState<boolean>(false);
   const currentSite = useSelector(selectCurrentSite);
+  const user = useSelector(selectUserReducerValues);
   const params = useParams<{ site: string; page: string }>();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const { initUserData, isAuth } = useAuth();
 
   useEffect(() => {
@@ -59,12 +64,13 @@ const SiteConstructor: React.FC = () => {
     }
   }, [params.site, currentSite.slug, dispatch, initUserData, isAuth]);
 
-  const slugsAndNames = React.useMemo(
+  const pagesData = React.useMemo(
     () =>
       currentSite.pages.map((page) => {
         return {
           slug: page.slug,
           name: page.name,
+          id: page._id,
         };
       }),
     [currentSite.pages]
@@ -80,6 +86,33 @@ const SiteConstructor: React.FC = () => {
     return wantedPage;
   }, [currentSite.pages, params.page]);
 
+  const handleDeleteSite = () => {
+    const callApi = async () => {
+      try {
+        const otherSites = user.allSites.filter((site) => site.slug !== currentSite.slug);
+
+        await SiteService.deleteSite(currentSite.slug);
+        enqueueSnackbar('Website deleted successfully.', { variant: 'success' });
+
+        if (otherSites.length > 0) {
+          window.open(`${window.location.origin}/edit/${otherSites[0].slug}`, '_self');
+        } else {
+          window.open(`${window.location.origin}/edit/new-website`, '_self');
+        }
+      } catch (error) {
+        if (error.response || error.request) {
+          enqueueSnackbar('Something went wrong. Please, try again.', { variant: 'error' });
+        } else {
+          enqueueSnackbar('Something went wrong. Please, check your internet connection and try again.', {
+            variant: 'error',
+          });
+        }
+      }
+    };
+
+    callApi();
+  };
+
   const handleLoginClick = () => {
     toggleAuthModalOpen();
     toggleMainMenuOpen();
@@ -87,6 +120,10 @@ const SiteConstructor: React.FC = () => {
 
   const toggleAuthModalOpen = () => {
     setAuthModalOpen(!authModalOpen);
+  };
+
+  const toggleDeleteSiteModalOpen = () => {
+    setDeleteSiteModalOpen(!deleteSiteModalOpen);
   };
 
   const toggleMainMenuOpen = () => {
@@ -106,7 +143,7 @@ const SiteConstructor: React.FC = () => {
     return (
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer>
-          <NavbarConstructor slugsAndNames={slugsAndNames} activePageSlug={currentPage.slug} siteSlug={params.site} />
+          <NavbarConstructor pagesData={pagesData} activePageSlug={currentPage.slug} siteSlug={params.site} />
           <PageConstructor page={currentPage} />
         </SiteContainer>
         <Footer onMenuClick={toggleMainMenuOpen} onPrimaryBtnClick={handleSaveChangesClick} />
@@ -120,10 +157,29 @@ const SiteConstructor: React.FC = () => {
             )}
           </Modal>
         )}
-        {mainMenuOpen && <MainMenu onLoginClick={handleLoginClick} onClose={toggleMainMenuOpen} />}
+        {mainMenuOpen && (
+          <MainMenu
+            onLoginClick={handleLoginClick}
+            onClose={toggleMainMenuOpen}
+            onDeleteSiteClick={toggleDeleteSiteModalOpen}
+          />
+        )}
         {authModalOpen && (
           <Modal onClose={toggleAuthModalOpen}>
             <Auth closeModal={toggleAuthModalOpen} />
+          </Modal>
+        )}
+        {deleteSiteModalOpen && (
+          <Modal
+            onClose={toggleDeleteSiteModalOpen}
+            headerText="Delete whole website?"
+            showFooter
+            primaryButtonText="Delete"
+            secondaryButtonText="Close"
+            onSecondaryButtonClick={toggleDeleteSiteModalOpen}
+            onPrimaryButtonClick={handleDeleteSite}
+          >
+            <h2>This action cannot be undone!</h2>
           </Modal>
         )}
       </Flex>

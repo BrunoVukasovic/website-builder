@@ -2,11 +2,11 @@ import express from 'express';
 import passport from 'passport';
 
 import UserController from './UserController';
-import auth from '../../middleware/auth';
+import authentication from '../../middleware/authentication';
 
 const UserRouter = express.Router();
 
-UserRouter.get('/data', auth, UserController.getUserInfo);
+UserRouter.get('/data', authentication, UserController.getUserInfo);
 
 UserRouter.post('/login', passport.authenticate('local', { session: false }), UserController.login);
 

@@ -12,7 +12,7 @@ import Modal from '../../../Modal';
 import styles from './created_menu.module.scss';
 
 export interface CreatedMenuProps {
-  slugsAndNames: { slug: string; name: string }[];
+  pagesData: { slug: string; name: string; id?: string }[];
   activePageSlug: string;
   siteSlug: string;
   //   style?: Navbar;
@@ -22,7 +22,7 @@ export interface CreatedMenuProps {
 }
 
 const CreatedMenu: React.FC<CreatedMenuProps> = ({
-  slugsAndNames,
+  pagesData,
   activePageSlug,
   siteSlug,
   allowEditing,
@@ -38,7 +38,7 @@ const CreatedMenu: React.FC<CreatedMenuProps> = ({
       BodyClassName={styles.modalBody}
     >
       <Flex direction="column" className={styles.navbar}>
-        {slugsAndNames.map((item) => (
+        {pagesData.map((item) => (
           <NavLink
             key={item.slug}
             to={`${allowEditing ? '/edit' : ''}/${siteSlug}/${item.slug}`}

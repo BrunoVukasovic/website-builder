@@ -1,11 +1,11 @@
 import React from 'react';
+import ReactQuill from 'react-quill';
 
 import Flex from '../../Flex';
 
 import { PageSegment } from '../../../models';
 
 import styles from './page_viewer.module.scss';
-import ReactQuill from 'react-quill';
 
 export interface PageViewerProps {
   pageContainer: PageSegment[];

@@ -8,7 +8,7 @@ import SiteController from '../Site/SiteController';
 
 import { RegisterUserReq, UserDataRes, UserAuthRes } from '../../models';
 import { UserDocument } from './UserModel';
-import { DecodedToken } from '../../middleware/auth';
+import { DecodedToken } from '../../middleware/authentication';
 
 const saltRounds = 10;
 

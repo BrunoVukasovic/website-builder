@@ -14,13 +14,14 @@ import ImageSizePopover from './partials/ImageSizePopover';
 import ImagePositionPopover from './partials/ImagePositionPopover';
 
 import { selectCurrentPage } from '../../../redux/selectors/site';
-import { setCurrentPageToCurrentSite, addPageSegment } from '../../../redux/actions/site';
+import { setCurrentPageToCurrentSite, addPageSegment, deletePageSegment } from '../../../redux/actions/site';
 import { setCurrentPage } from '../../../redux/actions/site';
 import { CurrentPage, PageSegment } from '../../../models';
 import { CurrentSegment, DisplaySegment } from './PageConstructor.helpers';
 import { fileToBase64String } from '../../../utils/shared';
 
 import styles from './page_constructor.module.scss';
+import Modal from '../../Modal';
 
 export interface PageConstructorProps {
   page: CurrentPage;
@@ -33,6 +34,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
   const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
   const [imagePositionPopoverOpen, setImagePositionPopoverOpen] = useState<boolean>(false);
   const [imageSizePopoverOpen, setImageSizePopoverOpen] = useState<boolean>(false);
+  const [deleteSegmentModalOpen, setDeleteSegmentModalOpen] = useState<boolean>(false);
   const currentPage = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -51,6 +53,13 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
       dispatch(setCurrentPageToCurrentSite());
     };
   }, [page, currentPage, dispatch]);
+
+  const deleteSegment = () => {
+    if (currentSegment) {
+      dispatch(deletePageSegment(currentSegment.position));
+      setCurrentSegment(undefined);
+    }
+  };
 
   const handleNotSupportedClick = () => {
     enqueueSnackbar('This feature is not implemented yet.', { variant: 'error' });
@@ -115,6 +124,10 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     setAddSegmentMenuOpen(!addSegmentMenuOpen);
   };
 
+  const toggleDeleteSegmentModal = () => {
+    setDeleteSegmentModalOpen(!deleteSegmentModalOpen);
+  };
+
   const toggleImagePositionPopoverOpen = () => {
     setImagePositionPopoverOpen(!imagePositionPopoverOpen);
   };
@@ -173,6 +186,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               onChangeImagePositionClick={toggleImagePositionPopoverOpen}
               onChangeImageSizeClick={toggleImageSizePopoverOpen}
               onNotSupportedClick={handleNotSupportedClick}
+              onDeleteSegmentClick={toggleDeleteSegmentModal}
             />
           )}
           {textEditorOpen && (
@@ -204,6 +218,19 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
                 horizontalPosition: currentSegment.style && currentSegment.style.wrapper?.position,
               }}
             />
+          )}
+          {deleteSegmentModalOpen && currentSegment && (
+            <Modal
+              onClose={toggleDeleteSegmentModal}
+              headerText="Delete page segment?"
+              showFooter
+              primaryButtonText="Delete"
+              secondaryButtonText="Close"
+              onSecondaryButtonClick={toggleDeleteSegmentModal}
+              onPrimaryButtonClick={deleteSegment}
+            >
+              <p>This action cannot be undone.</p>
+            </Modal>
           )}
         </Flex>
       </Flex>

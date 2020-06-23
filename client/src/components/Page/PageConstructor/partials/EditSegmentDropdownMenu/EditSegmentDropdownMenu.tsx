@@ -19,6 +19,7 @@ export interface EditSegmentDropdownMenuProps {
   transparent?: boolean;
   anchorEl?: HTMLElement;
   MenuProps?: Partial<MUIMenuProps>;
+  onDeleteSegmentClick?: () => void;
   onNotSupportedClick?: () => void;
   onChangeImageSizeClick?: () => void;
   onChangeImagePositionClick?: () => void;
@@ -34,6 +35,7 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
   onNotSupportedClick,
   onChangeImageSizeClick,
   onChangeImagePositionClick,
+  onDeleteSegmentClick,
 }) => {
   return (
     <Menu
@@ -108,7 +110,7 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
             Move down
           </Button>
           <Button
-            onClick={onNotSupportedClick}
+            onClick={onDeleteSegmentClick}
             color="secondary"
             size="small"
             startIcon={<DeleteForeverIcon />}

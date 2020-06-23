@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import cx from 'classnames';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { Dialog, DialogContent, Fade, IconButton } from '@material-ui/core';
+import { Dialog, DialogContent, Fade, IconButton, Button } from '@material-ui/core';
 import { ModalProps as MUIModalProps } from '@material-ui/core/Modal';
 
 import Flex from '../Flex';
@@ -17,6 +17,11 @@ export interface ModalProps extends Omit<MUIModalProps, 'open' | 'children'> {
   ContentClassName?: string;
   HeaderClassName?: string;
   headerText?: string;
+  showFooter?: boolean;
+  onPrimaryButtonClick?: () => void;
+  onSecondaryButtonClick?: () => void;
+  primaryButtonText?: string;
+  secondaryButtonText?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -27,6 +32,11 @@ const Modal: React.FC<ModalProps> = ({
   ContentClassName,
   HeaderClassName,
   headerText,
+  showFooter,
+  onPrimaryButtonClick,
+  onSecondaryButtonClick,
+  primaryButtonText,
+  secondaryButtonText,
   open = true,
   ...props
 }) => (
@@ -64,6 +74,16 @@ const Modal: React.FC<ModalProps> = ({
           {children}
         </Flex>
       </Flex>
+      {showFooter && (
+        <Flex justifyContent="space-between" className={styles.footerWrapper}>
+          <Button variant="outlined" color="primary" size="large" onClick={onSecondaryButtonClick}>
+            {secondaryButtonText}
+          </Button>
+          <Button variant="contained" color="primary" size="large" onClick={onPrimaryButtonClick}>
+            {primaryButtonText}
+          </Button>
+        </Flex>
+      )}
     </DialogContent>
   </Dialog>
 );

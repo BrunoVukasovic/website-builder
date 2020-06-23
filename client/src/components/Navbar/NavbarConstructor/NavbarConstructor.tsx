@@ -16,23 +16,29 @@ import { Navbar } from '../../../models';
 import styles from './navbar_constructor.module.scss';
 import CreatedMenu from '../partials/CreatedMenu/CreatedMenu';
 import EditItemDropdownMenu from '../partials/EditItemDropdownMenu';
+import { useDispatch } from 'react-redux';
+import { deletePage } from '../../../redux/actions/site';
+import Modal from '../../Modal';
 
 export type CurrentEditingItem = {
   slug: string;
   name: string;
+  id?: string;
 };
 export interface NavbarViewerProps {
-  slugsAndNames: { slug: string; name: string }[];
+  pagesData: { slug: string; name: string; id?: string }[];
   activePageSlug: string;
   siteSlug: string;
   style?: Navbar;
 }
 
-const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, style, activePageSlug }) => {
+const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, style, activePageSlug }) => {
   const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
   const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
   const [createdMenuOpen, setCreatedMenuOpen] = useState<boolean>(false);
   const [currentEditingItem, setCurrentEditingItem] = useState<CurrentEditingItem | undefined>(undefined);
+  const [deletePageModalOpen, setDeletePageModalOpen] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const closeAll = () => {
     removeCurrentEditingItem();
@@ -45,9 +51,16 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
     toggleTextEditorOpen();
   };
 
+  const handleDeletePage = () => {
+    if (currentEditingItem) {
+      dispatch(deletePage({ slug: currentEditingItem.slug, id: currentEditingItem.id }));
+      setCurrentEditingItem(undefined);
+    }
+  };
+
   const handleEditItemMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { currentTarget } = e;
-    const clickedItem = slugsAndNames.find((item) => item.slug === currentTarget.id);
+    const clickedItem = pagesData.find((item) => item.slug === currentTarget.id);
     setAnchorElement(currentTarget);
     setCurrentEditingItem(clickedItem);
   };
@@ -60,6 +73,10 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
     setCreatedMenuOpen(!createdMenuOpen);
   };
 
+  const toggleDeletePageModalOpen = () => {
+    setDeletePageModalOpen(!deletePageModalOpen);
+  };
+
   const toggleTextEditorOpen = () => {
     setTextEditorOpen(!textEditorOpen);
   };
@@ -67,7 +84,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
   return (
     <Flex className={styles.navbar}>
       <Flex className={styles.navbarItemsWrapper}>
-        {slugsAndNames.map((item) => (
+        {pagesData.map((item) => (
           <>
             <IconButton id={`${item.slug}`} onClick={handleEditItemMenuClick} color="primary" aria-label="edit">
               <EditIcon />
@@ -106,7 +123,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
       )}
       {createdMenuOpen && (
         <CreatedMenu
-          slugsAndNames={slugsAndNames}
+          pagesData={pagesData}
           activePageSlug={activePageSlug}
           siteSlug={siteSlug}
           onClose={toggleCreatedMenuOpen}
@@ -120,7 +137,21 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
           anchorEl={anchorElement}
           onClose={removeCurrentEditingItem}
           onEditClick={toggleTextEditorOpen}
+          onDeletePageClick={toggleDeletePageModalOpen}
         />
+      )}
+      {deletePageModalOpen && currentEditingItem && (
+        <Modal
+          onClose={toggleDeletePageModalOpen}
+          headerText="Delete whole page?"
+          showFooter
+          primaryButtonText="Delete"
+          secondaryButtonText="Close"
+          onSecondaryButtonClick={toggleDeletePageModalOpen}
+          onPrimaryButtonClick={handleDeletePage}
+        >
+          <p>This action cannot be undone.</p>
+        </Modal>
       )}
     </Flex>
   );

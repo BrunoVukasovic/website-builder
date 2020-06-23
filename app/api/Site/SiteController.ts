@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
-import SiteModel from './SiteModel';
+import SiteModel, { SiteDocument } from './SiteModel';
 import NavbarModel from '../Navbar';
 import PageModel from '../Page';
 import PageController from '../Page/PageController';
 
 import { GetSiteRes, UpdateSiteReq, Page, SiteTitleAndSlug, CurrentSite } from '../../models';
-import { DecodedToken } from '../../middleware/auth';
+import { DecodedToken } from '../../middleware/authentication';
 
 const SiteController = {
   createSite: async (req: Request, res: Response) => {
@@ -32,6 +32,17 @@ const SiteController = {
       }
     } else {
       res.status(400).json('Title and slug must be provided in the request.');
+    }
+  },
+  deleteSite: async (req: Request, res: Response) => {
+    const { site } = (req as unknown) as { site: SiteDocument };
+
+    if (site) {
+      await site.remove();
+
+      res.send(200).send('Site deleted successfully.');
+    } else {
+      res.status(500).send("Couldn't find site attached in the request");
     }
   },
   findUsersSites: async (userID: string) =>
@@ -91,11 +102,11 @@ const SiteController = {
   updateSite: async (req: Request, res: Response) => {
     const { siteData, pagesData, navbarData } = req.body as UpdateSiteReq;
     const { slug } = req.params;
-    const { user } = req as { user: DecodedToken | undefined };
+    const { user, site } = (req as unknown) as { user: DecodedToken | undefined; site: SiteDocument };
 
     if (siteData || pagesData || navbarData) {
       try {
-        const site = await SiteModel.findOne({ slug });
+        // const site = await SiteModel.findOne({ slug });
 
         if (site) {
           if (siteData) {
@@ -135,7 +146,7 @@ const SiteController = {
             res.status(500).send('Something went wrong');
           }
         } else {
-          res.status(500).send("Couldn't find site");
+          res.status(500).send("Couldn't find site in the request");
         }
       } catch (error) {
         console.log(error);

@@ -12,8 +12,8 @@ export interface CurrentSiteState {
   oldSlug: string;
   navbar: NavbarState; // samo jedan elements isSaved
   pages: CurrentPage[];
-  shouldAllowEditing?: boolean;
   deletedPages?: DeletedPage[];
+  shouldAllowEditing?: boolean;
 }
 
 export interface HeightAndPosition {
@@ -49,6 +49,11 @@ export interface RegisterFormValues {
 export interface SegmentContentAndType {
   content: string;
   type: 'text' | 'image';
+}
+
+export interface SlugAndId {
+  slug: string;
+  id?: string;
 }
 
 export interface TitleAndSlug {

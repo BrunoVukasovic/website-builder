@@ -45,7 +45,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
       </Flex>
       {createdMenuOpen && (
         <CreatedMenu
-          slugsAndNames={slugsAndNames}
+          pagesData={slugsAndNames}
           activePageSlug={activePageSlug}
           siteSlug={siteSlug}
           onClose={toggleCreatedMenuOpen}

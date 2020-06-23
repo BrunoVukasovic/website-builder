@@ -8,7 +8,7 @@ export interface DecodedToken {
   iat: number;
 }
 
-const auth = (req: Request, res: Response, next: NextFunction) => {
+const authentication = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('x-auth-token');
 
   if (!token) {
@@ -26,4 +26,4 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default auth;
+export default authentication;

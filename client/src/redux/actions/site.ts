@@ -14,6 +14,8 @@ import {
   UPDATE_IMAGE_WIDTH,
   UPDATE_IMAGE_HEIGHT,
   UPDATE_SEGMENT_HORIZONTAL_POSITION,
+  DELETE_PAGE_SEGMENT,
+  DELETE_PAGE,
 } from '../types/site';
 import { SiteReducerState } from '../reducers/site';
 import {
@@ -24,6 +26,7 @@ import {
   WidthAndPosition,
   HeightAndPosition,
   HorizontalPosition,
+  SlugAndId,
 } from '../models';
 
 export const addNewPage = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
@@ -33,6 +36,16 @@ export const addNewPage = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
 
 export const addPageSegment = (payload: SegmentContentAndType): Action<SegmentContentAndType> => ({
   type: ADD_PAGE_SEGMENT,
+  payload,
+});
+
+export const deletePage = (payload: SlugAndId): Action<SlugAndId> => ({
+  type: DELETE_PAGE,
+  payload,
+});
+
+export const deletePageSegment = (payload: number): Action<number> => ({
+  type: DELETE_PAGE_SEGMENT,
   payload,
 });
 

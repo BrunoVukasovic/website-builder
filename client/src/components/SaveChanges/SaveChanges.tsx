@@ -37,12 +37,9 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onCloseClick }) 
 
   useEffect(() => {
     let payload: UpdateSiteReq = {};
+    const deletedPages = currentSite.deletedPages && currentSite.deletedPages.filter((page) => page);
     const updatedPages = currentSite.pages.filter((page) => page.updatedElements && page._id);
     const newPages = currentSite.pages.filter((page) => !page._id);
-    const { deletedPages } = currentSite;
-
-    console.log(updatedPages);
-    console.log(newPages);
 
     if (currentSite.oldSlug !== currentSite.slug) {
       payload.siteData = {

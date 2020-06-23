@@ -9,6 +9,7 @@
 
   .modalBody {
     padding: 0 !important;
+    flex: 1;
   }
 
   .container {
@@ -32,6 +33,12 @@
 
     .menuItem {
       border-bottom: 0.0625rem solid $primary;
+
+      &.deleteWrapper {
+        margin-top: auto;
+        border-top: 0.0625rem solid $red;
+        border-bottom: none;
+      }
 
       .menuButton {
         padding-left: 1rem;
@@ -66,6 +73,10 @@
             .siteNameBtn {
               padding-left: 1rem;
               justify-content: flex-start;
+
+              .selectedSite {
+                font-weight: bold;
+              }
             }
           }
         }

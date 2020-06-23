@@ -16,6 +16,8 @@ import {
   UPDATE_IMAGE_WIDTH,
   UPDATE_IMAGE_HEIGHT,
   UPDATE_SEGMENT_HORIZONTAL_POSITION,
+  DELETE_PAGE_SEGMENT,
+  DELETE_PAGE,
 } from '../types/site';
 
 export interface SiteReducerState {
@@ -67,6 +69,27 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
             ...state.currentPage.updatedElements,
             container: true,
           },
+        },
+      };
+    case DELETE_PAGE:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          deletedPages: state.currentSite.deletedPages ? [...state.currentSite.deletedPages, payload.id] : [payload.id],
+          pages: state.currentSite.pages.filter((page) => page.slug !== payload.slug),
+        },
+      };
+    case DELETE_PAGE_SEGMENT:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            container: true,
+          },
+          container: state.currentPage.container.filter((segment) => segment.position !== payload),
         },
       };
     case SET_CURRENT_PAGE:

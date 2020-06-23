@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { DecodedToken } from './auth';
+import { DecodedToken } from './authentication';
 
 const checkToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('x-auth-token');
