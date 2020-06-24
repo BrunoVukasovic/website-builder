@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useSnackbar } from 'notistack';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import SiteService from '../../../services/SiteService';
@@ -34,7 +34,7 @@ const SiteConstructor: React.FC = () => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { initUserData, isAuth } = useAuth();
-
+  console.log('SiteContructor');
   useEffect(() => {
     if (!isAuth) {
       initUserData();
@@ -45,6 +45,11 @@ const SiteConstructor: React.FC = () => {
         if (params.site === 'new-website') {
           dispatch(setSite(defaultSite));
         } else {
+          //@ts-ignore
+          if (window.wbbvWebsiteCreatedSuccessfully) {
+            //@ts-ignore
+            console.log(window.wbbvWebsiteCreatedSuccessfully);
+          }
           const callApi = async () => {
             try {
               const site = await SiteService.getSite(params.site);
@@ -147,8 +152,8 @@ const SiteConstructor: React.FC = () => {
           <PageConstructor page={currentPage} />
         </SiteContainer>
         <Footer onMenuClick={toggleMainMenuOpen} onPrimaryBtnClick={handleSaveChangesClick} />
-        {saveChangesModalOpen && (
-          <Modal onClose={toggleSaveChangesModalOpen}>
+        {/* {saveChangesModalOpen && (
+          <Modal onClose={handleSaveChangesClose}>
             {currentSite.slug === 'new-website' && (
               <CreateSite closeModal={toggleSaveChangesModalOpen} onCancelClick={toggleSaveChangesModalOpen} />
             )}
@@ -156,7 +161,15 @@ const SiteConstructor: React.FC = () => {
               <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModalOpen} />
             )}
           </Modal>
-        )}
+        )} */}
+        {saveChangesModalOpen &&
+          (currentSite.slug === 'new-website' ? (
+            <Redirect to="/create" />
+          ) : (
+            <Modal onClose={toggleSaveChangesModalOpen}>
+              <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModalOpen} />{' '}
+            </Modal>
+          ))}
         {mainMenuOpen && (
           <MainMenu
             onLoginClick={handleLoginClick}

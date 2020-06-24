@@ -1,0 +1,23 @@
+.siteContainer {
+  align-items: center;
+  .createSiteWrapper {
+    margin: 1rem;
+    width: 100%;
+    max-width: 30rem;
+    .heading {
+      margin: 0;
+    }
+
+    .input {
+      width: 90%;
+    }
+
+    .buttonContainer {
+      margin-top: 2rem;
+
+      .cancelBtn {
+        margin-right: 1rem;
+      }
+    }
+  }
+}

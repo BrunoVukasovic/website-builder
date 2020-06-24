@@ -12,16 +12,16 @@ import AddSegmentDropdownMenu from './partials/AddSegmentDropdownMenu';
 import EditSegmentDropdownMenu from './partials/EditSegmentDropdownMenu';
 import ImageSizePopover from './partials/ImageSizePopover';
 import ImagePositionPopover from './partials/ImagePositionPopover';
+import Modal from '../../Modal';
 
 import { selectCurrentPage } from '../../../redux/selectors/site';
 import { setCurrentPageToCurrentSite, addPageSegment, deletePageSegment } from '../../../redux/actions/site';
 import { setCurrentPage } from '../../../redux/actions/site';
 import { CurrentPage, PageSegment } from '../../../models';
-import { CurrentSegment, DisplaySegment } from './PageConstructor.helpers';
+import { DisplaySegment } from './PageConstructor.helpers';
 import { fileToBase64String } from '../../../utils/shared';
 
 import styles from './page_constructor.module.scss';
-import Modal from '../../Modal';
 
 export interface PageConstructorProps {
   page: CurrentPage;

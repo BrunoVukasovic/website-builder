@@ -8,17 +8,17 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import { NavLink } from 'react-router-dom';
 
+import Modal from '../../Modal';
 import Flex from '../../Flex';
 import EditText from '../../EditText';
-
-import { Navbar } from '../../../models';
-
-import styles from './navbar_constructor.module.scss';
 import CreatedMenu from '../partials/CreatedMenu/CreatedMenu';
 import EditItemDropdownMenu from '../partials/EditItemDropdownMenu';
+
+import { Navbar } from '../../../models';
 import { useDispatch } from 'react-redux';
 import { deletePage } from '../../../redux/actions/site';
-import Modal from '../../Modal';
+
+import styles from './navbar_constructor.module.scss';
 
 export type CurrentEditingItem = {
   slug: string;
