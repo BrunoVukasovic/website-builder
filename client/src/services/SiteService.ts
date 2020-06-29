@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { GetSiteRes, UpdateSiteReq, CurrentSite } from '../models';
+import { GetSiteRes, UpdateSiteReq, CurrentSite, RenameSiteReq } from '../models';
 
 class SiteService {
   public create = (title: string, slug: string) =>
@@ -38,6 +38,21 @@ class SiteService {
       const callApi = async () => {
         try {
           const { data } = await axios.get<GetSiteRes>(`/site/get/${slug}`);
+
+          resolve(data);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      callApi();
+    });
+
+  public renameSite = (oldSlug: string, payload: RenameSiteReq) =>
+    new Promise<string>((resolve, reject) => {
+      const callApi = async () => {
+        try {
+          const { data } = await axios.put<string>(`/site/rename/${oldSlug}`, payload);
 
           resolve(data);
         } catch (error) {

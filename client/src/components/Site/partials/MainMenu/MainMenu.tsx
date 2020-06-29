@@ -5,6 +5,7 @@ import SpellcheckIcon from '@material-ui/icons/Spellcheck';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
+import { useHistory } from 'react-router-dom';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
 
@@ -28,20 +29,26 @@ export interface MainMenuProps {
 const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLoginClick, onDeleteSiteClick }) => {
   const user = useSelector(selectUserReducerValues);
   const currentSite = useSelector(selectCurrentSite);
+  const history = useHistory();
   const { isAuth, logOut } = useAuth();
 
   const handleCreateNewSiteClick = () => {
-    window.open(`${window.location.origin}`, '_self');
+    history.push('/edit/new-website');
+    onClose();
   };
+
+  const handleRenameSiteClick = () => history.push('/rename');
 
   const handleSiteSelectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { id } = e.currentTarget;
-    window.open(`${window.location.origin}/edit/${id}`, '_self');
+
+    history.push(`/edit/${id}`);
+    onClose();
   };
 
   const handleLogoutClick = () => {
     logOut();
-    window.open(`${window.location.origin}/${currentSite.slug}`, '_self');
+    window.open(`${window.location.origin}`, '_self');
   };
 
   return (
@@ -56,7 +63,12 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
       {isAuth ? (
         <Flex direction="column" flexOut>
           <Flex className={styles.menuItem}>
-            <Button color="primary" startIcon={<SpellcheckIcon />} className={styles.menuButton}>
+            <Button
+              color="primary"
+              startIcon={<SpellcheckIcon />}
+              className={styles.menuButton}
+              onClick={handleRenameSiteClick}
+            >
               <p className={styles.menuItemText}>{`Rename ${currentSite.title}`}</p>
             </Button>
           </Flex>

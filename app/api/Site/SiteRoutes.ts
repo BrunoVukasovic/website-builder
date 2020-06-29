@@ -15,4 +15,6 @@ SiteRouter.patch('/update/:slug', authentication, authorization, SiteController.
 
 SiteRouter.post('/create/:slug', authentication, SiteController.createSite);
 
+SiteRouter.put('/rename/:slug', authentication, authorization, SiteController.renameSite);
+
 export default SiteRouter;

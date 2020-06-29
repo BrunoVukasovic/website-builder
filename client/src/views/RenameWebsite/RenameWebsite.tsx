@@ -7,18 +7,22 @@ import Auth from '../../components/Auth';
 import Flex from '../../components/Flex';
 import SiteContainer from '../../components/SiteContainer';
 import Footer from '../../components/Footer';
-import SaveChanges from '../../components/SaveChanges';
 import SiteTitleForm from '../../components/SiteTitleForm';
 
+import { SiteTitleFormValues } from '../../redux/models';
 import { useAuth } from '../../utils/AuthContext';
 import { selectCurrentSite } from '../../redux/selectors/site';
 
-import styles from './create_new_website.module.scss';
+import styles from './rename_website.module.scss';
 
-const CreateNewWebsite: React.FC = () => {
+const RenameWebsite: React.FC = () => {
   const currentSite = useSelector(selectCurrentSite);
-  const history = useHistory();
+  // const dispatch = useDispatch();
   const { isAuth } = useAuth();
+  // const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
+
+  const origin = React.useMemo(() => window.location.origin, []);
 
   const redirectToSiteConstructor = () => history.push(`/edit/${currentSite.slug}`);
 
@@ -35,28 +39,19 @@ const CreateNewWebsite: React.FC = () => {
     );
   }
 
-  if (currentSite.slug !== 'new-website') {
-    return (
-      <Flex direction="column" alignItems="center" maxHeight>
-        <SiteContainer className={styles.siteContainer}>
-          <Flex direction="column" className={styles.createSiteWrapper}>
-            <SaveChanges currentSite={currentSite} onCloseClick={redirectToSiteConstructor} />
-          </Flex>
-        </SiteContainer>
-        <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} />
-      </Flex>
-    );
-  }
-
   return (
     <Flex direction="column" alignItems="center" maxHeight>
       <SiteContainer className={styles.siteContainer}>
-        <Flex direction="column" className={styles.createSiteWrapper}>
+        <Flex direction="column" className={styles.renameSiteWrapper}>
           <SiteTitleForm
             onCancelClick={redirectToSiteConstructor}
             action="create"
-            currentSlug="new-website"
-            submitButtonText="Create site"
+            currentSlug={currentSite.slug}
+            submitButtonText="Rename site"
+            initialValues={{
+              title: currentSite.title,
+              url: `${origin}/${currentSite.slug}`,
+            }}
           />
         </Flex>
       </SiteContainer>
@@ -65,4 +60,4 @@ const CreateNewWebsite: React.FC = () => {
   );
 };
 
-export default CreateNewWebsite;
+export default RenameWebsite;

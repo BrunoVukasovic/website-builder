@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import SiteModel, { SiteDocument } from './SiteModel';
 import NavbarModel from '../Navbar';
 import PageModel from '../Page';
 import PageController from '../Page/PageController';
 
-import { GetSiteRes, UpdateSiteReq, Page, SiteTitleAndSlug, CurrentSite } from '../../models';
+import { GetSiteRes, UpdateSiteReq, Page, SiteTitleAndSlug, CurrentSite, RenameSiteReq } from '../../models';
 import { DecodedToken } from '../../middleware/authentication';
 
 const SiteController = {
@@ -31,16 +31,21 @@ const SiteController = {
         res.status(500).send('Something went wrong, please try again.');
       }
     } else {
-      res.status(400).json('Title and slug must be provided in the request.');
+      res.sendStatus(400).json('Title and slug must be provided in the request.');
     }
   },
   deleteSite: async (req: Request, res: Response) => {
     const { site } = (req as unknown) as { site: SiteDocument };
 
     if (site) {
+      const pages = PageModel.find({ siteID: site._id });
+      const navbar = NavbarModel.findById(site.navbarID);
+
+      await pages.remove();
+      await navbar.remove();
       await site.remove();
 
-      res.send(200).send('Site deleted successfully.');
+      res.status(200).send('Site deleted successfully.');
     } else {
       res.status(500).send("Couldn't find site attached in the request");
     }
@@ -99,9 +104,37 @@ const SiteController = {
       res.status(500).send("Couldn't fetch site");
     }
   },
+  renameSite: async (req: Request, res: Response, next: NextFunction) => {
+    const { title, slug } = req.body as RenameSiteReq;
+    const { site } = (req as unknown) as { site: SiteDocument };
+
+    if (!title || !slug) {
+      res.status(400).send('Title and slug must be provided in the request.');
+      return;
+    }
+
+    if (!site) {
+      res.status(500).send("Couldn't find site in the request object");
+      return;
+    }
+
+    try {
+      let duplicateSlug = await SiteModel.findOne({ slug });
+
+      if (duplicateSlug) {
+        res.status(400).send('Site with this title already exist. Please, choose another title.');
+      } else {
+        await site.update({ title, slug });
+
+        res.status(201).send('Site renamed successfully');
+      }
+    } catch {
+      res.status(500).send("Couldn't rename the site");
+    }
+  },
   updateSite: async (req: Request, res: Response) => {
     const { siteData, pagesData, navbarData } = req.body as UpdateSiteReq;
-    const { slug } = req.params;
+    // const { slug } = req.params;
     const { user, site } = (req as unknown) as { user: DecodedToken | undefined; site: SiteDocument };
 
     if (siteData || pagesData || navbarData) {

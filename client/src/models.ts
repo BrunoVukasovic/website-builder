@@ -69,6 +69,11 @@ export interface RegisterUserReq {
   password: string;
 }
 
+export interface RenameSiteReq {
+  title: string;
+  slug: string;
+}
+
 export interface SiteTitleAndSlug {
   title: string;
   slug: string;

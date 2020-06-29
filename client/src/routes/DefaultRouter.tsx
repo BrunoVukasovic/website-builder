@@ -3,8 +3,8 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import NotFound from '../views/NotFound';
-import CreateNewWebsite from '../views/CreateNewWebsite';
 
+import { CreateNewWebsite, RenameWebsite } from '../views';
 import { SiteViewer, SiteConstructor } from '../components/Site';
 
 const DefaultRouter: React.FC = () => (
@@ -13,6 +13,7 @@ const DefaultRouter: React.FC = () => (
       <Redirect to="/edit/new-website" />
     </Route>
     <Route path="/create" component={CreateNewWebsite} />
+    <Route path="/rename" exact component={RenameWebsite} />
     <Route path="/edit/:site?/:page?" component={SiteConstructor} />
     <Route path="/:site/:page?" component={SiteViewer} />
     <Route component={NotFound} />

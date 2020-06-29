@@ -14,7 +14,7 @@ import Input from '../Input/Input';
 import Validator from '../../utils/validation';
 import SiteService from '../../services/SiteService';
 
-import { CreateSiteFormValues } from '../../redux/models';
+import { SiteTitleFormValues } from '../../redux/models';
 import { updateTitleAndSlug } from '../../redux/actions/site';
 import { useAuth } from '../../utils/AuthContext';
 
@@ -28,7 +28,7 @@ export interface CreateSiteProps {
   closeModal?: () => void;
 }
 
-type WithInjectedFormProps = InjectedFormProps<CreateSiteFormValues, CreateSiteProps> & CreateSiteProps;
+type WithInjectedFormProps = InjectedFormProps<SiteTitleFormValues, CreateSiteProps> & CreateSiteProps;
 
 const CreateSite: React.FC<WithInjectedFormProps> = ({
   handleSubmit,
@@ -57,7 +57,7 @@ const CreateSite: React.FC<WithInjectedFormProps> = ({
   };
 
   const onSubmit = React.useCallback(
-    async ({ title, url }: CreateSiteFormValues) => {
+    async ({ title, url }: SiteTitleFormValues) => {
       try {
         const slug = url.slice(url.lastIndexOf('/') + 1);
         await SiteService.create(title, slug);
@@ -115,7 +115,7 @@ const CreateSite: React.FC<WithInjectedFormProps> = ({
     <Flex direction="column">
       <h2 className={styles.heading}>Choose a title for your site</h2>
       <p>Link will be generated based on the title</p>
-      <Form<CreateSiteFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>
+      <Form<SiteTitleFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>
         <Flex direction="column" alignItems="flex-start">
           <Field
             name="title"
@@ -142,6 +142,6 @@ const CreateSite: React.FC<WithInjectedFormProps> = ({
   );
 };
 
-export default reduxForm<CreateSiteFormValues, CreateSiteProps>({ form: 'createSiteForm' })(
+export default reduxForm<SiteTitleFormValues, CreateSiteProps>({ form: 'createSiteForm' })(
   CreateSite
 ) as React.ComponentType<CreateSiteProps>;

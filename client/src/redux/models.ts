@@ -1,6 +1,6 @@
 import { Navbar, DeletedPage, CurrentPage } from '../models';
 
-export interface CreateSiteFormValues {
+export interface SiteTitleFormValues {
   title: string;
   url: string;
 }
