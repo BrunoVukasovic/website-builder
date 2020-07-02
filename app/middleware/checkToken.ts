@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+
 import { Request, Response, NextFunction } from 'express';
 import { DecodedToken } from './authentication';
 
@@ -12,7 +13,6 @@ const checkToken = (req: Request, res: Response, next: NextFunction) => {
   } else {
     try {
       const decoded = jwt.verify(token, process.env.SECRET as string) as DecodedToken;
-
       req.user = decoded;
 
       next();

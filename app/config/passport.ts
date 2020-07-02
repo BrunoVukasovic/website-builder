@@ -9,12 +9,12 @@ const initializePassport = (passport: PassportStatic) => {
   passport.use(
     new LocalStrategy(
       { usernameField: 'email' },
-      async (email: string, password: string, done: (err: any, user: UserDocument | boolean) => void) => {
+      async (email: string, password: string, done: (err: any, user: UserDocument | undefined) => void) => {
         try {
           const user = await UserModel.findOne({ email });
 
           if (!user) {
-            return done(null, false);
+            return done(null, undefined);
           }
 
           const isMatch = await bcrypt.compare(password, user.password);
@@ -22,10 +22,10 @@ const initializePassport = (passport: PassportStatic) => {
           if (isMatch) {
             return done(null, user);
           } else {
-            return done(null, false);
+            return done(null, undefined);
           }
         } catch (error) {
-          console.log(error);
+          return done(error, undefined);
         }
       }
     )

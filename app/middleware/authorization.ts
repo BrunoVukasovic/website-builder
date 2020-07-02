@@ -24,10 +24,10 @@ const authorization = async (req: Request, res: Response, next: NextFunction) =>
         return res.status(401).json('Authorization failed.');
       }
     } else {
-      res.status(500).send("Couldn't find site");
+      res.status(400).send("Couldn't find site");
     }
   } catch (err) {
-    res.status(401).send('Something went wrong during authorization.');
+    res.status(500).send('Something went wrong during authorization.');
   }
 };
 
