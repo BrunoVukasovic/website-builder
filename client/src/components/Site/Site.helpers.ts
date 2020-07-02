@@ -28,7 +28,12 @@ export const defaultSite: SiteReducerState = {
           },
           {
             position: 2,
-            content: '<p>Some content</p>',
+            content: '<p>Click on the pencil icon to edit this text</p>',
+            type: 'text',
+          },
+          {
+            position: 3,
+            content: '<p>Click on the plus icon below to add something new to the page</p>',
             type: 'text',
           },
         ],
@@ -45,7 +50,8 @@ export const defaultSite: SiteReducerState = {
           },
           {
             position: 2,
-            content: '<p>Second content on the second page</p>',
+            content:
+              '<p>When you are finished, click save changes button in bottom right corner to save your new website permanently!</p>',
             type: 'text',
           },
         ],

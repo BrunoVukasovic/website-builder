@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 
 const app: Application = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: false })); // Bodyparser
+app.use(express.urlencoded({ extended: false }));
 
 config();
 connectDatabase();
