@@ -14,12 +14,12 @@ import {
   updatePageName,
   updateCurrentPageName,
 } from '../../redux/actions/site';
-import { modules, formats } from './EditText.helpers';
+import { modules, formats } from './TextEditor.helpers';
 
 import 'react-quill/dist/quill.snow.css';
-import styles from './edit_text.module.scss';
+import styles from './text_editor.module.scss';
 
-export interface EditTextProps {
+export interface TextEditorProps {
   onCloseEditor: () => void;
   action: 'updateSegment' | 'addSegment' | 'updatePageName' | 'addPage';
   anchorElement?: HTMLElement;
@@ -30,7 +30,7 @@ export interface EditTextProps {
   activePageSlug?: string;
 }
 
-const EditText: React.FC<EditTextProps> = ({
+const TextEditor: React.FC<TextEditorProps> = ({
   initialValue,
   itemPosition,
   onCloseEditor,
@@ -139,4 +139,4 @@ const EditText: React.FC<EditTextProps> = ({
   );
 };
 
-export default EditText;
+export default TextEditor;

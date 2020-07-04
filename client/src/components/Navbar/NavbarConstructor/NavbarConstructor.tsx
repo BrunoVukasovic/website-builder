@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
 
 import Modal from '../../Modal';
 import Flex from '../../Flex';
-import EditText from '../../EditText';
+import TextEditor from '../../TextEditor';
 import CreatedMenu from '../partials/CreatedMenu/CreatedMenu';
 import EditItemDropdownMenu from '../partials/EditItemDropdownMenu';
 
@@ -110,7 +110,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, style,
       </Flex>
       {textEditorOpen && (
         <Flex>
-          <EditText
+          <TextEditor
             headerText="Enter page name: "
             onCloseEditor={closeAll}
             action={currentEditingItem ? 'updatePageName' : 'addPage'}

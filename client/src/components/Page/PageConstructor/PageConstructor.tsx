@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Flex from '../../Flex';
-import EditText from '../../EditText';
+import TextEditor from '../../TextEditor';
 import AddSegmentDropdownMenu from './partials/AddSegmentDropdownMenu';
 import EditSegmentDropdownMenu from './partials/EditSegmentDropdownMenu';
 import ImageSizePopover from './partials/ImageSizePopover';
@@ -190,7 +190,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
             />
           )}
           {textEditorOpen && (
-            <EditText
+            <TextEditor
               anchorElement={anchorElement}
               initialValue={currentSegment && currentSegment.content}
               itemPosition={currentSegment && currentSegment.position}

@@ -34,7 +34,7 @@ const SiteConstructor: React.FC = () => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { initUserData, isAuth } = useAuth();
-  console.log('SiteContructor');
+
   useEffect(() => {
     if (!isAuth) {
       initUserData();
@@ -45,11 +45,6 @@ const SiteConstructor: React.FC = () => {
         if (params.site === 'new-website') {
           dispatch(setSite(defaultSite));
         } else {
-          //@ts-ignore
-          if (window.wbbvWebsiteCreatedSuccessfully) {
-            //@ts-ignore
-            console.log(window.wbbvWebsiteCreatedSuccessfully);
-          }
           const callApi = async () => {
             try {
               const site = await SiteService.getSite(params.site);
@@ -167,7 +162,7 @@ const SiteConstructor: React.FC = () => {
             <Redirect to="/create" />
           ) : (
             <Modal onClose={toggleSaveChangesModalOpen}>
-              <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModalOpen} />{' '}
+              <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModalOpen} />
             </Modal>
           ))}
         {mainMenuOpen && (
