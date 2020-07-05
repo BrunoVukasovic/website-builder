@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import PageModel from './PageModel';
 import SiteModel from '../Site';
 
-import { PagesData } from '../../models';
+import { PagesData, Page } from '../../models';
 import { Types } from 'mongoose';
 
 const PageController = {
@@ -34,6 +34,30 @@ const PageController = {
   //     res.status(500).send('Error while creating pages.');
   //   }
   // },
+  // findAllAndSort: async (siteID: Types.ObjectId): Promise<Page[]> => {
+  //   try {
+  //     const pages: Page[] = await PageModel.find({ siteID }).select('-siteID -__v');
+  //     pages.sort((a, b) => a.position - b.position);
+  //     return pages;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // },
+  findAllAndSort: async (siteID: Types.ObjectId) =>
+    new Promise<Page[]>((resolve, reject) => {
+      const checkDatabase = async () => {
+        try {
+          const pages: Page[] = await PageModel.find({ siteID }).select('-siteID -__v');
+          pages.sort((a, b) => a.position - b.position);
+
+          resolve(pages);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      checkDatabase();
+    }),
   updatePages: async (pagesData: PagesData, siteID: Types.ObjectId) => {
     const { updatedPages, deletedPages, newPages } = pagesData;
 
@@ -45,7 +69,7 @@ const PageController = {
       if (updatedPages) {
         await Promise.all(
           updatedPages.map(async (page) => {
-            const { name, position, slug, container, _id, updatedElements } = page;
+            const { name, position, slug, container, _id, backgroundColor, updatedElements } = page;
 
             if (updatedElements) {
               await PageModel.findByIdAndUpdate(_id, {
@@ -53,6 +77,7 @@ const PageController = {
                 ...(updatedElements.name && { slug }),
                 ...(updatedElements.position && { position }),
                 ...(updatedElements.container && { container }),
+                ...(updatedElements.color && { backgroundColor }),
               });
             }
           })
@@ -62,8 +87,8 @@ const PageController = {
       if (newPages) {
         await Promise.all(
           newPages.map(async (page) => {
-            const { name, position, slug, container } = page;
-            await PageModel.create({ name, position, slug, container, siteID });
+            const { name, position, slug, container, backgroundColor } = page;
+            await PageModel.create({ name, position, slug, container, backgroundColor, siteID });
           })
         );
       }

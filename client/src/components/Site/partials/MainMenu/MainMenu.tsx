@@ -33,7 +33,9 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
   const { isAuth, logOut } = useAuth();
 
   const handleCreateNewSiteClick = () => {
-    history.push('/edit/new-website');
+    // @NOTE don't use history.push()
+    // causes redux new page with _id bug
+    window.open(`${window.location.origin}/edit/new-website`, '_self');
     onClose();
   };
 

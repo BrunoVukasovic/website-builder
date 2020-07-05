@@ -20,7 +20,7 @@ import 'react-quill/dist/quill.snow.css';
 import styles from './text_editor.module.scss';
 
 export interface TextEditorProps {
-  onCloseEditor: () => void;
+  onClose: () => void;
   action: 'updateSegment' | 'addSegment' | 'updatePageName' | 'addPage';
   anchorElement?: HTMLElement;
   itemPosition?: number;
@@ -33,7 +33,7 @@ export interface TextEditorProps {
 const TextEditor: React.FC<TextEditorProps> = ({
   initialValue,
   itemPosition,
-  onCloseEditor,
+  onClose,
   action,
   anchorElement,
   headerText,
@@ -107,7 +107,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
       // @TODO show notistack error, couldn't save
     }
 
-    onCloseEditor();
+    onClose();
   };
 
   return (
@@ -115,7 +115,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
       <Flex direction="column" alignItems="flex-start" paper className={styles.editorWrapper}>
         <Flex fluid>
           {headerText && <h3>{`${headerText}`}</h3>}
-          <IconButton aria-label="close" onClick={onCloseEditor} className={styles.closeButton}>
+          <IconButton aria-label="close" onClick={onClose} className={styles.closeButton}>
             <CloseIcon />
           </IconButton>
         </Flex>
@@ -127,7 +127,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
           className={styles.quill}
         />
         <Flex justifyContent="space-between" className={styles.buttonWrapper} fluid>
-          <Button color="primary" variant="outlined" onClick={onCloseEditor}>
+          <Button color="primary" variant="outlined" onClick={onClose}>
             Close
           </Button>
           <Button color="primary" variant="contained" onClick={onSaveChangesClick}>

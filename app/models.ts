@@ -1,8 +1,10 @@
 export interface CurrentPage extends Page {
+  initialBackgroundColor?: string;
   updatedElements?: {
     name?: boolean;
     position?: boolean;
     container?: boolean;
+    color?: boolean;
   };
 }
 
@@ -18,10 +20,14 @@ export interface CurrentSite {
 export interface DeletedPage {
   id: string;
 }
-// @TODO izbaci allSites
+
 export interface GetSiteRes {
   currentSite: CurrentSite;
-  allSites?: string[];
+}
+
+export interface LoginReq {
+  email: string;
+  password: string;
 }
 
 export interface Navbar {
@@ -34,6 +40,7 @@ export interface Page {
   position: number;
   slug: string;
   container: PageSegment[];
+  backgroundColor?: string;
   _id?: string;
 }
 

@@ -22,6 +22,7 @@ export interface ModalProps extends Omit<MUIModalProps, 'open' | 'children'> {
   onSecondaryButtonClick?: () => void;
   primaryButtonText?: string;
   secondaryButtonText?: string;
+  inlineStyle?: { backgroundColor?: string };
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -37,6 +38,7 @@ const Modal: React.FC<ModalProps> = ({
   onSecondaryButtonClick,
   primaryButtonText,
   secondaryButtonText,
+  inlineStyle,
   open = true,
   ...props
 }) => (
@@ -57,6 +59,7 @@ const Modal: React.FC<ModalProps> = ({
           justifyContent="space-between"
           alignItems="center"
           className={cx(styles.headerWrapper, HeaderClassName)}
+          style={inlineStyle}
         >
           <Flex className={styles.closeButtonWrapper} onClick={onClose}>
             <IconButton aria-label="close" className={styles.closeButton}>
@@ -70,7 +73,7 @@ const Modal: React.FC<ModalProps> = ({
           )}
         </Flex>
 
-        <Flex direction="column" className={cx(styles.body, BodyClassName)}>
+        <Flex direction="column" className={cx(styles.body, BodyClassName)} style={inlineStyle} flexOut>
           {children}
         </Flex>
       </Flex>

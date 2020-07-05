@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
+import PaletteIcon from '@material-ui/icons/Palette';
 
 import { useSnackbar } from 'notistack';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,6 +14,7 @@ import EditSegmentDropdownMenu from './partials/EditSegmentDropdownMenu';
 import ImageSizePopover from './partials/ImageSizePopover';
 import ImagePositionPopover from './partials/ImagePositionPopover';
 import Modal from '../../Modal';
+import ColorPicker from '../../ColorPicker';
 
 import { selectCurrentPage } from '../../../redux/selectors/site';
 import { setCurrentPageToCurrentSite, addPageSegment, deletePageSegment } from '../../../redux/actions/site';
@@ -20,14 +22,16 @@ import { setCurrentPage } from '../../../redux/actions/site';
 import { CurrentPage, PageSegment } from '../../../models';
 import { DisplaySegment } from './PageConstructor.helpers';
 import { fileToBase64String } from '../../../utils/shared';
+import { useToggle } from 'react-use';
 
 import styles from './page_constructor.module.scss';
 
 export interface PageConstructorProps {
   page: CurrentPage;
+  siteBackgroundColor?: string;
 }
 
-const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
+const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundColor }) => {
   const [currentSegment, setCurrentSegment] = useState<PageSegment | undefined>(undefined);
   const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
   const [addSegmentMenuOpen, setAddSegmentMenuOpen] = useState<boolean>(false);
@@ -35,6 +39,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
   const [imagePositionPopoverOpen, setImagePositionPopoverOpen] = useState<boolean>(false);
   const [imageSizePopoverOpen, setImageSizePopoverOpen] = useState<boolean>(false);
   const [deleteSegmentModalOpen, setDeleteSegmentModalOpen] = useState<boolean>(false);
+  const [colorPickerPopoverOpen, toggleColorPickerPopover] = useToggle(false);
   const currentPage = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -95,6 +100,11 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     toggleImageSizePopoverOpen();
   };
 
+  const handleColorPickerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setAnchorElement(e.currentTarget);
+    toggleColorPickerPopover();
+  };
+
   const handleEditSegmentMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { currentTarget } = e;
     const clickedSegmentPosition = parseInt(currentTarget.id, 10);
@@ -142,7 +152,12 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
 
   if (currentPage) {
     return (
-      <Flex direction="column" className={styles.pageContainer}>
+      <Flex
+        direction="column"
+        style={{ backgroundColor: currentPage.backgroundColor }}
+        className={styles.pageContainer}
+        flexOut
+      >
         <Flex direction="column">
           {currentPage.container.map((item) => (
             <Flex key={item.content} alignSelf="flex-start" alignItems="center" className={styles.editableItem} fluid>
@@ -162,10 +177,17 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               <DisplaySegment segment={item} />
             </Flex>
           ))}
-          <Flex id="addNewSegment" className={styles.addPageSegmentWrapper}>
-            <IconButton aria-label="add-page" onClick={handleAddSegmentMenuClick}>
-              <AddCircleIcon color="primary" className={styles.addIcon} />
-            </IconButton>
+          <Flex>
+            <Flex id="addNewSegment" className={styles.addPageSegmentWrapper}>
+              <IconButton aria-label="add-page" onClick={handleAddSegmentMenuClick}>
+                <AddCircleIcon color="primary" className={styles.addIcon} />
+              </IconButton>
+            </Flex>
+            <Flex className={styles.addPageSegmentWrapper}>
+              <IconButton aria-label="color-picker" onClick={handleColorPickerClick}>
+                <PaletteIcon color="primary" className={styles.addIcon} />
+              </IconButton>
+            </Flex>
           </Flex>
           {addSegmentMenuOpen && (
             <AddSegmentDropdownMenu
@@ -195,7 +217,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               initialValue={currentSegment && currentSegment.content}
               itemPosition={currentSegment && currentSegment.position}
               action={currentSegment ? 'updateSegment' : 'addSegment'}
-              onCloseEditor={handleTextEditorClose}
+              onClose={handleTextEditorClose}
             />
           )}
           {imageSizePopoverOpen && currentSegment && (
@@ -231,6 +253,14 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
             >
               <p>This action cannot be undone.</p>
             </Modal>
+          )}
+          {colorPickerPopoverOpen && (
+            <ColorPicker
+              onClose={toggleColorPickerPopover}
+              coloredArea="page"
+              initialValue={currentPage.backgroundColor}
+              anchorElement={anchorElement}
+            />
           )}
         </Flex>
       </Flex>

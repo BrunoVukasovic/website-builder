@@ -16,10 +16,10 @@ export interface NavbarViewerProps {
   slugsAndNames: { slug: string; name: string }[];
   activePageSlug: string;
   siteSlug: string;
-  style?: Navbar;
+  navbarData: Navbar;
 }
 
-const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, style, activePageSlug }) => {
+const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, navbarData, activePageSlug }) => {
   const [createdMenuOpen, setCreatedMenuOpen] = useState<boolean>(false);
 
   const toggleCreatedMenuOpen = () => {
@@ -27,7 +27,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
   };
 
   return (
-    <Flex className={styles.navbar}>
+    <Flex style={{ backgroundColor: navbarData.backgroundColor }} className={styles.navbar}>
       <Flex className={styles.navbarItemsWrapper}>
         {slugsAndNames.map((item) => (
           <NavLink key={item.slug} to={`/${siteSlug}/${item.slug}`} className={styles.link}>
@@ -46,6 +46,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, st
       {createdMenuOpen && (
         <CreatedMenu
           pagesData={slugsAndNames}
+          navbarData={navbarData}
           activePageSlug={activePageSlug}
           siteSlug={siteSlug}
           onClose={toggleCreatedMenuOpen}

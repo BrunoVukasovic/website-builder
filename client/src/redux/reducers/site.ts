@@ -18,6 +18,13 @@ import {
   UPDATE_SEGMENT_HORIZONTAL_POSITION,
   DELETE_PAGE_SEGMENT,
   DELETE_PAGE,
+  CHANGE_COLOR_NAVBAR,
+  UNDO_NAVBAR_COLOR_CHANGE,
+  UPDATE_INITIAL_NAVBAR_COLOR,
+  CHANGE_COLOR_SINGLE_PAGE,
+  UNDO_PAGE_COLOR_CHANGE,
+  UPDATE_INITIAL_SINGLE_PAGE_COLOR,
+  UPDATE_ALL_PAGES_COLOR,
 } from '../types/site';
 
 export interface SiteReducerState {
@@ -31,7 +38,7 @@ const initialState: SiteReducerState = {
     title: '',
     slug: '',
     oldSlug: '',
-    navbar: {},
+    navbar: { initialBackgroundColor: '#FFFFFF' },
     pages: [],
     shouldAllowEditing: false,
   },
@@ -39,6 +46,7 @@ const initialState: SiteReducerState = {
     name: '',
     position: 0,
     slug: '',
+    backgroundColor: '',
     container: [],
   },
 };
@@ -68,6 +76,30 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           updatedElements: {
             ...state.currentPage.updatedElements,
             container: true,
+          },
+        },
+      };
+    case CHANGE_COLOR_NAVBAR:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          navbar: {
+            ...state.currentSite.navbar,
+            backgroundColor: payload,
+            isUpdated: true,
+          },
+        },
+      };
+    case CHANGE_COLOR_SINGLE_PAGE:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          backgroundColor: payload,
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            color: true,
           },
         },
       };
@@ -118,6 +150,44 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           ),
         },
       };
+    case UNDO_NAVBAR_COLOR_CHANGE:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          navbar: {
+            ...state.currentSite.navbar,
+            backgroundColor: state.currentSite.navbar.initialBackgroundColor,
+          },
+        },
+      };
+    case UNDO_PAGE_COLOR_CHANGE:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          backgroundColor: state.currentPage.initialBackgroundColor,
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            color: false,
+          },
+        },
+      };
+    case UPDATE_ALL_PAGES_COLOR:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          pages: state.currentSite.pages.map((page) => ({
+            ...page,
+            backgroundColor: state.currentPage.backgroundColor,
+            updatedElements: {
+              ...page.updatedElements,
+              color: true,
+            },
+          })),
+        },
+      };
     case UPDATE_CURRENT_PAGE_SEGMENT:
       return {
         ...state,
@@ -162,6 +232,25 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           },
           name: payload.title,
           slug: payload.slug,
+        },
+      };
+    case UPDATE_INITIAL_NAVBAR_COLOR:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          navbar: {
+            ...state.currentSite.navbar,
+            initialBackgroundColor: state.currentSite.navbar.backgroundColor,
+          },
+        },
+      };
+    case UPDATE_INITIAL_SINGLE_PAGE_COLOR:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          initialBackgroundColor: state.currentPage.backgroundColor,
         },
       };
     case UPDATE_IMAGE_HEIGHT:

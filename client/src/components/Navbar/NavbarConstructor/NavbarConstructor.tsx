@@ -5,14 +5,17 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import EditIcon from '@material-ui/icons/Edit';
+import PaletteIcon from '@material-ui/icons/Palette';
 
 import { NavLink } from 'react-router-dom';
+import { useToggle } from 'react-use';
 
 import Modal from '../../Modal';
 import Flex from '../../Flex';
 import TextEditor from '../../TextEditor';
 import CreatedMenu from '../partials/CreatedMenu/CreatedMenu';
 import EditItemDropdownMenu from '../partials/EditItemDropdownMenu';
+import ColorPicker from '../../ColorPicker/ColorPicker';
 
 import { Navbar } from '../../../models';
 import { useDispatch } from 'react-redux';
@@ -29,15 +32,17 @@ export interface NavbarViewerProps {
   pagesData: { slug: string; name: string; id?: string }[];
   activePageSlug: string;
   siteSlug: string;
-  style?: Navbar;
+  navbarData: Navbar;
 }
 
-const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, style, activePageSlug }) => {
+const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, navbarData, activePageSlug }) => {
   const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
   const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
   const [createdMenuOpen, setCreatedMenuOpen] = useState<boolean>(false);
   const [currentEditingItem, setCurrentEditingItem] = useState<CurrentEditingItem | undefined>(undefined);
   const [deletePageModalOpen, setDeletePageModalOpen] = useState<boolean>(false);
+  // const [colorPickerModalOpen, setColorPickerModalOpen] = useState<boolean>(false);
+  const [colorPickerPopoverOpen, toggleColorPickerPopover] = useToggle(false);
   const dispatch = useDispatch();
 
   const closeAll = () => {
@@ -49,6 +54,11 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, style,
     const { currentTarget } = e;
     setAnchorElement(currentTarget);
     toggleTextEditorOpen();
+  };
+
+  const handleColorPickerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setAnchorElement(e.currentTarget);
+    toggleColorPickerPopover();
   };
 
   const handleDeletePage = () => {
@@ -82,7 +92,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, style,
   };
 
   return (
-    <Flex className={styles.navbar}>
+    <Flex style={{ backgroundColor: navbarData.backgroundColor }} className={styles.navbar}>
       <Flex className={styles.navbarItemsWrapper}>
         {pagesData.map((item) => (
           <>
@@ -104,6 +114,11 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, style,
             <AddCircleIcon color="primary" className={styles.addIcon} />
           </IconButton>
         </Flex>
+        <Flex className={styles.addPageWrapper}>
+          <IconButton aria-label="color-picker" onClick={handleColorPickerClick}>
+            <PaletteIcon color="primary" className={styles.addIcon} />
+          </IconButton>
+        </Flex>
       </Flex>
       <Flex alignItems="center" className={styles.menuIconWrapper} onClick={toggleCreatedMenuOpen}>
         <MenuIcon color="primary" className={styles.menuIcon} />
@@ -112,7 +127,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, style,
         <Flex>
           <TextEditor
             headerText="Enter page name: "
-            onCloseEditor={closeAll}
+            onClose={closeAll}
             action={currentEditingItem ? 'updatePageName' : 'addPage'}
             anchorElement={anchorElement}
             initialValue={currentEditingItem && currentEditingItem.name}
@@ -123,6 +138,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, style,
       )}
       {createdMenuOpen && (
         <CreatedMenu
+          navbarData={navbarData}
           pagesData={pagesData}
           activePageSlug={activePageSlug}
           siteSlug={siteSlug}
@@ -138,6 +154,14 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, style,
           onClose={removeCurrentEditingItem}
           onEditClick={toggleTextEditorOpen}
           onDeletePageClick={toggleDeletePageModalOpen}
+        />
+      )}
+      {colorPickerPopoverOpen && (
+        <ColorPicker
+          onClose={toggleColorPickerPopover}
+          coloredArea="navbar"
+          initialValue={navbarData.backgroundColor}
+          anchorElement={anchorElement}
         />
       )}
       {deletePageModalOpen && currentEditingItem && (

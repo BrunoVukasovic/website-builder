@@ -6,12 +6,12 @@ export interface SiteTitleFormValues {
 }
 
 export interface CurrentSiteState {
-  // @TOOD:
-  title: string; // odma se update
-  slug: string; // odma se update-a skupa sa title
+  title: string;
+  slug: string;
   oldSlug: string;
-  navbar: NavbarState; // samo jedan elements isSaved
+  navbar: NavbarState;
   pages: CurrentPage[];
+  backgroundColor?: string;
   deletedPages?: DeletedPage[];
   shouldAllowEditing?: boolean;
 }
@@ -37,6 +37,7 @@ export interface LoginFormValues {
 }
 
 export interface NavbarState extends Navbar {
+  initialBackgroundColor?: string;
   isUpdated?: boolean;
 }
 

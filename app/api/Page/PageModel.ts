@@ -6,7 +6,7 @@ export interface PageDocument extends Document {
   name: string;
   position: number;
   slug: string;
-  //@TODO sortiraj PageSegmente-e po positionu
+  backgroundColor: string;
   container: PageSegment[];
   siteID: Types.ObjectId;
 }
@@ -15,6 +15,7 @@ const PageSchema: Schema = new Schema({
   name: { type: String, required: true },
   position: { type: Number, required: true },
   slug: { type: String, required: true },
+  backgroundColor: { type: String },
   container: [
     {
       position: Number,

@@ -3,8 +3,8 @@
 .root {
   z-index: 0 !important;
 
-  .header {
-    background-color: $grey !important;
+  &::-webkit-scrollbar {
+    display: none;
   }
 
   .modalBody {
@@ -18,15 +18,10 @@
     height: 100%;
     margin: 0 !important;
     border-radius: 0;
-    background-color: $grey !important;
 
     .navbar {
       .link {
         text-decoration: none;
-
-        &.activeNavLink {
-          background-color: darken($grey, 5%) !important;
-        }
 
         .navbarButton {
           text-transform: none;

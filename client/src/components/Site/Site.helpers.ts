@@ -13,7 +13,7 @@ export const defaultSite: SiteReducerState = {
     title: 'New website',
     slug: 'new-website',
     oldSlug: 'new-website',
-    navbar: {},
+    navbar: { backgroundColor: '#FFFFFF', initialBackgroundColor: '#FFFFFF' },
     shouldAllowEditing: true,
     pages: [
       {

@@ -16,6 +16,13 @@ import {
   UPDATE_SEGMENT_HORIZONTAL_POSITION,
   DELETE_PAGE_SEGMENT,
   DELETE_PAGE,
+  CHANGE_COLOR_NAVBAR,
+  UNDO_NAVBAR_COLOR_CHANGE,
+  UPDATE_INITIAL_NAVBAR_COLOR,
+  CHANGE_COLOR_SINGLE_PAGE,
+  UNDO_PAGE_COLOR_CHANGE,
+  UPDATE_INITIAL_SINGLE_PAGE_COLOR,
+  UPDATE_ALL_PAGES_COLOR,
 } from '../types/site';
 import { SiteReducerState } from '../reducers/site';
 import {
@@ -36,6 +43,16 @@ export const addNewPage = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
 
 export const addPageSegment = (payload: SegmentContentAndType): Action<SegmentContentAndType> => ({
   type: ADD_PAGE_SEGMENT,
+  payload,
+});
+
+export const changeNavbarColor = (payload: string): Action<string> => ({
+  type: CHANGE_COLOR_NAVBAR,
+  payload,
+});
+
+export const changePageColor = (payload: string): Action<string> => ({
+  type: CHANGE_COLOR_SINGLE_PAGE,
   payload,
 });
 
@@ -68,6 +85,18 @@ export const setCurrentPageToCurrentSite = (): Action => ({
   type: SET_CURRENT_PAGE_TO_CURRENT_SITE,
 });
 
+export const undoNavbarColorChange = (): Action => ({
+  type: UNDO_NAVBAR_COLOR_CHANGE,
+});
+
+export const undoPageColorChange = (): Action => ({
+  type: UNDO_PAGE_COLOR_CHANGE,
+});
+
+export const updateAllPagesColor = (): Action => ({
+  type: UPDATE_ALL_PAGES_COLOR,
+});
+
 export const updateCurrentPageSegment = (segment: PageSegment): Action<PageSegment> => ({
   type: UPDATE_CURRENT_PAGE_SEGMENT,
   payload: segment,
@@ -81,6 +110,14 @@ export const updatePageName = (payload: UpdatePageNamePayload): Action<UpdatePag
 export const updateCurrentPageName = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
   type: UPDATE_CURRENT_PAGE_NAME,
   payload,
+});
+
+export const updateInitialNavbarColor = (): Action => ({
+  type: UPDATE_INITIAL_NAVBAR_COLOR,
+});
+
+export const updateInitialPageColor = (): Action => ({
+  type: UPDATE_INITIAL_SINGLE_PAGE_COLOR,
 });
 
 export const updateImageHeight = (payload: HeightAndPosition): Action<HeightAndPosition> => ({

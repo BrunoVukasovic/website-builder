@@ -143,8 +143,13 @@ const SiteConstructor: React.FC = () => {
     return (
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer>
-          <NavbarConstructor pagesData={pagesData} activePageSlug={currentPage.slug} siteSlug={params.site} />
-          <PageConstructor page={currentPage} />
+          <NavbarConstructor
+            pagesData={pagesData}
+            activePageSlug={currentPage.slug}
+            siteSlug={params.site}
+            navbarData={currentSite.navbar}
+          />
+          <PageConstructor page={currentPage} siteBackgroundColor={currentSite.backgroundColor} />
         </SiteContainer>
         <Footer onMenuClick={toggleMainMenuOpen} onPrimaryBtnClick={handleSaveChangesClick} />
         {/* {saveChangesModalOpen && (

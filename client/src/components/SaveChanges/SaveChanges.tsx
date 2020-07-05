@@ -36,22 +36,23 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onCloseClick }) 
   }, [enqueueSnackbar]);
 
   useEffect(() => {
+    const { deletedPages, pages, oldSlug, slug, title, navbar } = currentSite;
     let payload: UpdateSiteReq = {};
-    const deletedPages = currentSite.deletedPages && currentSite.deletedPages.filter((page) => page);
-    const updatedPages = currentSite.pages.filter((page) => page.updatedElements && page._id);
-    const newPages = currentSite.pages.filter((page) => !page._id);
 
-    if (currentSite.oldSlug !== currentSite.slug) {
+    const updatedPages = pages.filter((page) => page.updatedElements && page._id);
+    const newPages = pages.filter((page) => !page._id);
+
+    if (oldSlug !== slug) {
       payload.siteData = {
-        title: currentSite.title,
-        slug: currentSite.slug,
+        title,
+        slug,
       };
     }
 
-    if (currentSite.navbar.isUpdated) {
+    if (navbar.isUpdated) {
       payload.navbarData = {
-        logo: currentSite.navbar.logo,
-        backgroundColor: currentSite.navbar.backgroundColor,
+        // logo: navbar.logo,
+        backgroundColor: navbar.backgroundColor,
       };
     }
 

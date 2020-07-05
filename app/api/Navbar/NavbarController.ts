@@ -1,10 +1,22 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import SiteModel from "../Site";
-import NavbarModel from "../Navbar";
-import PageController from "../Page/PageController";
+import SiteModel from '../Site';
+import NavbarModel from '../Navbar';
+import PageController from '../Page/PageController';
+import { Navbar } from '../../models';
+import { Types } from 'mongoose';
 
 const NavbarController = {
+  updateNavbar: async (data: Navbar, navbarID: Types.ObjectId) => {
+    try {
+      await NavbarModel.findByIdAndUpdate(navbarID, {
+        backgroundColor: data.backgroundColor,
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+
   // // createAndPopulate: async (navbarComponents) => {
   // //   // const { navbarItems }: { navbarItems: FirstNavbarPayload[] } = req.body;
   // //   // const { siteSlug } = req.params;

@@ -12,18 +12,12 @@ export interface CurrentSegment extends PageSegment {
   position: number;
   content: string;
   type: 'text' | 'image';
-  // shouldEdit?: boolean;
-  // shouldMoveUp?: boolean;
-  // shouldMoveDown?: boolean;
-  // shouldDelete?: boolean;k
-  // anchorElement?: HTMLElement;
 }
 
 export const initialCurrentSegment: CurrentSegment = {
   position: 0,
   content: '',
   type: 'text',
-  // anchorElement: undefined,
 };
 
 export interface DisplaySegmentProps {
@@ -31,8 +25,6 @@ export interface DisplaySegmentProps {
 }
 
 export const DisplaySegment: React.FC<DisplaySegmentProps> = ({ segment }) => {
-  console.log(segment.position);
-  console.log(segment.style?.content);
   switch (segment.type) {
     case 'text':
       return (

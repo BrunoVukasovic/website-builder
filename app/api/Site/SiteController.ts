@@ -4,6 +4,7 @@ import SiteModel, { SiteDocument } from './SiteModel';
 import NavbarModel from '../Navbar';
 import PageModel from '../Page';
 import PageController from '../Page/PageController';
+import NavbarController from '../Navbar/NavbarController';
 
 import { GetSiteRes, UpdateSiteReq, Page, SiteTitleAndSlug, CurrentSite, RenameSiteReq } from '../../models';
 import { DecodedToken } from '../../middleware/authentication';
@@ -89,7 +90,6 @@ const SiteController = {
               navbar,
               shouldAllowEditing: user && site.userID.equals(user._id),
             },
-            allSites: [site.slug], //@TODO izbaci iz ovoga tu
           };
 
           res.status(200).send(payload);
@@ -152,24 +152,21 @@ const SiteController = {
           }
 
           if (navbarData) {
-            // @TODO update Navbar
+            NavbarController.updateNavbar(navbarData, site.navbarID);
           }
 
-          // @TODO extract to PageController.findAllBySiteIDAndSort
-          const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
-          pages.sort((a, b) => a.position - b.position);
+          // const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
+          // pages.sort((a, b) => a.position - b.position);
 
           const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
-
-          console.log(user);
-          user && console.log(site.userID.equals(user._id));
+          const sortedPages = await PageController.findAllAndSort(site._id);
 
           if (navbar) {
             const payload: CurrentSite = {
               title: site.title,
               slug: site.slug,
               oldSlug: site.slug,
-              pages: pages,
+              pages: sortedPages,
               navbar,
               shouldAllowEditing: user && site.userID.equals(user._id),
             };

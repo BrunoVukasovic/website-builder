@@ -5,6 +5,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 
 import { NavLink } from 'react-router-dom';
+import { Navbar } from '../../../../models';
 
 import Flex from '../../../Flex';
 import Modal from '../../../Modal';
@@ -15,7 +16,7 @@ export interface CreatedMenuProps {
   pagesData: { slug: string; name: string; id?: string }[];
   activePageSlug: string;
   siteSlug: string;
-  //   style?: Navbar;
+  navbarData: Navbar;
   allowEditing?: boolean;
   onClose: () => void;
   onAddPageBtnClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -25,6 +26,7 @@ const CreatedMenu: React.FC<CreatedMenuProps> = ({
   pagesData,
   activePageSlug,
   siteSlug,
+  navbarData,
   allowEditing,
   onClose,
   onAddPageBtnClick,
@@ -34,8 +36,8 @@ const CreatedMenu: React.FC<CreatedMenuProps> = ({
       onClose={onClose}
       classes={{ root: styles.root }}
       className={styles.container}
-      HeaderClassName={styles.header}
       BodyClassName={styles.modalBody}
+      inlineStyle={{ backgroundColor: navbarData.backgroundColor ? navbarData.backgroundColor : '#cfd2e4' }}
     >
       <Flex direction="column" className={styles.navbar}>
         {pagesData.map((item) => (

@@ -9,10 +9,11 @@ import styles from './page_viewer.module.scss';
 
 export interface PageViewerProps {
   pageContainer: PageSegment[];
+  backgroundColor?: string;
 }
 
-const PageViewer: React.FC<PageViewerProps> = ({ pageContainer }) => (
-  <Flex direction="column" className={styles.pageContainer}>
+const PageViewer: React.FC<PageViewerProps> = ({ pageContainer, backgroundColor }) => (
+  <Flex direction="column" flexOut style={{ backgroundColor }} className={styles.pageContainer}>
     <Flex direction="column">
       {pageContainer.map((segment) => {
         const { content, type, style } = segment;
