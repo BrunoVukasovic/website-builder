@@ -5,6 +5,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import EditIcon from '@material-ui/icons/Edit';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 
+import { useTranslation } from 'react-i18next';
+
 import Flex from '../Flex';
 
 import styles from './footer.module.scss';
@@ -16,6 +18,8 @@ export interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText, onMenuClick }) => {
+  const { t } = useTranslation();
+
   return (
     <Flex justifyContent="space-between" className={styles.footerContainer}>
       <Button variant="outlined" color="primary" size="large" className={styles.secondaryButton} onClick={onMenuClick}>
@@ -29,7 +33,7 @@ const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText, onMe
         className={styles.saveBtn}
         startIcon={primaryBtnText ? <EditIcon /> : <SaveIcon />}
       >
-        {primaryBtnText ? `${primaryBtnText}` : 'Save changes'}
+        {primaryBtnText ? `${primaryBtnText}` : `${t('Save changes')}`}
       </Button>
     </Flex>
   );

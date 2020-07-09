@@ -59,6 +59,12 @@
         width: 100%;
         background-color: $gray300;
 
+        & > div:first-of-type {
+          & > div:first-of-type {
+            margin: 6px 0;
+          }
+        }
+
         .summaryText {
           color: $primary;
           text-transform: uppercase;

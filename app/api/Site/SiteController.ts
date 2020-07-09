@@ -15,24 +15,25 @@ const SiteController = {
     const { title } = req.body;
     const { slug } = req.params;
 
-    if (title && slug) {
-      try {
-        let site = await SiteModel.findOne({ slug });
-
-        if (site) {
-          res.status(400).send('Site with this title already exist. Please, choose another title.');
-        } else {
-          const navbar = await NavbarModel.create({});
-          site = await SiteModel.create({ title, slug, navbarID: navbar._id, userID: user._id });
-
-          res.status(201).send();
-        }
-      } catch (err) {
-        console.log(err);
-        res.status(500).send('Something went wrong, please try again.');
-      }
-    } else {
+    if (!title || !slug) {
       res.sendStatus(400).json('Title and slug must be provided in the request.');
+      return;
+    }
+
+    try {
+      let site = await SiteModel.findOne({ slug });
+
+      if (site) {
+        res.status(400).send('Site with this title already exist. Please, choose another title.');
+      } else {
+        const navbar = await NavbarModel.create({});
+        site = await SiteModel.create({ title, slug, navbarID: navbar._id, userID: user._id });
+
+        res.status(201).send();
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send('Something went wrong, please try again.');
     }
   },
   deleteSite: async (req: Request, res: Response) => {
@@ -77,16 +78,18 @@ const SiteController = {
       if (site) {
         const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
         // @TODO extract to PageController.findAllBySiteIDAndSort
-        const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
-        pages.sort((a, b) => a.position - b.position);
+        // const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
+        // pages.sort((a, b) => a.position - b.position);
+        const sortedPages = await PageController.findAllAndSort(site._id);
 
-        if (navbar && pages) {
+        if (navbar && sortedPages) {
+          // @TODO remove oldSlug from GetSiteRes
           const payload: GetSiteRes = {
             currentSite: {
               title: site.title,
               slug: site.slug,
               oldSlug: site.slug,
-              pages: pages,
+              pages: sortedPages,
               navbar,
               shouldAllowEditing: user && site.userID.equals(user._id),
             },
@@ -97,14 +100,13 @@ const SiteController = {
           res.status(500).send("Couldn't find site elements");
         }
       } else {
-        res.status(500).send("Couldn't find site");
+        res.status(400).send("Couldn't find site");
       }
     } catch (err) {
-      console.log(err);
       res.status(500).send("Couldn't fetch site");
     }
   },
-  renameSite: async (req: Request, res: Response, next: NextFunction) => {
+  renameSite: async (req: Request, res: Response) => {
     const { title, slug } = req.body as RenameSiteReq;
     const { site } = (req as unknown) as { site: SiteDocument };
 
@@ -137,53 +139,43 @@ const SiteController = {
     // const { slug } = req.params;
     const { user, site } = (req as unknown) as { user: DecodedToken | undefined; site: SiteDocument };
 
-    if (siteData || pagesData || navbarData) {
-      try {
-        // const site = await SiteModel.findOne({ slug });
-
-        if (site) {
-          if (siteData) {
-            const { title, slug } = siteData;
-            await site.update({ title, slug });
-          }
-
-          if (pagesData) {
-            await PageController.updatePages(pagesData, site._id);
-          }
-
-          if (navbarData) {
-            NavbarController.updateNavbar(navbarData, site.navbarID);
-          }
-
-          // const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
-          // pages.sort((a, b) => a.position - b.position);
-
-          const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
-          const sortedPages = await PageController.findAllAndSort(site._id);
-
-          if (navbar) {
-            const payload: CurrentSite = {
-              title: site.title,
-              slug: site.slug,
-              oldSlug: site.slug,
-              pages: sortedPages,
-              navbar,
-              shouldAllowEditing: user && site.userID.equals(user._id),
-            };
-
-            res.status(200).send(payload);
-          } else {
-            res.status(500).send('Something went wrong');
-          }
-        } else {
-          res.status(500).send("Couldn't find site in the request");
-        }
-      } catch (error) {
-        console.log(error);
-        res.status(500).send("Couldn't update site");
-      }
-    } else {
+    if (!siteData && !pagesData && !navbarData) {
       res.status(400).send('Updated site elements must be provided in the request.');
+    }
+
+    if (!site) {
+      res.status(500).send("Couldn't find site in the request");
+    }
+
+    try {
+      if (pagesData) {
+        await PageController.updatePages(pagesData, site._id);
+      }
+
+      if (navbarData) {
+        NavbarController.updateNavbar(navbarData, site.navbarID);
+      }
+
+      const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
+      const sortedPages = await PageController.findAllAndSort(site._id);
+
+      if (navbar && sortedPages) {
+        const payload: CurrentSite = {
+          title: site.title,
+          slug: site.slug,
+          oldSlug: site.slug,
+          pages: sortedPages,
+          navbar,
+          shouldAllowEditing: user && site.userID.equals(user._id),
+        };
+
+        res.status(200).send(payload);
+      } else {
+        res.status(500).send('Something went wrong');
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Couldn't update site");
     }
   },
 };

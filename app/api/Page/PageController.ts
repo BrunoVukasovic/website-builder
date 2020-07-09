@@ -63,7 +63,7 @@ const PageController = {
 
     try {
       if (deletedPages) {
-        await Promise.all(deletedPages.map(async (pageID) => await PageModel.deleteOne({ _id: pageID })));
+        await Promise.all(deletedPages.map((pageID) => PageModel.deleteOne({ _id: pageID })));
       }
 
       if (updatedPages) {
@@ -86,9 +86,9 @@ const PageController = {
 
       if (newPages) {
         await Promise.all(
-          newPages.map(async (page) => {
+          newPages.map((page) => {
             const { name, position, slug, container, backgroundColor } = page;
-            await PageModel.create({ name, position, slug, container, backgroundColor, siteID });
+            PageModel.create({ name, position, slug, container, backgroundColor, siteID });
           })
         );
       }

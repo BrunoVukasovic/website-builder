@@ -14,21 +14,21 @@ const UserController = {
   getUserInfo: async (req: Request, res: Response) => {
     const { user } = (req as unknown) as { user: DecodedToken };
 
-    if (user) {
-      try {
-        const allSites = await SiteController.findUsersSites(user._id);
-
-        const response: UserDataRes = {
-          name: user.name,
-          email: user.email,
-          allSites,
-        };
-        res.status(200).send(response);
-      } catch (error) {
-        res.status(500).send('Something went wrong, please try again.');
-      }
-    } else {
+    if (!user) {
       res.status(400).send('Bad token.');
+    }
+
+    try {
+      const allSites = await SiteController.findUsersSites(user._id);
+
+      const payload: UserDataRes = {
+        name: user.name,
+        email: user.email,
+        allSites,
+      };
+      res.status(200).send(payload);
+    } catch (error) {
+      res.status(500).send('Something went wrong, please try again.');
     }
   },
   login: async (req: Request, res: Response) => {

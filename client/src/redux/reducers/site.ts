@@ -137,7 +137,13 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
     case SET_SITE:
       return {
         ...state,
-        currentSite: payload.currentSite,
+        currentSite: {
+          ...payload.currentSite,
+          navbar: {
+            backgroundColor: payload.currentSite.navbar.backgroundColor,
+            initialBackgroundColor: payload.currentSite.navbar.backgroundColor,
+          },
+        },
         allSites: payload.allSites,
       };
     case SET_CURRENT_PAGE_TO_CURRENT_SITE:

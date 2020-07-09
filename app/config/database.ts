@@ -7,11 +7,13 @@ const connectDatabase = async () => {
       useCreateIndex: true,
       useFindAndModify: false,
       useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 15000,
     });
 
     console.log('Database connected...');
   } catch (err) {
     console.error('Error in config: ' + err.message);
+
     process.exit(1);
   }
 };

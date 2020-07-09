@@ -8,6 +8,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { useHistory } from 'react-router-dom';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../../Flex';
 import Modal from '../../../Modal';
@@ -31,6 +32,14 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
   const currentSite = useSelector(selectCurrentSite);
   const history = useHistory();
   const { isAuth, logOut } = useAuth();
+  const { t, i18n } = useTranslation();
+  const language = localStorage.getItem('i18nextLng');
+
+  const handleChangeLanguageClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const { id } = e.currentTarget;
+
+    i18n.changeLanguage(id);
+  };
 
   const handleCreateNewSiteClick = () => {
     // @NOTE don't use history.push()
@@ -44,7 +53,8 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
   const handleSiteSelectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { id } = e.currentTarget;
 
-    history.push(`/edit/${id}`);
+    window.open(`${window.location.origin}/edit/${id}`, '_self');
+    // history.push(`/edit/${id}`);
     onClose();
   };
 
@@ -52,6 +62,8 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
     logOut();
     window.open(`${window.location.origin}`, '_self');
   };
+
+  const handleViewSiteClick = () => window.open(`${window.location.origin}/${currentSite.slug}`);
 
   return (
     <Modal
@@ -63,7 +75,17 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
       BodyClassName={styles.modalBody}
     >
       {isAuth ? (
-        <Flex direction="column" flexOut>
+        <Flex direction="column">
+          <Flex className={styles.menuItem}>
+            <Button
+              color="primary"
+              startIcon={<AccountCircleIcon />}
+              className={styles.menuButton}
+              onClick={handleLogoutClick}
+            >
+              <p className={styles.menuItemText}>Logout</p>
+            </Button>
+          </Flex>
           <Flex className={styles.menuItem}>
             <Button
               color="primary"
@@ -72,6 +94,16 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
               onClick={handleRenameSiteClick}
             >
               <p className={styles.menuItemText}>{`Rename ${currentSite.title}`}</p>
+            </Button>
+          </Flex>
+          <Flex className={styles.menuItem}>
+            <Button
+              color="primary"
+              startIcon={<SpellcheckIcon />}
+              className={styles.menuButton}
+              onClick={handleViewSiteClick}
+            >
+              <p className={styles.menuItemText}>{`View ${currentSite.title}`}</p>
             </Button>
           </Flex>
           <Flex className={styles.expansionPanelWrapper}>
@@ -106,28 +138,6 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </Flex>
-          <Flex className={styles.menuItem}>
-            <Button
-              color="primary"
-              startIcon={<AccountCircleIcon />}
-              className={styles.menuButton}
-              onClick={handleLogoutClick}
-            >
-              <p className={styles.menuItemText}>Logout</p>
-            </Button>
-          </Flex>
-          {currentSite.slug !== 'new-website' && (
-            <Flex className={cx(styles.menuItem, styles.deleteWrapper)}>
-              <Button
-                color="secondary"
-                startIcon={<DeleteForeverIcon />}
-                className={styles.menuButton}
-                onClick={onDeleteSiteClick}
-              >
-                <p className={styles.deleteText}>{`Delete ${currentSite.title}`}</p>
-              </Button>
-            </Flex>
-          )}
         </Flex>
       ) : (
         <Flex className={styles.menuItem}>
@@ -139,6 +149,56 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
             onClick={onLoginClick}
           >
             <p className={styles.menuItemText}>Login</p>
+          </Button>
+        </Flex>
+      )}
+      <Flex className={styles.expansionPanelWrapper}>
+        <ExpansionPanel className={styles.mySitesPanel}>
+          <ExpansionPanelSummary expandIcon={<ExpandMore color="primary" />} className={styles.summary}>
+            <p className={styles.summaryText}>{`${t('Language')}`}</p>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails className={styles.panelDetails}>
+            <Flex direction="column" className={styles.namesWrapper}>
+              <Button
+                id="croatian"
+                color="primary"
+                size="small"
+                onClick={handleChangeLanguageClick}
+                className={styles.siteNameBtn}
+              >
+                <p className={language === 'croatian' ? styles.selectedSite : ''}>{`${t('Croatian')}`}</p>
+              </Button>
+              <Button
+                id="german"
+                color="primary"
+                size="small"
+                onClick={handleChangeLanguageClick}
+                className={styles.siteNameBtn}
+              >
+                <p className={language === 'german' ? styles.selectedSite : ''}>{`${t('German')}`}</p>
+              </Button>
+              <Button
+                id="english"
+                color="primary"
+                size="small"
+                onClick={handleChangeLanguageClick}
+                className={styles.siteNameBtn}
+              >
+                <p className={language === 'english' ? styles.selectedSite : ''}>{`${t('English')}`}</p>
+              </Button>
+            </Flex>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      </Flex>
+      {currentSite.slug !== 'new-website' && (
+        <Flex className={cx(styles.menuItem, styles.deleteWrapper)}>
+          <Button
+            color="secondary"
+            startIcon={<DeleteForeverIcon />}
+            className={styles.menuButton}
+            onClick={onDeleteSiteClick}
+          >
+            <p className={styles.deleteText}>{`Delete ${currentSite.title}`}</p>
           </Button>
         </Flex>
       )}
