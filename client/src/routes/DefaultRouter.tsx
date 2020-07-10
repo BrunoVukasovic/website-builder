@@ -4,8 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import NotFound from '../views/NotFound';
 
-import { CreateNewWebsite, RenameWebsite } from '../views';
-import { SiteViewer, SiteConstructor } from '../components/Site';
+import { CreateNewWebsite, RenameWebsite, SiteViewer, SiteConstructor } from '../views';
 
 const DefaultRouter: React.FC = () => (
   <Switch>

@@ -7,7 +7,7 @@ import NotFound from './views/NotFound'; //@TODO should be Loading
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={NotFound}>
+    <Suspense fallback={() => <div>Loading Load Load ...</div>}>
       <App />
     </Suspense>
   </React.StrictMode>,
