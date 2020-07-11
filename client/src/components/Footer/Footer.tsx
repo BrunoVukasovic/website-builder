@@ -13,18 +13,27 @@ import styles from './footer.module.scss';
 
 export interface FooterProps {
   onPrimaryBtnClick: () => void;
+  showMenu?: boolean;
   onMenuClick?: () => void;
   primaryBtnText?: string;
 }
 
-const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText, onMenuClick }) => {
+const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText, onMenuClick, showMenu }) => {
   const { t } = useTranslation();
 
   return (
     <Flex justifyContent="space-between" className={styles.footerContainer}>
-      <Button variant="outlined" color="primary" size="large" className={styles.secondaryButton} onClick={onMenuClick}>
-        <UnfoldMoreIcon className={styles.unfoldMoreIcon} />
-      </Button>
+      {showMenu && (
+        <Button
+          variant="outlined"
+          color="primary"
+          size="large"
+          className={styles.secondaryButton}
+          onClick={onMenuClick}
+        >
+          <UnfoldMoreIcon className={styles.unfoldMoreIcon} />
+        </Button>
+      )}
       <Button
         variant="contained"
         color="primary"

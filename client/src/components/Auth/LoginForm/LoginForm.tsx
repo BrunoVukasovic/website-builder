@@ -16,11 +16,11 @@ import styles from './login.module.scss';
 
 export interface LoginProps {
   onRegisterClick: () => void;
-  closeModal?: () => void;
 }
+
 type WithInjectedFormProps = InjectedFormProps<LoginFormValues, LoginProps> & LoginProps;
 
-const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegisterClick, closeModal }) => {
+const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegisterClick }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
 
@@ -34,10 +34,6 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
         const user = await UserService.login(payload);
         logIn(user);
         enqueueSnackbar('Authentication successful!', { variant: 'success' });
-
-        if (closeModal) {
-          closeModal();
-        }
       } catch (error) {
         if (error.response) {
           throw new SubmissionError({ _error: `Wrong email or password` });
@@ -46,7 +42,7 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
         }
       }
     },
-    [enqueueSnackbar, closeModal]
+    [enqueueSnackbar]
   );
 
   return (

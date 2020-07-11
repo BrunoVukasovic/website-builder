@@ -3,31 +3,29 @@ import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useToggle } from 'react-use';
 
-import SiteService from '../../services/SiteService';
-import Flex from '../../components/Flex';
-import NotFound from '../NotFound';
-import SiteContainer from '../../components/SiteContainer';
-import Footer from '../../components/Footer';
-import MainMenu from '../../components/MainMenu';
-import Auth from '../../components/Auth/Auth';
 import PageConstructor from '../PageConstructor';
-import Modal from '../../components/Modal/Modal';
-import SaveChanges from '../../components/SaveChanges';
+import SiteService from '../../services/SiteService';
 import NavbarConstructor from '../NavbarConstructor';
-import CreateSite from '../../components/CreateSite';
+import NotFound from '../NotFound';
 
+import { Flex, SiteContainer, Footer, MainMenu, Auth, Modal, SaveChanges } from '../../components';
 import { setSite, setCurrentPageToCurrentSite } from '../../redux/actions/site';
 import { selectCurrentSite } from '../../redux/selectors/site';
+import { selectUserReducerValues } from '../../redux/selectors/user';
 import { defaultSite, emptyPage } from './Site.helpers';
 import { useAuth } from '../../utils/AuthContext';
-import { selectUserReducerValues } from '../../redux/selectors/user';
 
 const SiteConstructor: React.FC = () => {
-  const [saveChangesModalOpen, setSaveChangesModalOpen] = useState<boolean>(false);
-  const [mainMenuOpen, setMainMenuOpen] = useState<boolean>(false);
-  const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
-  const [deleteSiteModalOpen, setDeleteSiteModalOpen] = useState<boolean>(false);
+  const [saveChangesModalOpen, toggleSaveChangesModal] = useToggle(false);
+  const [mainMenuOpen, toggleMainMenu] = useToggle(false);
+  const [authModalOpen, toggleAuthModal] = useToggle(false);
+  const [deleteSiteModalOpen, toggleDeleteSiteModal] = useToggle(false);
+  // const [saveChangesModalOpen, setSaveChangesModalOpen] = useState<boolean>(false);
+  // const [mainMenuOpen, setMainMenuOpen] = useState<boolean>(false);
+  // const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
+  // const [deleteSiteModalOpen, setDeleteSiteModalOpen] = useState<boolean>(false);
   const currentSite = useSelector(selectCurrentSite);
   const user = useSelector(selectUserReducerValues);
   const params = useParams<{ site: string; page: string }>();
@@ -114,29 +112,29 @@ const SiteConstructor: React.FC = () => {
   };
 
   const handleLoginClick = () => {
-    toggleAuthModalOpen();
-    toggleMainMenuOpen();
+    toggleAuthModal();
+    toggleMainMenu();
   };
 
-  const toggleAuthModalOpen = () => {
-    setAuthModalOpen(!authModalOpen);
-  };
+  // const toggleAuthModalOpen = () => {
+  //   setAuthModalOpen(!authModalOpen);
+  // };
 
-  const toggleDeleteSiteModalOpen = () => {
-    setDeleteSiteModalOpen(!deleteSiteModalOpen);
-  };
+  // const toggleDeleteSiteModalOpen = () => {
+  //   setDeleteSiteModalOpen(!deleteSiteModalOpen);
+  // };
 
-  const toggleMainMenuOpen = () => {
-    setMainMenuOpen(!mainMenuOpen);
-  };
+  // const toggleMainMenuOpen = () => {
+  //   setMainMenuOpen(!mainMenuOpen);
+  // };
 
-  const toggleSaveChangesModalOpen = () => {
-    setSaveChangesModalOpen(!saveChangesModalOpen);
-  };
+  // const toggleSaveChangesModalOpen = () => {
+  //   setSaveChangesModalOpen(!saveChangesModalOpen);
+  // };
 
   const handleSaveChangesClick = () => {
     dispatch(setCurrentPageToCurrentSite());
-    toggleSaveChangesModalOpen();
+    toggleSaveChangesModal();
   };
 
   if (currentPage && currentSite.shouldAllowEditing) {
@@ -151,45 +149,36 @@ const SiteConstructor: React.FC = () => {
           />
           <PageConstructor page={currentPage} siteBackgroundColor={currentSite.backgroundColor} />
         </SiteContainer>
-        <Footer onMenuClick={toggleMainMenuOpen} onPrimaryBtnClick={handleSaveChangesClick} />
-        {/* {saveChangesModalOpen && (
-          <Modal onClose={handleSaveChangesClose}>
-            {currentSite.slug === 'new-website' && (
-              <CreateSite closeModal={toggleSaveChangesModalOpen} onCancelClick={toggleSaveChangesModalOpen} />
-            )}
-            {currentSite.slug !== 'new-website' && (
-              <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModalOpen} />
-            )}
-          </Modal>
-        )} */}
+        <Footer onMenuClick={toggleMainMenu} onPrimaryBtnClick={handleSaveChangesClick} showMenu />
         {saveChangesModalOpen &&
           (currentSite.slug === 'new-website' ? (
-            <Redirect to="/create" />
+            <Redirect to="/action/create" />
           ) : (
-            <Modal onClose={toggleSaveChangesModalOpen}>
-              <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModalOpen} />
+            <Modal onClose={toggleSaveChangesModal}>
+              <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModal} />
             </Modal>
           ))}
         {mainMenuOpen && (
           <MainMenu
             onLoginClick={handleLoginClick}
-            onClose={toggleMainMenuOpen}
-            onDeleteSiteClick={toggleDeleteSiteModalOpen}
+            onClose={toggleMainMenu}
+            onDeleteSiteClick={toggleDeleteSiteModal}
           />
         )}
         {authModalOpen && (
-          <Modal onClose={toggleAuthModalOpen}>
-            <Auth closeModal={toggleAuthModalOpen} />
-          </Modal>
+          // <Modal onClose={toggleAuthModal}>
+          //   <Auth closeModal={toggleAuthModal} />
+          // </Modal>
+          <Redirect to="/action/auth" />
         )}
         {deleteSiteModalOpen && (
           <Modal
-            onClose={toggleDeleteSiteModalOpen}
+            onClose={toggleDeleteSiteModal}
             headerText="Delete whole website?"
             showFooter
             primaryButtonText="Delete"
             secondaryButtonText="Close"
-            onSecondaryButtonClick={toggleDeleteSiteModalOpen}
+            onSecondaryButtonClick={toggleDeleteSiteModal}
             onPrimaryButtonClick={handleDeleteSite}
           >
             <h2>This action cannot be undone!</h2>

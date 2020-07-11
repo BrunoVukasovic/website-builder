@@ -1,28 +1,30 @@
-//@NOTE deprecated, use ActionContainer instead
-
 import React, { useCallback } from 'react';
 
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Auth from '../../components/Auth';
 import Flex from '../../components/Flex';
 import SiteContainer from '../../components/SiteContainer';
 import Footer from '../../components/Footer';
-import SaveChanges from '../../components/SaveChanges';
 import SiteTitleForm from '../../components/SiteTitleForm';
 
+import { SiteTitleFormValues } from '../../redux/models';
 import { useAuth } from '../../utils/AuthContext';
 import { selectCurrentSite } from '../../redux/selectors/site';
 
-import styles from './create_new_website.module.scss';
+import styles from './action_container.module.scss';
+import { Action } from './ActionContainer.helpers';
 
-//@NOTE deprecated, use ActionContainer instead
-
-const CreateNewWebsite: React.FC = () => {
+const ActionContainer: React.FC = () => {
   const currentSite = useSelector(selectCurrentSite);
-  const history = useHistory();
+  const params = useParams<{ action: string }>();
+  // const dispatch = useDispatch();
   const { isAuth } = useAuth();
+  // const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
+
+  // const origin = React.useMemo(() => window.location.origin, []);
 
   const redirectToSiteConstructor = () => history.push(`/edit/${currentSite.slug}`);
 
@@ -30,21 +32,8 @@ const CreateNewWebsite: React.FC = () => {
     return (
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer className={styles.siteContainer}>
-          <Flex direction="column" className={styles.createSiteWrapper}>
+          <Flex direction="column" className={styles.actionWrapper}>
             <Auth />
-          </Flex>
-        </SiteContainer>
-        <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} />
-      </Flex>
-    );
-  }
-
-  if (currentSite.slug !== 'new-website') {
-    return (
-      <Flex direction="column" alignItems="center" maxHeight>
-        <SiteContainer className={styles.siteContainer}>
-          <Flex direction="column" className={styles.createSiteWrapper}>
-            <SaveChanges currentSite={currentSite} onCloseClick={redirectToSiteConstructor} />
           </Flex>
         </SiteContainer>
         <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} />
@@ -55,12 +44,11 @@ const CreateNewWebsite: React.FC = () => {
   return (
     <Flex direction="column" alignItems="center" maxHeight>
       <SiteContainer className={styles.siteContainer}>
-        <Flex direction="column" className={styles.createSiteWrapper}>
-          <SiteTitleForm
-            onCancelClick={redirectToSiteConstructor}
-            action="create"
-            currentSlug="new-website"
-            submitButtonText="Create site"
+        <Flex direction="column" className={styles.actionWrapper}>
+          <Action
+            type={params.action}
+            currentSite={currentSite}
+            redirectToSiteConstructor={redirectToSiteConstructor}
           />
         </Flex>
       </SiteContainer>
@@ -69,4 +57,4 @@ const CreateNewWebsite: React.FC = () => {
   );
 };
 
-export default CreateNewWebsite;
+export default ActionContainer;

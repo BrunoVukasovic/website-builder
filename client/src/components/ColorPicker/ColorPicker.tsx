@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 
-//@ts-ignore
+import { useToggle } from 'react-use';
+
 import { SketchPicker, ColorResult } from 'react-color';
 import { Button, Popover, IconButton, Switch } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
@@ -19,7 +20,6 @@ import {
 } from '../../redux/actions/site';
 
 import styles from './color_picker.module.scss';
-import { useToggle } from 'react-use';
 
 export interface ColorPickerProps {
   coloredArea: 'navbar' | 'page';

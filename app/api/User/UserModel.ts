@@ -6,10 +6,10 @@ export interface UserDocument extends Document {
   password: string;
 }
 
-const SiteSchema: Schema = new Schema({
+const UserSchema: Schema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
 
-export default mongoose.model<UserDocument>('User', SiteSchema);
+export default mongoose.model<UserDocument>('User', UserSchema);

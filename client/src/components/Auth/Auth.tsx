@@ -5,20 +5,20 @@ import LoginForm from './LoginForm/LoginForm';
 
 export interface AuthProps {
   shouldRegister?: boolean;
-  closeModal?: () => void;
 }
-const Auth: React.FC<AuthProps> = ({ closeModal, shouldRegister }) => {
+
+const Auth: React.FC<AuthProps> = ({ shouldRegister }) => {
   const [registerView, setRegisterView] = useState<boolean | undefined>(shouldRegister);
 
-  const toggleRegisterView = () => {
+  const toggleRegisterView = React.useCallback(() => {
     setRegisterView(!registerView);
-  };
+  }, []);
 
   if (registerView) {
-    return <RegisterForm onGoBackClick={toggleRegisterView} closeModal={closeModal} />;
+    return <RegisterForm onGoBackClick={toggleRegisterView} />;
   }
 
-  return <LoginForm onRegisterClick={toggleRegisterView} closeModal={closeModal} />;
+  return <LoginForm onRegisterClick={toggleRegisterView} />;
 };
 
 export default Auth;
