@@ -8,4 +8,5 @@ export { default as Modal } from './Modal';
 export { default as SaveChanges } from './SaveChanges';
 export { default as SiteContainer } from './SiteContainer';
 export { default as SiteTitleForm } from './SiteTitleForm';
+export { default as Spinner } from './Spinner';
 export { default as TextEditor } from './TextEditor';

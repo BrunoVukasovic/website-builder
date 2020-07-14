@@ -1,7 +1,4 @@
-import { createSelectorCreator, defaultMemoize } from "reselect";
-import isEqual from "lodash/isEqual";
+import isEqual from 'lodash/isEqual';
+import { createSelectorCreator, defaultMemoize } from 'reselect';
 
-export const createDeepEqualitySelector = createSelectorCreator(
-  defaultMemoize,
-  isEqual
-);
+export const createDeepEqualitySelector = createSelectorCreator(defaultMemoize, isEqual);

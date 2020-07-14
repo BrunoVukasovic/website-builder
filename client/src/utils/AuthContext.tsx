@@ -30,28 +30,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   refreshAuthHeader(token);
-  //   console.log('useEFfect od providera');
-  //   if (token) {
-  //     const callApi = async () => {
-  //       try {
-  //         const userData = await UserService.getUserData();
-
-  //         dispatch(setUser(userData));
-  //         setIsAuth(true);
-  //       } catch (error) {
-  //         console.log(error);
-  //         // localStorage.removeItem('token');
-  //         // refreshAuthHeader(null);
-  //       }
-  //     };
-
-  //     callApi();
-  //   }
-  // }, []);
-
   const initUserData = () => {
     const token = localStorage.getItem('token');
     refreshAuthHeader(token);
@@ -65,8 +43,6 @@ export const AuthProvider: React.FC = ({ children }) => {
           setIsAuth(true);
         } catch (error) {
           console.log(error);
-          // localStorage.removeItem('token');
-          // refreshAuthHeader(null);
         }
       };
 

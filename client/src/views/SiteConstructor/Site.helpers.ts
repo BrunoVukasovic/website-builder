@@ -59,5 +59,5 @@ export const defaultSite: SiteReducerState = {
     ],
   },
   currentPage: emptyPage,
-  allSites: ['new-website'],
+  // allSites: ['new-website'],
 };

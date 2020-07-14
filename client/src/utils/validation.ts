@@ -1,9 +1,7 @@
 /* eslint-disable max-classes-per-file */
-import isEmpty from 'lodash/isEmpty';
 
 class Validation {
-  static isEmpty = (value?: string | object) =>
-    typeof value === 'string' ? value && isEmpty(value.trim()) : isEmpty(value);
+  static isEmpty = (value?: string) => !value || value.trim().length === 0;
 
   static isValidEmail = (value?: string) => {
     if (!value) {

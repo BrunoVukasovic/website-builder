@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import './utils/i18n';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import NotFound from './views/NotFound'; //@TODO should be Loading
+import './utils/i18n';
+import { Spinner } from './components';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={() => <div>Loading Load Load ...</div>}>
+    <Suspense fallback={Spinner}>
       <App />
     </Suspense>
   </React.StrictMode>,

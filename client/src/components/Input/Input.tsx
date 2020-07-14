@@ -1,6 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 
+import { useTranslation } from 'react-i18next';
+
 import { TextField } from '@material-ui/core';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import { WrappedFieldMetaProps, WrappedFieldInputProps } from 'redux-form';
@@ -28,6 +30,8 @@ const Input: React.FC<InputProps> = ({
   meta,
   ...props
 }) => {
+  const { t } = useTranslation();
+
   return (
     <TextField
       className={cx(styles.container, className)}
@@ -36,7 +40,7 @@ const Input: React.FC<InputProps> = ({
       variant={variant as 'outlined'}
       InputProps={{ ...MUIInputProps, ...input, readOnly }}
       error={meta && meta.error && meta.touched ? true : error}
-      helperText={meta && meta.error && meta.touched ? meta && meta.error : helperText}
+      helperText={meta && meta.error && meta.touched ? meta && t(meta.error) : helperText && t(helperText as string)}
       FormHelperTextProps={{ ...FormHelperTextProps, className: styles.helperText }}
       {...props}
     >

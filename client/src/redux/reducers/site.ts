@@ -30,7 +30,7 @@ import {
 export interface SiteReducerState {
   currentSite: CurrentSiteState;
   currentPage: CurrentPage;
-  allSites?: string[];
+  // allSites?: string[];
 }
 
 const initialState: SiteReducerState = {
@@ -144,7 +144,7 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
             initialBackgroundColor: payload.currentSite.navbar.backgroundColor,
           },
         },
-        allSites: payload.allSites,
+        // allSites: payload.allSites,
       };
     case SET_CURRENT_PAGE_TO_CURRENT_SITE:
       return {

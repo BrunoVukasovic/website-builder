@@ -7,9 +7,9 @@ class SiteService {
     new Promise((resolve, reject) => {
       const callApi = async () => {
         try {
-          const { data } = await axios.post(`/site/create/${slug}`, { title });
+          await axios.post(`/site/create/${slug}`, { title });
 
-          resolve(data);
+          resolve();
         } catch (error) {
           reject(error);
         }

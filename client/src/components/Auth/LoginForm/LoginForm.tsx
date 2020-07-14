@@ -3,6 +3,7 @@ import React from 'react';
 import { useSnackbar } from 'notistack';
 import { Button } from '@material-ui/core';
 import { reduxForm, Form, Field, InjectedFormProps, SubmissionError } from 'redux-form';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../Flex';
 import Input from '../../Input/Input';
@@ -14,15 +15,16 @@ import { useAuth } from '../../../utils/AuthContext';
 
 import styles from './login.module.scss';
 
-export interface LoginProps {
+export interface LoginFormProps {
   onRegisterClick: () => void;
 }
 
-type WithInjectedFormProps = InjectedFormProps<LoginFormValues, LoginProps> & LoginProps;
+type WithInjectedFormProps = InjectedFormProps<LoginFormValues, LoginFormProps> & LoginFormProps;
 
 const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegisterClick }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
+  const { t } = useTranslation();
 
   const onSubmit = React.useCallback(
     async ({ email, password }: LoginFormValues) => {
@@ -47,7 +49,7 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
 
   return (
     <Flex direction="column">
-      <h2>Login:</h2>
+      <h2>{`${t('Login')}:`}</h2>
       <Form<LoginFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>
         <Flex direction="column" alignItems="flex-start">
           <Field
@@ -92,6 +94,6 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
   );
 };
 
-export default reduxForm<LoginFormValues, LoginProps>({ form: 'loginForm' })(LoginForm) as React.ComponentType<
-  LoginProps
+export default reduxForm<LoginFormValues, LoginFormProps>({ form: 'loginForm' })(LoginForm) as React.ComponentType<
+  LoginFormProps
 >;
