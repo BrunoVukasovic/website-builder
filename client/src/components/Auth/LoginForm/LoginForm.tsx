@@ -4,6 +4,7 @@ import { useSnackbar } from 'notistack';
 import { Button } from '@material-ui/core';
 import { reduxForm, Form, Field, InjectedFormProps, SubmissionError } from 'redux-form';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
 import Flex from '../../Flex';
 import Input from '../../Input/Input';
@@ -17,14 +18,16 @@ import styles from './login.module.scss';
 
 export interface LoginFormProps {
   onRegisterClick: () => void;
+  shouldRedirect?: boolean;
 }
 
 type WithInjectedFormProps = InjectedFormProps<LoginFormValues, LoginFormProps> & LoginFormProps;
 
-const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegisterClick }) => {
+const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegisterClick, shouldRedirect }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
   const { t } = useTranslation();
+  const history = useHistory();
 
   const onSubmit = React.useCallback(
     async ({ email, password }: LoginFormValues) => {
@@ -36,6 +39,10 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
         const user = await UserService.login(payload);
         logIn(user);
         enqueueSnackbar('Authentication successful!', { variant: 'success' });
+
+        if (shouldRedirect) {
+          history.push(user.allSites.length > 0 ? `/edit/${user.allSites[0].slug}` : '/edit/new-website');
+        }
       } catch (error) {
         if (error.response) {
           throw new SubmissionError({ _error: `Wrong email or password` });

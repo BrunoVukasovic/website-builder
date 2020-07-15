@@ -5,6 +5,7 @@ import LoginForm from './LoginForm/LoginForm';
 
 export interface AuthProps {
   shouldRegister?: boolean;
+  shouldRedirect?: boolean;
 }
 
 const Auth: React.FC<AuthProps> = ({ shouldRegister }) => {
@@ -15,10 +16,10 @@ const Auth: React.FC<AuthProps> = ({ shouldRegister }) => {
   }, []);
 
   if (registerView) {
-    return <RegisterForm onGoBackClick={toggleRegisterView} />;
+    return <RegisterForm onGoBackClick={toggleRegisterView} shouldRedirect />;
   }
 
-  return <LoginForm onRegisterClick={toggleRegisterView} />;
+  return <LoginForm onRegisterClick={toggleRegisterView} shouldRedirect />;
 };
 
 export default Auth;

@@ -3,6 +3,7 @@ import React from 'react';
 import { useSnackbar } from 'notistack';
 import { Button } from '@material-ui/core';
 import { reduxForm, Form, Field, InjectedFormProps, SubmissionError } from 'redux-form';
+import { useHistory } from 'react-router-dom';
 
 import Flex from '../../Flex';
 import Input from '../../Input/Input';
@@ -16,14 +17,15 @@ import styles from './register.module.scss';
 
 export interface RegisterProps {
   onGoBackClick: () => void;
-  closeModal?: () => void;
+  shouldRedirect?: boolean;
 }
 
 type WithInjectedFormProps = InjectedFormProps<RegisterFormValues, RegisterProps> & RegisterProps;
 
-const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick, closeModal }) => {
+const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick, shouldRedirect }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
+  const history = useHistory();
 
   const onSubmit = React.useCallback(
     async ({ name, email, password }: RegisterFormValues) => {
@@ -38,8 +40,8 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackC
         logIn(user);
         enqueueSnackbar('Registration successful!', { variant: 'success' });
 
-        if (closeModal) {
-          closeModal();
+        if (shouldRedirect) {
+          history.push(user.allSites.length > 0 ? `/edit/${user.allSites[0].slug}` : '/edit/new-website');
         }
       } catch (error) {
         if (error.response && error.response.status === 409) {
@@ -49,7 +51,7 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackC
         }
       }
     },
-    [enqueueSnackbar, logIn, closeModal]
+    [enqueueSnackbar, logIn]
   );
 
   return (
