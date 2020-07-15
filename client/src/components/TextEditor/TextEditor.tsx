@@ -27,7 +27,6 @@ export interface TextEditorProps {
   initialValue?: string;
   headerText?: string;
   oldSlug?: string;
-  activePageSlug?: string;
 }
 
 const TextEditor: React.FC<TextEditorProps> = ({
@@ -38,7 +37,6 @@ const TextEditor: React.FC<TextEditorProps> = ({
   anchorElement,
   headerText,
   oldSlug,
-  activePageSlug,
 }) => {
   const [text, setText] = useState<string>(initialValue || '');
   const dispatch = useDispatch();
@@ -61,29 +59,17 @@ const TextEditor: React.FC<TextEditorProps> = ({
         );
         break;
       case 'updatePageName':
-        if (activePageSlug === oldSlug) {
-          dispatch(
-            updateCurrentPageName({
-              title: text,
-              slug: text
-                .replace(/(<([^>]+)>)/gi, '')
-                .replace(/[^a-zA-Z0-9]/g, '-')
-                .toLowerCase(),
-            })
-          );
-        } else {
-          dispatch(
-            updatePageName({
-              name: text,
-              slug: text
-                .replace(/(<([^>]+)>)/gi, '')
-                .replace(/[^a-zA-Z0-9]/g, '-')
-                .toLowerCase(),
-              //@ts-ignore
-              oldSlug,
-            })
-          );
-        }
+        dispatch(
+          updatePageName({
+            name: text,
+            slug: text
+              .replace(/(<([^>]+)>)/gi, '')
+              .replace(/[^a-zA-Z0-9]/g, '-')
+              .toLowerCase(),
+            //@ts-ignore
+            oldSlug,
+          })
+        );
         break;
       case 'addSegment':
         dispatch(

@@ -132,7 +132,6 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, navbar
             anchorElement={anchorElement}
             initialValue={currentEditingItem && currentEditingItem.name}
             oldSlug={currentEditingItem && currentEditingItem.slug}
-            activePageSlug={activePageSlug}
           />
         </Flex>
       )}
