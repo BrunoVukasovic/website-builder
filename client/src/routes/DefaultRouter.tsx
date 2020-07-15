@@ -13,7 +13,7 @@ const DefaultRouter: React.FC = () => (
     </Route>
     <Route path="/action/:action" component={ActionContainer} />
     {/* <Route path="/create" component={CreateNewWebsite} /> */}
-    <Route path="/rename" exact component={RenameWebsite} />
+    {/* <Route path="/rename" exact component={RenameWebsite} /> */}
     <Route path="/edit/:site?/:page?" component={SiteConstructor} />
     <Route path="/:site/:page?" component={SiteViewer} />
     <Route component={NotFound} />

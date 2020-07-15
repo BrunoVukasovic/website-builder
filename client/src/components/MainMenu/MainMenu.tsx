@@ -49,7 +49,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
     onClose();
   };
 
-  const handleRenameSiteClick = () => history.push('/rename');
+  const handleRenameSiteClick = () => history.push('/action/rename');
 
   const handleSiteSelectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { id } = e.currentTarget;

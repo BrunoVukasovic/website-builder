@@ -16,7 +16,7 @@ export interface ActionProps {
 export const Action: React.FC<ActionProps> = ({ type, currentSite, redirectToSiteConstructor }) => {
   switch (type) {
     case 'auth':
-      return <Auth />;
+      return <Auth shouldRedirect />;
     case 'create':
       return currentSite.slug !== 'new-website' ? (
         <SaveChanges currentSite={currentSite} onCloseClick={redirectToSiteConstructor} />
@@ -26,6 +26,19 @@ export const Action: React.FC<ActionProps> = ({ type, currentSite, redirectToSit
           action="create"
           currentSlug="new-website"
           submitButtonText="Create site"
+        />
+      );
+    case 'rename':
+      return (
+        <SiteTitleForm
+          onCancelClick={redirectToSiteConstructor}
+          action="create"
+          currentSlug={currentSite.slug}
+          submitButtonText="Rename site"
+          initialValues={{
+            title: currentSite.title,
+            url: `${origin}/${currentSite.slug}`,
+          }}
         />
       );
     default:

@@ -1,3 +1,4 @@
+//@NOTE deprecated, use ActionContainer instead
 import React, { useCallback } from 'react';
 
 import { useHistory } from 'react-router-dom';
@@ -14,6 +15,8 @@ import { useAuth } from '../../utils/AuthContext';
 import { selectCurrentSite } from '../../redux/selectors/site';
 
 import styles from './rename_website.module.scss';
+
+//@NOTE deprecated, use ActionContainer instead
 
 const RenameWebsite: React.FC = () => {
   const currentSite = useSelector(selectCurrentSite);
