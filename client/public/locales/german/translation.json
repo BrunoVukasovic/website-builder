@@ -1,9 +1,25 @@
 {
+  "Anyone can view the website": "Jeder kann die Website anzeigen, indem er den folgenden Link in den Browser eingibt. Sie können jedoch nur Änderungen vornehmen.",
+  "Changes saved successfully": "Änderungen erfolgreich gespeichert!",
+  "Close": "Schließen",
+  "Copy link": "Link kopieren",
+  "Create new website": "Erstellen Sie eine neue Website",
   "Croatian": "Kroatisch",
+  "Delete": "Löschen",
   "English": "English",
+  "Error": {
+    "Check your internet connection": "Etwas ist schief gelaufen. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+    "Something went wrong": "Etwas ist schief gelaufen. Bitte versuche es erneut."
+  },
   "German": "Deutsche",
+  "Hello": "Hallo",
   "Language": "Sprache",
-  "Login": "Login",
+  "Login": "Anmelden",
+  "Logout": "Abmelden",
+  "My websites": "Meine Websites",
+  "Rename": "Name ändern",
   "Required": "Erforderlich",
-  "Save changes": "Speichern"
+  "Save": "Speichern",
+  "Save changes": "Speichern",
+  "View": "Schau"
 }

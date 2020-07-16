@@ -1,9 +1,25 @@
 {
+  "Anyone can view the website": "Anyone can view the website by the typing link bellow in the browser, but only you can make changes.",
+  "Changes saved successfully": "Changes saved successfully!",
+  "Close": "Close",
+  "Copy link": "Copy Link",
+  "Create new website": "Create new website",
   "Croatian": "Croatian",
+  "Delete": "Delete",
   "English": "English",
+  "Error": {
+    "Check your internet connection": "Something went wrong. Please, check your internet connection and try again.",
+    "Something went wrong": "Something went wrong. Please, try again."
+  },
   "German": "German",
+  "Hello": "Hello",
   "Language": "Language",
   "Login": "Login",
+  "Logout": "Logout",
+  "My websites": "My websites",
+  "Rename": "Rename",
   "Required": "Required",
-  "Save changes": "Save changes"
+  "Save": "Save",
+  "Save changes": "Save changes",
+  "View": "View"
 }

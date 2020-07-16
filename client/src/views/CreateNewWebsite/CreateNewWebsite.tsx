@@ -44,7 +44,7 @@ const CreateNewWebsite: React.FC = () => {
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer className={styles.siteContainer}>
           <Flex direction="column" className={styles.createSiteWrapper}>
-            <SaveChanges currentSite={currentSite} onCloseClick={redirectToSiteConstructor} />
+            <SaveChanges currentSite={currentSite} onClose={redirectToSiteConstructor} />
           </Flex>
         </SiteContainer>
         <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} />

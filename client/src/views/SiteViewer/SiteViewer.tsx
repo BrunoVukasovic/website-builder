@@ -24,25 +24,27 @@ const SiteConstructor: React.FC = () => {
 
   useEffect(() => {
     if (params.site) {
-      if (params.site === 'new-website') {
-        dispatch(setSite(defaultSite));
-      } else {
-        const callApi = async () => {
-          try {
-            if (!isAuth) {
-              initUserData();
+      if (params.site !== currentSite.slug) {
+        if (params.site === 'new-website') {
+          dispatch(setSite(defaultSite));
+        } else {
+          const callApi = async () => {
+            try {
+              if (!isAuth) {
+                initUserData();
+              }
+
+              const site = await SiteService.getSite(params.site);
+
+              dispatch(setSite({ ...site, currentPage: emptyPage }));
+            } catch (err) {
+              // @TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
+              return <NotFound />;
             }
+          };
 
-            const site = await SiteService.getSite(params.site);
-
-            dispatch(setSite({ ...site, currentPage: emptyPage }));
-          } catch (err) {
-            // @TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
-            return <NotFound />;
-          }
-        };
-
-        callApi();
+          callApi();
+        }
       }
     } else {
       dispatch(setSite(defaultSite));

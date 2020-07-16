@@ -19,7 +19,7 @@ export const Action: React.FC<ActionProps> = ({ type, currentSite, redirectToSit
       return <Auth shouldRedirect />;
     case 'create':
       return currentSite.slug !== 'new-website' ? (
-        <SaveChanges currentSite={currentSite} onCloseClick={redirectToSiteConstructor} />
+        <SaveChanges currentSite={currentSite} onClose={redirectToSiteConstructor} />
       ) : (
         <SiteTitleForm
           onCancelClick={redirectToSiteConstructor}

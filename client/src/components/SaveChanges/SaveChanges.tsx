@@ -5,25 +5,26 @@ import MoodBadIcon from '@material-ui/icons/MoodBad';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { Button } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
-import Flex from '../Flex';
 import SiteService from '../../services/SiteService';
-import Input from '../Input';
 
+import { Spinner, Flex, Input } from '..';
+import { setCurrentSite } from '../../redux/actions/site';
 import { UpdateSiteReq } from '../../models';
 import { CurrentSiteState } from '../../redux/models';
 
 import styles from './save_changes.module.scss';
-import { setSite, setCurrentSite } from '../../redux/actions/site';
 
 export interface SaveChangesProps {
   currentSite: CurrentSiteState;
-  onCloseClick: () => void;
+  onClose: () => void;
 }
 
-const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onCloseClick }) => {
+const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isSiteUpdated, setIsSiteUpdated] = useState<boolean>(false);
+  const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const origin = React.useMemo(() => window.location.origin, []);
@@ -66,7 +67,6 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onCloseClick }) 
 
     const callApi = async () => {
       try {
-        console.log(payload);
         const updatedSite = await SiteService.updateSite(currentSite.oldSlug, payload);
 
         if (errorMessage) {
@@ -77,9 +77,9 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onCloseClick }) 
         dispatch(setCurrentSite(updatedSite));
       } catch (error) {
         if (error.response || error.request) {
-          setErrorMessage('Something went wrong. Please, try again.');
+          setErrorMessage('Error.Something went wrong');
         } else {
-          setErrorMessage('Something went wrong. Please, check your internet connection and try again.');
+          setErrorMessage('Error.Check your internet connection');
         }
       }
     };
@@ -87,16 +87,16 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onCloseClick }) 
     callApi();
   }, []);
 
-  if (!errorMessage && !isSiteUpdated) {
-    return <Flex>Loading...</Flex>;
-  }
+  // if (!errorMessage && !isSiteUpdated) {
+  //   return <Spinner />;
+  // }
 
   if (isSiteUpdated) {
     return (
       <Flex direction="column">
         <CloudDoneIcon color="primary" className={styles.successIcon} />
-        <h2>Changes saved successfully!</h2>
-        <p>Anyone can view site by typing link bellow in the browser, but only you can make changes.</p>
+        <h2>{`${t('Changes saved successfully!')}`}</h2>
+        <p>{`${t('Anyone can view the website')}`}</p>
         <Input id="siteURL" readOnly value={`${origin}/${currentSite.slug}`} />
         <Flex className={styles.buttonContainer}>
           <Button
@@ -106,10 +106,10 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onCloseClick }) 
             onClick={handleCopyToClipboardClick}
             classes={{ root: styles.cancelBtn }}
           >
-            Copy Link
+            {t('Copy link')}
           </Button>
-          <Button size="large" type="submit" variant="contained" color="primary" onClick={onCloseClick}>
-            Close
+          <Button size="large" type="submit" variant="contained" color="primary" onClick={onClose}>
+            {t('Close')}
           </Button>
         </Flex>
       </Flex>
@@ -120,15 +120,15 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onCloseClick }) 
     return (
       <Flex direction="column" alignItems="center">
         <MoodBadIcon color="primary" className={styles.successIcon} />
-        <h2 className={styles.errorText}>{errorMessage}</h2>
-        <Button size="large" type="submit" variant="contained" color="primary" onClick={onCloseClick}>
-          Close
+        <h2 className={styles.errorText}>{t(errorMessage)}</h2>
+        <Button size="large" type="submit" variant="contained" color="primary" onClick={onClose}>
+          {t('Close')}
         </Button>
       </Flex>
     );
   }
 
-  return <Flex>Loading...</Flex>;
+  return <Spinner />;
 };
 
 export default SaveChanges;

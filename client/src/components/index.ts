@@ -5,6 +5,7 @@ export { default as Footer } from './Footer';
 export { default as Input } from './Input';
 export { default as MainMenu } from './MainMenu';
 export { default as Modal } from './Modal';
+export { default as Plate } from './Plate';
 export { default as SaveChanges } from './SaveChanges';
 export { default as SiteContainer } from './SiteContainer';
 export { default as SiteTitleForm } from './SiteTitleForm';

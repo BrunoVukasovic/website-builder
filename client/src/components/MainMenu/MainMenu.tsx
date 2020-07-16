@@ -71,7 +71,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
       onClose={onClose}
       classes={{ root: styles.root }}
       className={styles.container}
-      headerText={user.name && `Welcome ${user.name}`}
+      headerText={user.name && `${t('Hello')} ${user.name}`}
       HeaderClassName={styles.header}
       BodyClassName={styles.modalBody}
     >
@@ -84,7 +84,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
               className={styles.menuButton}
               onClick={handleLogoutClick}
             >
-              <p className={styles.menuItemText}>Logout</p>
+              <p className={styles.menuItemText}>{t('Logout')}</p>
             </Button>
           </Flex>
           <Flex className={styles.menuItem}>
@@ -94,7 +94,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
               className={styles.menuButton}
               onClick={handleRenameSiteClick}
             >
-              <p className={styles.menuItemText}>{`Rename ${currentSite.title}`}</p>
+              <p className={styles.menuItemText}>{`${t('Rename')} ${currentSite.title}`}</p>
             </Button>
           </Flex>
           <Flex className={styles.menuItem}>
@@ -104,7 +104,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
               className={styles.menuButton}
               onClick={handleViewSiteClick}
             >
-              <p className={styles.menuItemText}>{`View ${currentSite.title}`}</p>
+              <p className={styles.menuItemText}>{`${t('View')} ${currentSite.title}`}</p>
             </Button>
           </Flex>
           <Flex className={styles.expansionPanelWrapper}>
@@ -123,7 +123,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
                         onClick={handleSiteSelectClick}
                         className={styles.siteNameBtn}
                       >
-                        <p className={site.title === currentSite.title ? styles.selectedSite : ''}>{site.title}</p>
+                        <p className={site.title === currentSite.title ? styles.selected : ''}>{site.title}</p>
                       </Button>
                     );
                   })}
@@ -133,7 +133,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
                     onClick={handleCreateNewSiteClick}
                     className={styles.siteNameBtn}
                   >
-                    <p>Create new website...</p>
+                    <p>{`${t('Create new website')}...`}</p>
                   </Button>
                 </Flex>
               </ExpansionPanelDetails>
@@ -149,7 +149,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
             className={styles.menuButton}
             onClick={onLoginClick}
           >
-            <p className={styles.menuItemText}>Login</p>
+            <p className={styles.menuItemText}>{t('Login')}</p>
           </Button>
         </Flex>
       )}
@@ -167,7 +167,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
                 onClick={handleChangeLanguageClick}
                 className={styles.siteNameBtn}
               >
-                <p className={language === 'croatian' ? styles.selectedSite : ''}>{`${t('Croatian')}`}</p>
+                <p className={language === 'croatian' ? styles.selected : ''}>{`${t('Croatian')}`}</p>
               </Button>
               <Button
                 id="german"
@@ -176,7 +176,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
                 onClick={handleChangeLanguageClick}
                 className={styles.siteNameBtn}
               >
-                <p className={language === 'german' ? styles.selectedSite : ''}>{`${t('German')}`}</p>
+                <p className={language === 'german' ? styles.selected : ''}>{`${t('German')}`}</p>
               </Button>
               <Button
                 id="english"
@@ -185,7 +185,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
                 onClick={handleChangeLanguageClick}
                 className={styles.siteNameBtn}
               >
-                <p className={language === 'english' ? styles.selectedSite : ''}>{`${t('English')}`}</p>
+                <p className={language === 'english' ? styles.selected : ''}>{`${t('English')}`}</p>
               </Button>
             </Flex>
           </ExpansionPanelDetails>

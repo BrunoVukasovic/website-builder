@@ -155,7 +155,7 @@ const SiteConstructor: React.FC = () => {
             <Redirect to="/action/create" />
           ) : (
             <Modal onClose={toggleSaveChangesModal}>
-              <SaveChanges currentSite={currentSite} onCloseClick={toggleSaveChangesModal} />
+              <SaveChanges currentSite={currentSite} onClose={toggleSaveChangesModal} />
             </Modal>
           ))}
         {mainMenuOpen && (

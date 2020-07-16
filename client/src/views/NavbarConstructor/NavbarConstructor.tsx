@@ -123,12 +123,12 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, navbar
       <Flex alignItems="center" className={styles.menuIconWrapper} onClick={toggleCreatedMenuOpen}>
         <MenuIcon color="primary" className={styles.menuIcon} />
       </Flex>
-      {textEditorOpen && (
+      {textEditorOpen && anchorElement && (
         <Flex>
           <TextEditor
             headerText="Enter page name: "
             onClose={closeAll}
-            action={currentEditingItem ? 'updatePageName' : 'addPage'}
+            objective={currentEditingItem ? 'updatePageName' : 'addPage'}
             anchorElement={anchorElement}
             initialValue={currentEditingItem && currentEditingItem.name}
             oldSlug={currentEditingItem && currentEditingItem.slug}
@@ -155,7 +155,7 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, navbar
           onDeletePageClick={toggleDeletePageModalOpen}
         />
       )}
-      {colorPickerPopoverOpen && (
+      {colorPickerPopoverOpen && anchorElement && (
         <ColorPicker
           onClose={toggleColorPickerPopover}
           coloredArea="navbar"

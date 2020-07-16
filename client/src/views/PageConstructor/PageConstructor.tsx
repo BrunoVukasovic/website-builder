@@ -211,12 +211,12 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
               onDeleteSegmentClick={toggleDeleteSegmentModal}
             />
           )}
-          {textEditorOpen && (
+          {textEditorOpen && anchorElement && (
             <TextEditor
               anchorElement={anchorElement}
               initialValue={currentSegment && currentSegment.content}
               itemPosition={currentSegment && currentSegment.position}
-              action={currentSegment ? 'updateSegment' : 'addSegment'}
+              objective={currentSegment ? 'updateSegment' : 'addSegment'}
               onClose={handleTextEditorClose}
             />
           )}
@@ -231,7 +231,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
               }}
             />
           )}
-          {imagePositionPopoverOpen && currentSegment && (
+          {imagePositionPopoverOpen && currentSegment && anchorElement && (
             <ImagePositionPopover
               onClose={toggleImagePositionPopoverOpen}
               anchorElement={anchorElement}
@@ -254,7 +254,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
               <p>This action cannot be undone.</p>
             </Modal>
           )}
-          {colorPickerPopoverOpen && (
+          {colorPickerPopoverOpen && anchorElement && (
             <ColorPicker
               onClose={toggleColorPickerPopover}
               coloredArea="page"

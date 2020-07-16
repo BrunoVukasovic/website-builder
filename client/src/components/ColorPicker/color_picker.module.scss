@@ -1,20 +1,9 @@
-.editorWrapper {
-  max-width: 40rem;
-  padding: 0rem 1rem 1rem;
-
-  .closeButton {
-    margin-left: auto;
-  }
-
+.colorPickerWrapper {
   & > div {
     box-shadow: none !important;
   }
 
   .switchWrapper {
     padding-left: 0.625rem;
-  }
-
-  .buttonWrapper {
-    margin-top: 1.5rem;
   }
 }

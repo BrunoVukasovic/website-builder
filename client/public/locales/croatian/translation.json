@@ -1,9 +1,25 @@
 {
+  "Anyone can view the website": "Svatko može pregledavati web stranicu tako da upiše donju poveznicu u pretraživač, ali samo Vi možete napraviti promjene.",
+  "Changes saved successfully": "Promjene su uspješno spremljene!",
+  "Close": "Zatvori",
+  "Copy link": "Kopiraj poveznicu",
+  "Create new website": "Napravi novu web stranicu",
   "Croatian": "Hrvatski",
+  "Delete": "Izbriši",
   "English": "Engleski",
+  "Error": {
+    "Check your internet connection": "Nešto nije u redu. Molim Vas, provjerite jeste li spojeni na internet i pokušajte ponovo.",
+    "Something went wrong": "Nešto nije u redu. Molim Vas, pokušajte ponovo."
+  },
   "German": "Njemački",
+  "Hello": "Pozdrav",
   "Language": "Jezik",
-  "Login": "Prijava",
+  "Login": "Prijavi se",
+  "Logout": "Odjavi se",
+  "My websites": "Moje web stranice",
+  "Rename": "Preimenuj",
   "Required": "Potrebno",
-  "Save changes": "Spremi promjene"
+  "Save": "Spremi",
+  "Save changes": "Spremi promjene",
+  "View": "Vidi"
 }
