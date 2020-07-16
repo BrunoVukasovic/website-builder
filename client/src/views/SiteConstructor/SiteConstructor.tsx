@@ -10,7 +10,7 @@ import SiteService from '../../services/SiteService';
 import NavbarConstructor from '../NavbarConstructor';
 import NotFound from '../NotFound';
 
-import { Flex, SiteContainer, Footer, MainMenu, Auth, Modal, SaveChanges } from '../../components';
+import { Flex, SiteContainer, Footer, MainMenu, Auth, Modal, SaveChanges, Spinner } from '../../components';
 import { setSite, setCurrentPageToCurrentSite } from '../../redux/actions/site';
 import { selectCurrentSite } from '../../redux/selectors/site';
 import { selectUserReducerValues } from '../../redux/selectors/user';
@@ -22,6 +22,7 @@ const SiteConstructor: React.FC = () => {
   const [mainMenuOpen, toggleMainMenu] = useToggle(false);
   const [authModalOpen, toggleAuthModal] = useToggle(false);
   const [deleteSiteModalOpen, toggleDeleteSiteModal] = useToggle(false);
+  const [notFound, setNotFound] = useState<boolean>(false);
   // const [saveChangesModalOpen, setSaveChangesModalOpen] = useState<boolean>(false);
   // const [mainMenuOpen, setMainMenuOpen] = useState<boolean>(false);
   // const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
@@ -47,10 +48,11 @@ const SiteConstructor: React.FC = () => {
             try {
               const site = await SiteService.getSite(params.site);
 
-              dispatch(setSite({ ...site, currentPage: emptyPage }));
+              if (site) {
+                dispatch(setSite({ ...site, currentPage: emptyPage }));
+              }
             } catch (err) {
-              // @TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
-              return <NotFound />;
+              setNotFound(true);
             }
           };
 
@@ -188,7 +190,12 @@ const SiteConstructor: React.FC = () => {
     );
   }
 
-  return <NotFound />;
+  if (notFound) {
+    // @TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
+    return <NotFound />;
+  }
+
+  return <Spinner />;
 };
 
 export default SiteConstructor;

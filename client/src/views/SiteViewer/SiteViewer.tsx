@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,8 +15,10 @@ import { setSite } from '../../redux/actions/site';
 import { selectCurrentSite } from '../../redux/selectors/site';
 import { defaultSite, emptyPage } from '../SiteConstructor/Site.helpers';
 import { useAuth } from '../../utils/AuthContext';
+import { Spinner } from '../../components';
 
 const SiteConstructor: React.FC = () => {
+  const [notFound, setNotFound] = useState<boolean>(false);
   const params = useParams<{ site: string; page: string }>();
   const currentSite = useSelector(selectCurrentSite);
   const dispatch = useDispatch();
@@ -38,8 +40,7 @@ const SiteConstructor: React.FC = () => {
 
               dispatch(setSite({ ...site, currentPage: emptyPage }));
             } catch (err) {
-              // @TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
-              return <NotFound />;
+              setNotFound(true);
             }
           };
 
@@ -93,7 +94,11 @@ const SiteConstructor: React.FC = () => {
     );
   }
 
-  return <NotFound />;
+  if (notFound) {
+    return <NotFound />;
+  }
+
+  return <Spinner />;
 };
 
 export default SiteConstructor;
