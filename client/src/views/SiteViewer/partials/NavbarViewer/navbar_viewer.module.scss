@@ -1,0 +1,38 @@
+@import '../../../../styles/variables';
+
+.navbar {
+  border-bottom: 0.0625rem solid $grey;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+
+  .navbarItemsWrapper {
+    overflow-x: scroll;
+
+    .link {
+      text-decoration: none;
+      margin-right: 1rem;
+
+      .navbarButton {
+        text-transform: none;
+      }
+
+      .textWrapper {
+        white-space: nowrap;
+
+        &.active {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .menuIconWrapper {
+    margin-left: auto;
+    padding: 0 1rem;
+    // box-shadow: -7px -6px 10px 7px #f5f4f4;
+
+    .menuIcon {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}

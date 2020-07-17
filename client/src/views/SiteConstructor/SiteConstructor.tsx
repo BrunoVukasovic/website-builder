@@ -5,9 +5,9 @@ import { useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToggle } from 'react-use';
 
-import PageConstructor from '../PageConstructor';
+import PageConstructor from './partials/PageConstructor';
 import SiteService from '../../services/SiteService';
-import NavbarConstructor from '../NavbarConstructor';
+import NavbarConstructor from './partials/NavbarConstructor';
 import NotFound from '../NotFound';
 
 import { Flex, SiteContainer, Footer, MainMenu, Modal, SaveChanges, Spinner } from '../../components';

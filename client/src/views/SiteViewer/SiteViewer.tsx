@@ -8,8 +8,8 @@ import Flex from '../../components/Flex';
 import NotFound from '../NotFound';
 import SiteContainer from '../../components/SiteContainer';
 import Footer from '../../components/Footer';
-import NavbarViewer from '../NavbarViewer';
-import PageViewer from '../PageViewer';
+import NavbarViewer from './partials/NavbarViewer';
+import PageViewer from './partials/PageViewer';
 
 import { setSite } from '../../redux/actions/site';
 import { selectCurrentSite } from '../../redux/selectors/site';
