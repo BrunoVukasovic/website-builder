@@ -13,7 +13,7 @@ const Auth: React.FC<AuthProps> = ({ shouldRegister }) => {
 
   const toggleRegisterView = React.useCallback(() => {
     setRegisterView(!registerView);
-  }, []);
+  }, [registerView]);
 
   if (registerView) {
     return <RegisterForm onGoBackClick={toggleRegisterView} shouldRedirect />;

@@ -1,25 +1,40 @@
 {
   "Anyone can view the website": "Jeder kann die Website anzeigen, indem er den folgenden Link in den Browser eingibt. Sie können jedoch nur Änderungen vornehmen.",
+  "Authentication successful": "Authentifizierung erfolgreich!",
+  "Cancel": "Abbrechen",
   "Changes saved successfully": "Änderungen erfolgreich gespeichert!",
+  "Choose a title for your website": "Wählen Sie einen Titel für Ihre Website",
   "Close": "Schließen",
   "Copy link": "Link kopieren",
-  "Create new website": "Erstellen Sie eine neue Website",
+  "Create new website": "Erstellen Sie eine neue Webseite",
+  "Create website": "Erstellen Webseite",
   "Croatian": "Kroatisch",
   "Delete": "Löschen",
   "English": "English",
+  "Email address": "E-Mail Adresse",
   "Error": {
     "Check your internet connection": "Etwas ist schief gelaufen. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
-    "Something went wrong": "Etwas ist schief gelaufen. Bitte versuche es erneut."
+    "Something went wrong": "Etwas ist schief gelaufen. Bitte versuche es erneut.",
+    "Title already exist": "Die Website mit diesem Titel existiert bereits. Bitte wählen Sie einen anderen Titel.",
+    "Wrong email or password": "Falsche Email oder Passwort"
   },
+  "First time here": "Bist du zum ersten Mal hier?",
   "German": "Deutsche",
+  "Go back": "Geh zurück",
   "Hello": "Hallo",
   "Language": "Sprache",
   "Login": "Anmelden",
   "Logout": "Abmelden",
   "My websites": "Meine Websites",
+  "Password": "Passwort",
+  "Register": "Registrieren",
   "Rename": "Name ändern",
   "Required": "Erforderlich",
   "Save": "Speichern",
   "Save changes": "Speichern",
-  "View": "Schau"
+  "Submit": "einreichen",
+  "The link will be generated based on the title": "Der Link wird basierend auf dem Titel generiert",
+  "View": "Schau",
+  "Website renamed successfully": "Website erfolgreich umbenannt!",
+  "Your name": "Dein Name"
 }

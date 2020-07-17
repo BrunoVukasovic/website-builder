@@ -28,14 +28,14 @@ export type CurrentEditingItem = {
   name: string;
   id?: string;
 };
-export interface NavbarViewerProps {
+export interface NavbarConstructorProps {
   pagesData: { slug: string; name: string; id?: string }[];
   activePageSlug: string;
   siteSlug: string;
   navbarData: Navbar;
 }
 
-const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, navbarData, activePageSlug }) => {
+const NavbarConstructor: React.FC<NavbarConstructorProps> = ({ pagesData, siteSlug, navbarData, activePageSlug }) => {
   const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
   const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
   const [createdMenuOpen, setCreatedMenuOpen] = useState<boolean>(false);
@@ -180,4 +180,4 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ pagesData, siteSlug, navbar
   );
 };
 
-export default NavbarViewer;
+export default NavbarConstructor;

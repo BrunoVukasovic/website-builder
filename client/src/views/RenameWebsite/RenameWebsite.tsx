@@ -4,12 +4,7 @@ import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import Auth from '../../components/Auth';
-import Flex from '../../components/Flex';
-import SiteContainer from '../../components/SiteContainer';
-import Footer from '../../components/Footer';
-import SiteTitleForm from '../../components/SiteTitleForm';
-
+import { Auth, Flex, SiteContainer, Footer, SiteTitleForm } from '../../components';
 import { SiteTitleFormValues } from '../../redux/models';
 import { useAuth } from '../../utils/AuthContext';
 import { selectCurrentSite } from '../../redux/selectors/site';
@@ -48,9 +43,8 @@ const RenameWebsite: React.FC = () => {
         <Flex direction="column" className={styles.renameSiteWrapper}>
           <SiteTitleForm
             onCancelClick={redirectToSiteConstructor}
-            action="create"
             currentSlug={currentSite.slug}
-            submitButtonText="Rename site"
+            submitButtonText="Rename"
             initialValues={{
               title: currentSite.title,
               url: `${origin}/${currentSite.slug}`,

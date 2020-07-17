@@ -16,7 +16,7 @@ const SiteController = {
     const { slug } = req.params;
 
     if (!title || !slug) {
-      res.sendStatus(400).json('Title and slug must be provided in the request.');
+      res.sendStatus(400).send('Title and slug must be provided in the request.');
       return;
     }
 
@@ -24,7 +24,7 @@ const SiteController = {
       let site = await SiteModel.findOne({ slug });
 
       if (site) {
-        res.status(400).send('Site with this title already exist. Please, choose another title.');
+        res.status(409).send('Site with this title already exist. Please, choose another title.');
       } else {
         const navbar = await NavbarModel.create({});
         site = await SiteModel.create({ title, slug, navbarID: navbar._id, userID: user._id });
@@ -124,7 +124,7 @@ const SiteController = {
       let duplicateSlug = await SiteModel.findOne({ slug });
 
       if (duplicateSlug) {
-        res.status(400).send('Site with this title already exist. Please, choose another title.');
+        res.status(409).send('Site with this title already exist. Please, choose another title.');
       } else {
         await site.update({ title, slug });
 

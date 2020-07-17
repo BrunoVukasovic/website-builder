@@ -1,25 +1,40 @@
 {
   "Anyone can view the website": "Anyone can view the website by the typing link bellow in the browser, but only you can make changes.",
+  "Authentication successful": "Authentication successful!",
+  "Cancel": "Cancel",
   "Changes saved successfully": "Changes saved successfully!",
+  "Choose a title for your website": "Choose a title for your website",
   "Close": "Close",
   "Copy link": "Copy Link",
   "Create new website": "Create new website",
+  "Create website": "Create website",
   "Croatian": "Croatian",
   "Delete": "Delete",
   "English": "English",
+  "Email address": "Email address",
   "Error": {
     "Check your internet connection": "Something went wrong. Please, check your internet connection and try again.",
-    "Something went wrong": "Something went wrong. Please, try again."
+    "Something went wrong": "Something went wrong. Please, try again.",
+    "Title already exist": "The website with this title already exists. Please, choose another title.",
+    "Wrong email or password": "Wrong email or password"
   },
+  "First time here": "First time here?",
   "German": "German",
+  "Go back": "Go back",
   "Hello": "Hello",
   "Language": "Language",
   "Login": "Login",
   "Logout": "Logout",
   "My websites": "My websites",
+  "Password": "Password",
+  "Register": "Register",
   "Rename": "Rename",
   "Required": "Required",
   "Save": "Save",
   "Save changes": "Save changes",
-  "View": "View"
+  "Submit": "Submit",
+  "The link will be generated based on the title": "The link will be generated based on the title",
+  "View": "View",
+  "Website renamed successfully": "Website renamed successfully!",
+  "Your name": "Your name"
 }

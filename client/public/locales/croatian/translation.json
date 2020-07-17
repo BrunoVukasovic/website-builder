@@ -1,25 +1,40 @@
 {
   "Anyone can view the website": "Svatko može pregledavati web stranicu tako da upiše donju poveznicu u pretraživač, ali samo Vi možete napraviti promjene.",
+  "Authentication successful": "Prijava uspješna!",
+  "Cancel": "Otkaži",
   "Changes saved successfully": "Promjene su uspješno spremljene!",
+  "Choose a title for your website": "Odaberite naziv za Vašu web stranicu",
   "Close": "Zatvori",
   "Copy link": "Kopiraj poveznicu",
   "Create new website": "Napravi novu web stranicu",
+  "Create website": "Kreiraj web stranicu",
   "Croatian": "Hrvatski",
   "Delete": "Izbriši",
   "English": "Engleski",
+  "Email address": "Email adresa",
   "Error": {
     "Check your internet connection": "Nešto nije u redu. Molim Vas, provjerite jeste li spojeni na internet i pokušajte ponovo.",
-    "Something went wrong": "Nešto nije u redu. Molim Vas, pokušajte ponovo."
+    "Something went wrong": "Nešto nije u redu. Molim Vas, pokušajte ponovo.",
+    "Title already exist": "Web stranica s ovim nazivom već postoji. Molim Vas, odaberite drugi naziv.",
+    "Wrong email or password": "Krivi email ili lozinka"
   },
+  "First time here": "Prvi put ste ovdje?",
   "German": "Njemački",
+  "Go back": "Nazad",
   "Hello": "Pozdrav",
   "Language": "Jezik",
   "Login": "Prijavi se",
   "Logout": "Odjavi se",
   "My websites": "Moje web stranice",
+  "Password": "Lozinka",
+  "Register": "Registriraj se",
   "Rename": "Preimenuj",
   "Required": "Potrebno",
   "Save": "Spremi",
   "Save changes": "Spremi promjene",
-  "View": "Vidi"
+  "Submit": "Pošalji",
+  "The link will be generated based on the title": "Poveznica je generirana na temelju naziva",
+  "View": "Vidi",
+  "Website renamed successfully": "Web stranica je uspješno preimenovana!",
+  "Your name": "Vaše ime"
 }

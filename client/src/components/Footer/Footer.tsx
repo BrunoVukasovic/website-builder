@@ -16,9 +16,10 @@ export interface FooterProps {
   showMenu?: boolean;
   onMenuClick?: () => void;
   primaryBtnText?: string;
+  isOutlined?: boolean;
 }
 
-const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText, onMenuClick, showMenu }) => {
+const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText, onMenuClick, showMenu, isOutlined }) => {
   const { t } = useTranslation();
 
   return (
@@ -35,11 +36,11 @@ const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText, onMe
         </Button>
       )}
       <Button
-        variant="contained"
+        variant={isOutlined ? 'outlined' : 'contained'}
         color="primary"
         size="large"
         onClick={onPrimaryBtnClick}
-        className={styles.saveBtn}
+        className={isOutlined ? styles.outlined : ''}
         startIcon={primaryBtnText ? <EditIcon /> : <SaveIcon />}
       >
         {primaryBtnText ? `${primaryBtnText}` : `${t('Save changes')}`}

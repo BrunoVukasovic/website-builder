@@ -10,7 +10,7 @@ import SiteService from '../../services/SiteService';
 import NavbarConstructor from '../NavbarConstructor';
 import NotFound from '../NotFound';
 
-import { Flex, SiteContainer, Footer, MainMenu, Auth, Modal, SaveChanges, Spinner } from '../../components';
+import { Flex, SiteContainer, Footer, MainMenu, Modal, SaveChanges, Spinner } from '../../components';
 import { setSite, setCurrentPageToCurrentSite } from '../../redux/actions/site';
 import { selectCurrentSite } from '../../redux/selectors/site';
 import { selectUserReducerValues } from '../../redux/selectors/user';
@@ -23,10 +23,7 @@ const SiteConstructor: React.FC = () => {
   const [authModalOpen, toggleAuthModal] = useToggle(false);
   const [deleteSiteModalOpen, toggleDeleteSiteModal] = useToggle(false);
   const [notFound, setNotFound] = useState<boolean>(false);
-  // const [saveChangesModalOpen, setSaveChangesModalOpen] = useState<boolean>(false);
-  // const [mainMenuOpen, setMainMenuOpen] = useState<boolean>(false);
-  // const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
-  // const [deleteSiteModalOpen, setDeleteSiteModalOpen] = useState<boolean>(false);
+
   const currentSite = useSelector(selectCurrentSite);
   const user = useSelector(selectUserReducerValues);
   const params = useParams<{ site: string; page: string }>();

@@ -23,18 +23,16 @@ export const Action: React.FC<ActionProps> = ({ type, currentSite, redirectToSit
       ) : (
         <SiteTitleForm
           onCancelClick={redirectToSiteConstructor}
-          action="create"
           currentSlug="new-website"
-          submitButtonText="Create site"
+          submitButtonText="Create website"
         />
       );
     case 'rename':
       return (
         <SiteTitleForm
           onCancelClick={redirectToSiteConstructor}
-          action="create"
           currentSlug={currentSite.slug}
-          submitButtonText="Rename site"
+          submitButtonText="Rename"
           initialValues={{
             title: currentSite.title,
             url: `${origin}/${currentSite.slug}`,

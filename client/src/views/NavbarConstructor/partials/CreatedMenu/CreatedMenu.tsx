@@ -12,6 +12,8 @@ import Modal from '../../../../components/Modal';
 
 import styles from './created_menu.module.scss';
 
+// @TODO rename to FlyoutMenu
+
 export interface CreatedMenuProps {
   pagesData: { slug: string; name: string; id?: string }[];
   activePageSlug: string;

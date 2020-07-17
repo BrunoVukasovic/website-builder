@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import CloseIcon from '@material-ui/icons/Close';
 import ReactQuill from 'react-quill';
 
-import { Button, Popover, IconButton } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
 import { Flex, Plate } from '../';

@@ -85,11 +85,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose }) => {
     };
 
     callApi();
-  }, []);
-
-  // if (!errorMessage && !isSiteUpdated) {
-  //   return <Spinner />;
-  // }
+  }, [currentSite, dispatch, errorMessage]);
 
   if (isSiteUpdated) {
     return (

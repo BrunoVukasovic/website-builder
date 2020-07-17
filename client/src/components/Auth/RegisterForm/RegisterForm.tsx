@@ -4,6 +4,7 @@ import { useSnackbar } from 'notistack';
 import { Button } from '@material-ui/core';
 import { reduxForm, Form, Field, InjectedFormProps, SubmissionError } from 'redux-form';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../Flex';
 import Input from '../../Input/Input';
@@ -25,6 +26,7 @@ type WithInjectedFormProps = InjectedFormProps<RegisterFormValues, RegisterProps
 const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick, shouldRedirect }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
+  const { t } = useTranslation();
   const history = useHistory();
 
   const onSubmit = React.useCallback(
@@ -51,19 +53,19 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackC
         }
       }
     },
-    [enqueueSnackbar, logIn]
+    [enqueueSnackbar, logIn, history, shouldRedirect]
   );
 
   return (
     <Flex direction="column">
-      <h2>Register:</h2>
+      <h2>{`${t('Register')}:`}</h2>
       <Form<RegisterFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>
         <Flex direction="column" alignItems="flex-start">
           <Field
             name="name"
             type="text"
             component={Input}
-            label="Your name"
+            label={t('Your name')}
             validate={[Validator.required]}
             className={styles.input}
           />
@@ -71,7 +73,7 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackC
             name="email"
             type="text"
             component={Input}
-            label="Email address"
+            label={t('Email address')}
             validate={[Validator.required, Validator.validEmail]}
             className={styles.input}
           />
@@ -79,7 +81,7 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackC
             name="password"
             type="text"
             component={Input}
-            label="Password"
+            label={t('Email address')}
             validate={[Validator.required]}
             className={styles.input}
           />
@@ -91,10 +93,10 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackC
               classes={{ root: styles.cancelBtn }}
               onClick={onGoBackClick}
             >
-              Go back
+              {t('Go back')}
             </Button>
             <Button type="submit" variant="contained" color="primary" size="large">
-              Submit
+              {t('Submit')}
             </Button>
           </Flex>
         </Flex>

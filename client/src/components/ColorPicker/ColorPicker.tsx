@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import CloseIcon from '@material-ui/icons/Close';
 
 import { useToggle } from 'react-use';
 
 import { SketchPicker, ColorResult } from 'react-color';
-import { Button, Popover, IconButton, Switch } from '@material-ui/core';
+import { Switch } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
 import { Flex, Plate } from '../';

@@ -58,7 +58,6 @@ const CreateNewWebsite: React.FC = () => {
         <Flex direction="column" className={styles.createSiteWrapper}>
           <SiteTitleForm
             onCancelClick={redirectToSiteConstructor}
-            action="create"
             currentSlug="new-website"
             submitButtonText="Create site"
           />

@@ -36,7 +36,7 @@ const ActionContainer: React.FC = () => {
             <Auth />
           </Flex>
         </SiteContainer>
-        <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} />
+        <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} isOutlined />
       </Flex>
     );
   }
@@ -52,7 +52,7 @@ const ActionContainer: React.FC = () => {
           />
         </Flex>
       </SiteContainer>
-      <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} />
+      <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} isOutlined />
     </Flex>
   );
 };

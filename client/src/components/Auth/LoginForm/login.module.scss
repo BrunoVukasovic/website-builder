@@ -32,5 +32,9 @@
 
   .registerBtn {
     width: 30%;
+
+    & > span {
+      white-space: nowrap;
+    }
   }
 }

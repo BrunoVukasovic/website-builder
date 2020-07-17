@@ -38,20 +38,20 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
         };
         const user = await UserService.login(payload);
         logIn(user);
-        enqueueSnackbar('Authentication successful!', { variant: 'success' });
+        enqueueSnackbar(t('Authentication successful'), { variant: 'success' });
 
         if (shouldRedirect) {
           history.push(user.allSites.length > 0 ? `/edit/${user.allSites[0].slug}` : '/edit/new-website');
         }
       } catch (error) {
         if (error.response) {
-          throw new SubmissionError({ _error: `Wrong email or password` });
+          throw new SubmissionError({ _error: t('Error.Wrong email or password') });
         } else {
-          enqueueSnackbar('Something went wrong. Please, try again.', { variant: 'error' });
+          enqueueSnackbar(t('Error.Something went wrong'), { variant: 'error' });
         }
       }
     },
-    [enqueueSnackbar]
+    [enqueueSnackbar, history, shouldRedirect, logIn, t]
   );
 
   return (
@@ -63,7 +63,7 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
             name="email"
             type="text"
             component={Input}
-            label="Email address"
+            label={t('Email address')}
             validate={[Validator.required, Validator.validEmail]}
             error={error}
             className={styles.input}
@@ -72,7 +72,7 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
             name="password"
             type="text"
             component={Input}
-            label="Password"
+            label={t('Email address')}
             validate={[Validator.required]}
             error={error}
             className={styles.input}
@@ -80,13 +80,13 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
           {error && <p className={styles.errorMessage}>{error}</p>}
           <Flex className={styles.buttonContainer} fluid>
             <Button type="submit" variant="contained" color="primary" size="large" className={styles.submitBtn}>
-              Login
+              {t('Login')}
             </Button>
           </Flex>
         </Flex>
       </Form>
       <Flex direction="column" className={styles.registerWrapper}>
-        <h2>First time here?</h2>
+        <h2>{t('First time here')}</h2>
         <Button
           variant="outlined"
           color="primary"
@@ -94,7 +94,7 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
           classes={{ root: styles.registerBtn }}
           onClick={onRegisterClick}
         >
-          Register
+          {t('Register')}
         </Button>
       </Flex>
     </Flex>

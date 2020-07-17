@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import { useHistory } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
 import { reduxForm, Form, Field, InjectedFormProps, change, SubmissionError } from 'redux-form';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../components/Flex';
 import Input from '../../components/Input/Input';
@@ -18,7 +19,6 @@ import styles from './site_title_form.module.scss';
 
 export interface SiteTitleFormProps {
   onCancelClick: () => void;
-  action: 'create' | 'rename';
   currentSlug: string;
   submitButtonText: string;
   initialValues?: { title: string; url: string };
@@ -29,11 +29,11 @@ type WithInjectedFormProps = InjectedFormProps<SiteTitleFormValues, SiteTitleFor
 const SiteTitleForm: React.FC<WithInjectedFormProps> = ({
   handleSubmit,
   onCancelClick,
-  action,
   currentSlug,
   submitButtonText,
 }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
@@ -49,30 +49,34 @@ const SiteTitleForm: React.FC<WithInjectedFormProps> = ({
       try {
         const slug = url.slice(url.lastIndexOf('/') + 1);
 
+        if (slug === 'new-website') {
+          throw new Error('new-website');
+        }
+
         if (currentSlug === 'new-website') {
           await SiteService.create(title, slug);
           dispatch(updateTitleAndSlug({ title, slug }));
         } else {
           await SiteService.renameSite(currentSlug, { title, slug });
           dispatch(updateTitleAndSlug({ title, slug }));
-          enqueueSnackbar('Website renamed successfully!', { variant: 'success' });
+          enqueueSnackbar(t('Website renamed successfully'), { variant: 'success' });
           history.push(`/edit/${slug}`);
         }
       } catch (error) {
-        if (error.response && error.response.status === 400) {
-          throw new SubmissionError({ title: `${error.response.data}` });
+        if ((error.response && error.response.status === 409) || error.message === 'new-website') {
+          throw new SubmissionError({ title: t('Error.Title already exist') });
         } else {
-          enqueueSnackbar('Something went wrong. Please, try again.', { variant: 'error' });
+          enqueueSnackbar(t('Error.Something went wrong'), { variant: 'error' });
         }
       }
     },
-    [dispatch, enqueueSnackbar]
+    [dispatch, enqueueSnackbar, currentSlug, history, t]
   );
 
   return (
     <Flex direction="column" className={styles.siteTitleFormWrapper}>
-      <h2 className={styles.heading}>Choose a title for your site</h2>
-      <p>Link will be generated based on the title</p>
+      <h2 className={styles.heading}>{t('Choose a title for your site')}</h2>
+      <p>{t('Link will be generated based on the title')}</p>
       <Form<SiteTitleFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>
         <Flex direction="column" alignItems="flex-start">
           <Field
@@ -87,10 +91,10 @@ const SiteTitleForm: React.FC<WithInjectedFormProps> = ({
           <Field name="url" type="text" component={Input} label="Link" className={styles.input} readOnly />
           <Flex className={styles.buttonContainer}>
             <Button variant="outlined" color="primary" classes={{ root: styles.cancelBtn }} onClick={onCancelClick}>
-              Cancel
+              {t('Cancel')}
             </Button>
             <Button type="submit" variant="contained" color="primary">
-              {submitButtonText}
+              {t(submitButtonText)}
             </Button>
           </Flex>
         </Flex>
