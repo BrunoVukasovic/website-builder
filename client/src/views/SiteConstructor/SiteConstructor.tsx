@@ -4,6 +4,7 @@ import { useSnackbar } from 'notistack';
 import { useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToggle } from 'react-use';
+import { useTranslation } from 'react-i18next';
 
 import PageConstructor from './partials/PageConstructor';
 import SiteService from '../../services/SiteService';
@@ -18,7 +19,7 @@ import { defaultSite, emptyPage } from './Site.helpers';
 import { useAuth } from '../../utils/AuthContext';
 
 const SiteConstructor: React.FC = () => {
-  const [saveChangesModalOpen, toggleSaveChangesModal] = useToggle(false);
+  const [shouldSaveChanges, toggleShouldSaveChanges] = useToggle(false);
   const [mainMenuOpen, toggleMainMenu] = useToggle(false);
   const [authModalOpen, toggleAuthModal] = useToggle(false);
   const [deleteSiteModalOpen, toggleDeleteSiteModal] = useToggle(false);
@@ -30,6 +31,7 @@ const SiteConstructor: React.FC = () => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { initUserData, isAuth } = useAuth();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!isAuth) {
@@ -44,7 +46,7 @@ const SiteConstructor: React.FC = () => {
           const callApi = async () => {
             try {
               const site = await SiteService.getSite(params.site);
-
+              console.log(site.currentSite.navbar);
               if (site) {
                 dispatch(setSite({ ...site, currentPage: emptyPage }));
               }
@@ -73,14 +75,20 @@ const SiteConstructor: React.FC = () => {
     [currentSite.pages]
   );
 
-  const currentPage = React.useMemo(() => {
-    const wantedPage = currentSite.pages.find((page) => page.slug === params.page);
+  const activePage = React.useMemo(() => {
+    if (params.page) {
+      const wantedPage = currentSite.pages.find((page) => page.slug === params.page);
 
-    if (!wantedPage) {
-      return currentSite.pages[0];
+      if (wantedPage) {
+        return wantedPage;
+      }
     }
 
-    return wantedPage;
+    // if (!wantedPage) {
+    return currentSite.pages[0];
+    // }
+
+    // return wantedPage;
   }, [currentSite.pages, params.page]);
 
   const handleDeleteSite = () => {
@@ -115,46 +123,30 @@ const SiteConstructor: React.FC = () => {
     toggleMainMenu();
   };
 
-  // const toggleAuthModalOpen = () => {
-  //   setAuthModalOpen(!authModalOpen);
-  // };
-
-  // const toggleDeleteSiteModalOpen = () => {
-  //   setDeleteSiteModalOpen(!deleteSiteModalOpen);
-  // };
-
-  // const toggleMainMenuOpen = () => {
-  //   setMainMenuOpen(!mainMenuOpen);
-  // };
-
-  // const toggleSaveChangesModalOpen = () => {
-  //   setSaveChangesModalOpen(!saveChangesModalOpen);
-  // };
-
   const handleSaveChangesClick = () => {
     dispatch(setCurrentPageToCurrentSite());
-    toggleSaveChangesModal();
+    toggleShouldSaveChanges();
   };
 
-  if (currentPage && currentSite.shouldAllowEditing) {
+  if (activePage && currentSite.shouldAllowEditing) {
     return (
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer>
           <NavbarConstructor
             pagesData={pagesData}
-            activePageSlug={currentPage.slug}
+            activePageSlug={activePage.slug}
             siteSlug={params.site}
             navbarData={currentSite.navbar}
           />
-          <PageConstructor page={currentPage} siteBackgroundColor={currentSite.backgroundColor} />
+          <PageConstructor page={activePage} siteBackgroundColor={currentSite.backgroundColor} />
         </SiteContainer>
         <Footer onMenuClick={toggleMainMenu} onPrimaryBtnClick={handleSaveChangesClick} showMenu />
-        {saveChangesModalOpen &&
+        {shouldSaveChanges &&
           (currentSite.slug === 'new-website' ? (
             <Redirect to="/action/create" />
           ) : (
-            <Modal onClose={toggleSaveChangesModal}>
-              <SaveChanges currentSite={currentSite} onClose={toggleSaveChangesModal} />
+            <Modal onClose={toggleShouldSaveChanges}>
+              <SaveChanges currentSite={currentSite} onClose={toggleShouldSaveChanges} />
             </Modal>
           ))}
         {mainMenuOpen && (
@@ -180,7 +172,9 @@ const SiteConstructor: React.FC = () => {
             onSecondaryButtonClick={toggleDeleteSiteModal}
             onPrimaryButtonClick={handleDeleteSite}
           >
-            <h2>This action cannot be undone!</h2>
+            <h2>{`${t('Will be deleted', {
+              subject: currentSite.title,
+            })} ${t('This action cannot be undone')}`}</h2>
           </Modal>
         )}
       </Flex>
@@ -188,7 +182,6 @@ const SiteConstructor: React.FC = () => {
   }
 
   if (notFound) {
-    // @TODO Site not found, ponudi da kreira novi (/new-webisite) ili da vidi svoje posotojece (login)
     return <NotFound />;
   }
 

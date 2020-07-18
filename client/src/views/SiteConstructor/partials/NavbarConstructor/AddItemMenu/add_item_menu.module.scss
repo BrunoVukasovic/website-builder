@@ -1,0 +1,28 @@
+@import '../../../../../styles/variables';
+
+.dropdownMenu {
+  border-radius: 0.5rem;
+
+  & > ul {
+    padding: 0;
+  }
+}
+
+.buttonWrapper {
+  .imageInput {
+    display: none;
+  }
+
+  & > button {
+    padding: 0.75rem 1rem;
+
+    &:not(:last-of-type) {
+      border-bottom: 0.0625rem solid $grey;
+    }
+
+    & > span {
+      justify-content: flex-start;
+      align-items: center;
+    }
+  }
+}

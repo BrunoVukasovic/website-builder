@@ -10,7 +10,9 @@
   "Create website": "Erstellen Webseite",
   "Croatian": "Kroatisch",
   "Delete": "Löschen",
+  "Delete whole page": "Möchten Sie die gesamte Seite löschen??",
   "English": "English",
+  "Enter page name": "Geben Sie den Seitennamen ein: ",
   "Email address": "E-Mail Adresse",
   "Error": {
     "Check your internet connection": "Etwas ist schief gelaufen. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
@@ -34,7 +36,9 @@
   "Save changes": "Speichern",
   "Submit": "einreichen",
   "The link will be generated based on the title": "Der Link wird basierend auf dem Titel generiert",
+  "This action cannot be undone": "Diese Aktion kann nicht rückgängig gemacht werden.",
   "View": "Schau",
   "Website renamed successfully": "Website erfolgreich umbenannt!",
+  "Will be deleted": "{{subject}} wird gelöscht.",
   "Your name": "Dein Name"
 }

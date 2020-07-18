@@ -7,19 +7,22 @@ import MenuIcon from '@material-ui/icons/Menu';
 import EditIcon from '@material-ui/icons/Edit';
 import PaletteIcon from '@material-ui/icons/Palette';
 
+import { useSnackbar } from 'notistack';
 import { NavLink } from 'react-router-dom';
 import { useToggle } from 'react-use';
-
-import Modal from '../../../../components/Modal';
-import Flex from '../../../../components/Flex';
-import TextEditor from '../../../../components/TextEditor';
-import CreatedMenu from './CreatedMenu/CreatedMenu';
-import EditItemDropdownMenu from './EditItemDropdownMenu';
-import ColorPicker from '../../../../components/ColorPicker/ColorPicker';
-
-import { Navbar } from '../../../../models';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { deletePage } from '../../../../redux/actions/site';
+
+import AddItemMenu from './AddItemMenu';
+import ChangeColorMenu from './ChangeColorMenu';
+import EditItemMenu from './EditItemMenu';
+import FlyoutNavbar from './FlyoutNavbar';
+
+import { Modal, Flex, TextEditor, ColorPicker } from '../../../../components';
+import { Menu } from '../../../../components/Icons';
+import { Navbar } from '../../../../models';
+import { deletePage, changeLogo } from '../../../../redux/actions/site';
+import { fileToBase64String } from '../../../../utils/shared';
 
 import styles from './navbar_constructor.module.scss';
 
@@ -36,29 +39,82 @@ export interface NavbarConstructorProps {
 }
 
 const NavbarConstructor: React.FC<NavbarConstructorProps> = ({ pagesData, siteSlug, navbarData, activePageSlug }) => {
-  const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
-  const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
-  const [createdMenuOpen, setCreatedMenuOpen] = useState<boolean>(false);
   const [currentEditingItem, setCurrentEditingItem] = useState<CurrentEditingItem | undefined>(undefined);
+  const [shouldColorMenuIcon, toggleShouldColorMenuIcon] = useToggle(false);
+  const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
+  // const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
+  const [textEditorOpen, toggleTextEditor] = useToggle(false);
+  const [flyoutNavbarOpen, toggleFlyoutNavbar] = useToggle(false);
   const [deletePageModalOpen, setDeletePageModalOpen] = useState<boolean>(false);
   // const [colorPickerModalOpen, setColorPickerModalOpen] = useState<boolean>(false);
   const [colorPickerPopoverOpen, toggleColorPickerPopover] = useToggle(false);
+  const [changeColorMenuOpen, toggleChangeColorMenu] = useToggle(false);
+  const [addItemMenuOpen, toggleAddItemMenu] = useToggle(false);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation();
 
-  const closeAll = () => {
-    removeCurrentEditingItem();
-    setTextEditorOpen(false);
-  };
+  // const closeAll = () => {
+  //   removeCurrentEditingItem();
+  //   setTextEditorOpen(false);
+  // };
 
-  const handleAddPageBtnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  // const handleAddPageBtnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  //   const { currentTarget } = e;
+  //   setAnchorElement(currentTarget);
+  //   toggleTextEditorOpen();
+  // };
+
+  const handleAddBtnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { currentTarget } = e;
     setAnchorElement(currentTarget);
-    toggleTextEditorOpen();
+    toggleAddItemMenu();
+  };
+
+  const handleAddPageClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    toggleTextEditor();
+  };
+
+  const handleLogoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+
+    if (files && files[0].size < 500000) {
+      try {
+        const image = await fileToBase64String(files[0]);
+        dispatch(changeLogo(image));
+        toggleAddItemMenu();
+      } catch {
+        enqueueSnackbar('Something went wrong while processing image. Please, try again.', { variant: 'error' });
+        toggleAddItemMenu();
+      }
+    } else {
+      enqueueSnackbar(
+        `Maximum size per image is 500 KB. This image has ${files && Math.round(files[0].size / 100)} KB`,
+        {
+          variant: 'error',
+        }
+      );
+    }
+  };
+
+  const handleBackgroundColorClick = () => {
+    if (shouldColorMenuIcon) {
+      toggleShouldColorMenuIcon();
+    }
+    toggleColorPickerPopover();
+  };
+
+  const handleMenuIconColorClick = () => {
+    if (!shouldColorMenuIcon) {
+      toggleShouldColorMenuIcon();
+    }
+    toggleColorPickerPopover();
   };
 
   const handleColorPickerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorElement(e.currentTarget);
-    toggleColorPickerPopover();
+    toggleChangeColorMenu();
+    // toggleColorPickerPopover();
   };
 
   const handleDeletePage = () => {
@@ -71,6 +127,7 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({ pagesData, siteSl
   const handleEditItemMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { currentTarget } = e;
     const clickedItem = pagesData.find((item) => item.slug === currentTarget.id);
+
     setAnchorElement(currentTarget);
     setCurrentEditingItem(clickedItem);
   };
@@ -79,21 +136,22 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({ pagesData, siteSl
     setCurrentEditingItem(undefined);
   };
 
-  const toggleCreatedMenuOpen = () => {
-    setCreatedMenuOpen(!createdMenuOpen);
-  };
+  // const toggleCreatedMenuOpen = () => {
+  //   setCreatedMenuOpen(!createdMenuOpen);
+  // };
 
   const toggleDeletePageModalOpen = () => {
     setDeletePageModalOpen(!deletePageModalOpen);
   };
 
-  const toggleTextEditorOpen = () => {
-    setTextEditorOpen(!textEditorOpen);
-  };
+  // const toggleTextEditorOpen = () => {
+  //   setTextEditorOpen(!textEditorOpen);
+  // };
 
   return (
     <Flex style={{ backgroundColor: navbarData.backgroundColor }} className={styles.navbar}>
       <Flex className={styles.navbarItemsWrapper}>
+        {navbarData.logo && <img src={navbarData.logo} alt="logo" className={styles.logo} />}
         {pagesData.map((item) => (
           <>
             <IconButton id={`${item.slug}`} onClick={handleEditItemMenuClick} color="primary" aria-label="edit">
@@ -109,25 +167,28 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({ pagesData, siteSl
             </NavLink>
           </>
         ))}
-        <Flex className={styles.addPageWrapper}>
-          <IconButton aria-label="add-page" onClick={handleAddPageBtnClick}>
+        <Flex>
+          <IconButton aria-label="add-page" onClick={handleAddBtnClick}>
             <AddCircleIcon color="primary" className={styles.addIcon} />
           </IconButton>
         </Flex>
-        <Flex className={styles.addPageWrapper}>
+        <Flex>
           <IconButton aria-label="color-picker" onClick={handleColorPickerClick}>
             <PaletteIcon color="primary" className={styles.addIcon} />
           </IconButton>
         </Flex>
       </Flex>
-      <Flex alignItems="center" className={styles.menuIconWrapper} onClick={toggleCreatedMenuOpen}>
-        <MenuIcon color="primary" className={styles.menuIcon} />
+      <Flex alignItems="center" className={styles.menuIconWrapper} onClick={toggleFlyoutNavbar}>
+        <Menu
+          style={{ fill: navbarData.menuIconColor ? navbarData.menuIconColor : '#000000' }}
+          className={styles.menuIcon}
+        />
       </Flex>
       {textEditorOpen && anchorElement && (
         <Flex>
           <TextEditor
-            headerText="Enter page name: "
-            onClose={closeAll}
+            headerText="Enter page name"
+            onClose={toggleTextEditor}
             objective={currentEditingItem ? 'updatePageName' : 'addPage'}
             anchorElement={anchorElement}
             initialValue={currentEditingItem && currentEditingItem.name}
@@ -135,31 +196,47 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({ pagesData, siteSl
           />
         </Flex>
       )}
-      {createdMenuOpen && (
-        <CreatedMenu
+      {flyoutNavbarOpen && (
+        <FlyoutNavbar
           navbarData={navbarData}
           pagesData={pagesData}
           activePageSlug={activePageSlug}
           siteSlug={siteSlug}
-          onClose={toggleCreatedMenuOpen}
-          onAddPageBtnClick={handleAddPageBtnClick}
+          onClose={toggleFlyoutNavbar}
+          onAddItemClick={handleAddBtnClick}
           allowEditing
         />
       )}
       {currentEditingItem && (
-        <EditItemDropdownMenu
+        <EditItemMenu
           isRow
           anchorEl={anchorElement}
           onClose={removeCurrentEditingItem}
-          onEditClick={toggleTextEditorOpen}
+          onEditClick={toggleTextEditor}
           onDeletePageClick={toggleDeletePageModalOpen}
+        />
+      )}
+      {addItemMenuOpen && (
+        <AddItemMenu
+          anchorEl={anchorElement}
+          onAddPageClick={handleAddPageClick}
+          onLogoInputChange={handleLogoChange}
+          onClose={toggleAddItemMenu}
+        />
+      )}
+      {changeColorMenuOpen && (
+        <ChangeColorMenu
+          anchorEl={anchorElement}
+          onClose={toggleChangeColorMenu}
+          onBackgroundClick={handleBackgroundColorClick}
+          onMenuIconClick={handleMenuIconColorClick}
         />
       )}
       {colorPickerPopoverOpen && anchorElement && (
         <ColorPicker
           onClose={toggleColorPickerPopover}
-          coloredArea="navbar"
-          initialValue={navbarData.backgroundColor}
+          coloredArea={shouldColorMenuIcon ? 'menuIcon' : 'navbar'}
+          initialValue={shouldColorMenuIcon ? navbarData.menuIconColor : navbarData.backgroundColor}
           anchorElement={anchorElement}
         />
       )}
@@ -173,7 +250,9 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({ pagesData, siteSl
           onSecondaryButtonClick={toggleDeletePageModalOpen}
           onPrimaryButtonClick={handleDeletePage}
         >
-          <p>This action cannot be undone.</p>
+          <p>{`${t('Will be deleted', {
+            subject: currentEditingItem.name.replace(/\s?\<[^>]+\>/g, ''),
+          })} ${t('This action cannot be undone')}`}</p>
         </Modal>
       )}
     </Flex>

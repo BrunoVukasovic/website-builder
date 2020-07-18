@@ -6,6 +6,7 @@ import PaletteIcon from '@material-ui/icons/Palette';
 
 import { useSnackbar } from 'notistack';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../../../components/Flex';
 import TextEditor from '../../../../components/TextEditor';
@@ -43,6 +44,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
   const currentPage = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (currentPage && currentPage.slug) {
@@ -251,7 +253,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
               onSecondaryButtonClick={toggleDeleteSegmentModal}
               onPrimaryButtonClick={deleteSegment}
             >
-              <p>This action cannot be undone.</p>
+              <p>{t('This action cannot be undone')}</p>
             </Modal>
           )}
           {colorPickerPopoverOpen && anchorElement && (

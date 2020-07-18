@@ -16,29 +16,44 @@ import {
   undoPageColorChange,
   updateInitialPageColor,
   updateAllPagesColor,
+  changeMenuIconColor,
+  undoMenuIconColorChange,
+  updateInitialMenuIconColor,
 } from '../../redux/actions/site';
 
 import styles from './color_picker.module.scss';
+import Toggle from '../Toggle/Toggle';
 
 export interface ColorPickerProps {
   anchorElement: HTMLElement;
-  coloredArea: 'navbar' | 'page';
+  coloredArea: 'page' | 'navbar' | 'menuIcon';
   onClose: () => void;
   initialValue?: string;
   headerText?: string;
+  // firstToggleOption?: string;
 }
 
-const ColorPicker: React.FC<ColorPickerProps> = ({ coloredArea, onClose, initialValue, anchorElement, headerText }) => {
+const ColorPicker: React.FC<ColorPickerProps> = ({
+  coloredArea,
+  onClose,
+  initialValue,
+  anchorElement,
+  headerText,
+  // firstToggleOption,
+}) => {
   const [shouldColorAllPages, toggleShouldColorAllPages] = useToggle(false);
   const [color, setColor] = useState<string | undefined>(initialValue);
   const dispatch = useDispatch();
 
-  const handleChange = (color: ColorResult) => {
+  const handleColorChange = (color: ColorResult) => {
     setColor(color.hex);
 
     switch (coloredArea) {
       case 'navbar':
         dispatch(changeNavbarColor(color.hex));
+        break;
+      case 'menuIcon':
+        dispatch(changeMenuIconColor(color.hex));
         break;
       case 'page':
         dispatch(changePageColor(color.hex));
@@ -52,6 +67,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ coloredArea, onClose, initial
     switch (coloredArea) {
       case 'navbar':
         dispatch(undoNavbarColorChange());
+        break;
+      case 'menuIcon':
+        dispatch(undoMenuIconColorChange());
         break;
       case 'page':
         dispatch(undoPageColorChange());
@@ -67,6 +85,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ coloredArea, onClose, initial
     switch (coloredArea) {
       case 'navbar':
         dispatch(updateInitialNavbarColor());
+        break;
+      case 'menuIcon':
+        dispatch(updateInitialMenuIconColor());
         break;
       case 'page':
         shouldColorAllPages ? dispatch(updateAllPagesColor()) : dispatch(updateInitialPageColor());
@@ -94,7 +115,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ coloredArea, onClose, initial
             <Switch checked={shouldColorAllPages} onChange={toggleShouldColorAllPages} color="primary" />
           </Flex>
         )}
-        <SketchPicker color={color} onChange={handleChange} disableAlpha />
+        <SketchPicker color={color} onChange={handleColorChange} disableAlpha />
       </Flex>
     </Plate>
   );

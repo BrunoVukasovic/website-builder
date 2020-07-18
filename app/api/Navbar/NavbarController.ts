@@ -9,8 +9,12 @@ import { Types } from 'mongoose';
 const NavbarController = {
   updateNavbar: async (data: Navbar, navbarID: Types.ObjectId) => {
     try {
+      const { logo, backgroundColor, menuIconColor } = data;
+
       await NavbarModel.findByIdAndUpdate(navbarID, {
-        backgroundColor: data.backgroundColor,
+        ...(logo && { logo }),
+        ...(backgroundColor && { backgroundColor }),
+        ...(menuIconColor && { menuIconColor }),
       });
     } catch (error) {
       throw error;

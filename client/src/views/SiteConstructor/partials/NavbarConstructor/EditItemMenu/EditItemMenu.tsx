@@ -3,25 +3,28 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 import { Menu, Button } from '@material-ui/core';
 import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
 
 import Flex from '../../../../../components/Flex';
 
-import styles from './edit_item_dropdown_menu.module.scss';
+import styles from './edit_item_menu.module.scss';
 
-export interface EditItemDropdownMenuProps {
+export interface EditItemMenuProps {
   anchorEl: HTMLElement | null | undefined;
   onClose: () => void;
   onEditClick: () => void;
   onDeletePageClick: () => void;
+  isColorMenu?: boolean;
   isRow?: boolean;
   MenuProps?: Partial<MUIMenuProps>;
   onNotSupportedClick?: () => void;
 }
 
-const EditItemDropdownMenu: React.FC<EditItemDropdownMenuProps> = ({
+const EditItemMenu: React.FC<EditItemMenuProps> = ({
   anchorEl,
   onClose,
   onEditClick,
@@ -55,7 +58,7 @@ const EditItemDropdownMenu: React.FC<EditItemDropdownMenuProps> = ({
             onClick={onNotSupportedClick}
             color="primary"
             size="small"
-            startIcon={<ExpandLessIcon />}
+            startIcon={isRow ? <ArrowBackIosIcon /> : <ExpandLessIcon />}
             className={styles.dropdownMenuBtn}
           >
             {isRow ? `Move left` : `Move up`}
@@ -64,7 +67,7 @@ const EditItemDropdownMenu: React.FC<EditItemDropdownMenuProps> = ({
             onClick={onNotSupportedClick}
             color="primary"
             size="small"
-            startIcon={<ExpandMoreIcon />}
+            startIcon={isRow ? <ArrowForwardIosIcon /> : <ExpandMoreIcon />}
             className={styles.dropdownMenuBtn}
           >
             {isRow ? `Move right` : `Move down`}
@@ -84,4 +87,4 @@ const EditItemDropdownMenu: React.FC<EditItemDropdownMenuProps> = ({
   );
 };
 
-export default EditItemDropdownMenu;
+export default EditItemMenu;

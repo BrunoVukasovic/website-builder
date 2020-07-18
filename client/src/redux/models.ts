@@ -38,6 +38,7 @@ export interface LoginFormValues {
 
 export interface NavbarState extends Navbar {
   initialBackgroundColor?: string;
+  initialMenuIconColor?: string;
   isUpdated?: boolean;
 }
 

@@ -23,6 +23,10 @@ import {
   UNDO_PAGE_COLOR_CHANGE,
   UPDATE_INITIAL_SINGLE_PAGE_COLOR,
   UPDATE_ALL_PAGES_COLOR,
+  CHANGE_COLOR_MENU_ICON,
+  UNDO_MENU_ICON_COLOR_CHANGE,
+  UPDATE_INITIAL_MENU_ICON_COLOR,
+  CHANGE_LOGO,
 } from '../types/site';
 import { SiteReducerState } from '../reducers/site';
 import {
@@ -51,8 +55,18 @@ export const changeNavbarColor = (payload: string): Action<string> => ({
   payload,
 });
 
+export const changeMenuIconColor = (payload: string): Action<string> => ({
+  type: CHANGE_COLOR_MENU_ICON,
+  payload,
+});
+
 export const changePageColor = (payload: string): Action<string> => ({
   type: CHANGE_COLOR_SINGLE_PAGE,
+  payload,
+});
+
+export const changeLogo = (payload: string): Action<string> => ({
+  type: CHANGE_LOGO,
   payload,
 });
 
@@ -89,6 +103,10 @@ export const undoNavbarColorChange = (): Action => ({
   type: UNDO_NAVBAR_COLOR_CHANGE,
 });
 
+export const undoMenuIconColorChange = (): Action => ({
+  type: UNDO_MENU_ICON_COLOR_CHANGE,
+});
+
 export const undoPageColorChange = (): Action => ({
   type: UNDO_PAGE_COLOR_CHANGE,
 });
@@ -114,6 +132,10 @@ export const updateCurrentPageName = (payload: TitleAndSlug): Action<TitleAndSlu
 
 export const updateInitialNavbarColor = (): Action => ({
   type: UPDATE_INITIAL_NAVBAR_COLOR,
+});
+
+export const updateInitialMenuIconColor = (): Action => ({
+  type: UPDATE_INITIAL_MENU_ICON_COLOR,
 });
 
 export const updateInitialPageColor = (): Action => ({

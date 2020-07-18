@@ -51,9 +51,12 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose }) => {
     }
 
     if (navbar.isUpdated) {
+      const { logo, backgroundColor, menuIconColor } = navbar;
+
       payload.navbarData = {
-        // logo: navbar.logo,
-        backgroundColor: navbar.backgroundColor,
+        ...(logo && { logo }),
+        ...(backgroundColor && { backgroundColor }),
+        ...(menuIconColor && { menuIconColor }),
       };
     }
 
@@ -68,7 +71,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose }) => {
     const callApi = async () => {
       try {
         const updatedSite = await SiteService.updateSite(currentSite.oldSlug, payload);
-
+        console.log(payload);
         if (errorMessage) {
           setErrorMessage('');
         }

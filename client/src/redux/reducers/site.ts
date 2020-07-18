@@ -25,6 +25,10 @@ import {
   UNDO_PAGE_COLOR_CHANGE,
   UPDATE_INITIAL_SINGLE_PAGE_COLOR,
   UPDATE_ALL_PAGES_COLOR,
+  CHANGE_COLOR_MENU_ICON,
+  UNDO_MENU_ICON_COLOR_CHANGE,
+  UPDATE_INITIAL_MENU_ICON_COLOR,
+  CHANGE_LOGO,
 } from '../types/site';
 
 export interface SiteReducerState {
@@ -91,6 +95,18 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           },
         },
       };
+    case CHANGE_COLOR_MENU_ICON:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          navbar: {
+            ...state.currentSite.navbar,
+            menuIconColor: payload,
+            isUpdated: true,
+          },
+        },
+      };
     case CHANGE_COLOR_SINGLE_PAGE:
       return {
         ...state,
@@ -100,6 +116,18 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           updatedElements: {
             ...state.currentPage.updatedElements,
             color: true,
+          },
+        },
+      };
+    case CHANGE_LOGO:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          navbar: {
+            ...state.currentSite.navbar,
+            logo: payload,
+            isUpdated: true,
           },
         },
       };
@@ -140,11 +168,11 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
         currentSite: {
           ...payload.currentSite,
           navbar: {
-            backgroundColor: payload.currentSite.navbar.backgroundColor,
+            ...payload.currentSite.navbar,
             initialBackgroundColor: payload.currentSite.navbar.backgroundColor,
+            initialMenuIconColor: payload.currentSite.navbar.menuIconColor,
           },
         },
-        // allSites: payload.allSites,
       };
     case SET_CURRENT_PAGE_TO_CURRENT_SITE:
       return {
@@ -164,6 +192,17 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           navbar: {
             ...state.currentSite.navbar,
             backgroundColor: state.currentSite.navbar.initialBackgroundColor,
+          },
+        },
+      };
+    case UNDO_MENU_ICON_COLOR_CHANGE:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          navbar: {
+            ...state.currentSite.navbar,
+            menuIconColor: state.currentSite.navbar.initialMenuIconColor,
           },
         },
       };
@@ -248,6 +287,17 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           navbar: {
             ...state.currentSite.navbar,
             initialBackgroundColor: state.currentSite.navbar.backgroundColor,
+          },
+        },
+      };
+    case UPDATE_INITIAL_MENU_ICON_COLOR:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          navbar: {
+            ...state.currentSite.navbar,
+            initialMenuIconColor: state.currentSite.navbar.menuIconColor,
           },
         },
       };

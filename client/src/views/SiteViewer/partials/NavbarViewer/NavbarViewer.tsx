@@ -4,9 +4,10 @@ import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import { NavLink } from 'react-router-dom';
+import { useToggle } from 'react-use';
 
 import Flex from '../../../../components/Flex';
-import CreatedMenu from '../../../SiteConstructor/partials/NavbarConstructor/CreatedMenu';
+import FlyoutNavbar from '../../../SiteConstructor/partials/NavbarConstructor/FlyoutNavbar';
 
 import { Navbar } from '../../../../models';
 
@@ -20,11 +21,12 @@ export interface NavbarViewerProps {
 }
 
 const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, navbarData, activePageSlug }) => {
-  const [createdMenuOpen, setCreatedMenuOpen] = useState<boolean>(false);
+  // const [createdMenuOpen, setCreatedMenuOpen] = useState<boolean>(false);
+  const [flyoutNavbarOpen, toggleFlyoutNavbar] = useToggle(false);
 
-  const toggleCreatedMenuOpen = () => {
-    setCreatedMenuOpen(!createdMenuOpen);
-  };
+  // const toggleCreatedMenuOpen = () => {
+  //   setCreatedMenuOpen(!createdMenuOpen);
+  // };
 
   return (
     <Flex style={{ backgroundColor: navbarData.backgroundColor }} className={styles.navbar}>
@@ -40,16 +42,16 @@ const NavbarViewer: React.FC<NavbarViewerProps> = ({ slugsAndNames, siteSlug, na
           </NavLink>
         ))}
       </Flex>
-      <Flex alignItems="center" className={styles.menuIconWrapper} onClick={toggleCreatedMenuOpen}>
+      <Flex alignItems="center" className={styles.menuIconWrapper} onClick={toggleFlyoutNavbar}>
         <MenuIcon color="primary" className={styles.menuIcon} />
       </Flex>
-      {createdMenuOpen && (
-        <CreatedMenu
+      {flyoutNavbarOpen && (
+        <FlyoutNavbar
           pagesData={slugsAndNames}
           navbarData={navbarData}
           activePageSlug={activePageSlug}
           siteSlug={siteSlug}
-          onClose={toggleCreatedMenuOpen}
+          onClose={toggleFlyoutNavbar}
         />
       )}
     </Flex>

@@ -33,6 +33,7 @@ export interface LoginReq {
 export interface Navbar {
   logo?: string;
   backgroundColor?: string;
+  menuIconColor?: string;
 }
 
 export interface Page {

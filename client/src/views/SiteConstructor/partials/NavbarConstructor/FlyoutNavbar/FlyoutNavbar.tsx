@@ -10,28 +10,28 @@ import { Navbar } from '../../../../../models';
 import Flex from '../../../../../components/Flex';
 import Modal from '../../../../../components/Modal';
 
-import styles from './created_menu.module.scss';
+import styles from './flyout_navbar.module.scss';
 
-// @TODO rename to FlyoutMenu
-
-export interface CreatedMenuProps {
+export interface FlyoutNavbarProps {
   pagesData: { slug: string; name: string; id?: string }[];
   activePageSlug: string;
   siteSlug: string;
   navbarData: Navbar;
   allowEditing?: boolean;
   onClose: () => void;
-  onAddPageBtnClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onAddItemClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onColorPaletteButtonClick?: () => void;
 }
 
-const CreatedMenu: React.FC<CreatedMenuProps> = ({
+const FlyoutNavbar: React.FC<FlyoutNavbarProps> = ({
   pagesData,
   activePageSlug,
   siteSlug,
   navbarData,
   allowEditing,
   onClose,
-  onAddPageBtnClick,
+  onAddItemClick,
+  onColorPaletteButtonClick,
 }) => {
   return (
     <Modal
@@ -39,7 +39,7 @@ const CreatedMenu: React.FC<CreatedMenuProps> = ({
       classes={{ root: styles.root }}
       className={styles.container}
       BodyClassName={styles.modalBody}
-      inlineStyle={{ backgroundColor: navbarData.backgroundColor ? navbarData.backgroundColor : '#cfd2e4' }}
+      inlineStyle={{ backgroundColor: navbarData.backgroundColor ? navbarData.backgroundColor : '#FFFFFF' }}
     >
       <Flex direction="column" className={styles.navbar}>
         {pagesData.map((item) => (
@@ -60,7 +60,7 @@ const CreatedMenu: React.FC<CreatedMenuProps> = ({
         ))}
         {allowEditing && (
           <Flex className={styles.addPageWrapper}>
-            <IconButton aria-label="add-page" onClick={onAddPageBtnClick}>
+            <IconButton aria-label="add-page" onClick={onAddItemClick}>
               <AddCircleIcon color="primary" className={styles.addIcon} />
             </IconButton>
           </Flex>
@@ -70,4 +70,4 @@ const CreatedMenu: React.FC<CreatedMenuProps> = ({
   );
 };
 
-export default CreatedMenu;
+export default FlyoutNavbar;

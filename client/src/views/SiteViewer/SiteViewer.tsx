@@ -61,14 +61,23 @@ const SiteConstructor: React.FC = () => {
     });
   }, [currentSite.pages]);
 
-  const currentPage = React.useMemo(() => {
-    const activePage = currentSite.pages.find((page) => page.slug === params.page);
+  const activePage = React.useMemo(() => {
+    if (params.page) {
+      const wantedPage = currentSite.pages.find((page) => page.slug === params.page);
 
-    if (!activePage) {
-      return currentSite.pages[0];
+      if (wantedPage) {
+        return wantedPage;
+      }
     }
 
-    return activePage;
+    return currentSite.pages[0];
+    // const activePage = currentSite.pages.find((page) => page.slug === params.page);
+
+    // if (!activePage) {
+    //   return currentSite.pages[0];
+    // }
+
+    // return activePage;
   }, [currentSite.pages, params.page]);
 
   const handleEditClick = () => {
@@ -76,18 +85,17 @@ const SiteConstructor: React.FC = () => {
     window.open(url, '_blank');
   };
 
-  currentPage && console.log(currentPage.container);
-  if (currentSite && currentPage) {
+  if (currentSite && activePage) {
     return (
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer>
           <NavbarViewer
             slugsAndNames={slugsAndNames}
-            activePageSlug={currentPage.slug}
+            activePageSlug={activePage.slug}
             siteSlug={params.site}
             navbarData={currentSite.navbar}
           />
-          <PageViewer pageContainer={currentPage.container} backgroundColor={currentPage.backgroundColor} />
+          <PageViewer pageContainer={activePage.container} backgroundColor={activePage.backgroundColor} />
         </SiteContainer>
         {currentSite.shouldAllowEditing && <Footer primaryBtnText="Edit" onPrimaryBtnClick={handleEditClick} />}
       </Flex>

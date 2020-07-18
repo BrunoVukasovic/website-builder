@@ -10,7 +10,9 @@
   "Create website": "Kreiraj web stranicu",
   "Croatian": "Hrvatski",
   "Delete": "Izbriši",
+  "Delete whole page": "Želite li izbrisati cijelu stranicu?",
   "English": "Engleski",
+  "Enter page name": "Unesite ime stranice: ",
   "Email address": "Email adresa",
   "Error": {
     "Check your internet connection": "Nešto nije u redu. Molim Vas, provjerite jeste li spojeni na internet i pokušajte ponovo.",
@@ -34,7 +36,9 @@
   "Save changes": "Spremi promjene",
   "Submit": "Pošalji",
   "The link will be generated based on the title": "Poveznica je generirana na temelju naziva",
+  "This action cannot be undone": "Ova akcija ne može bit poništena.",
   "View": "Vidi",
   "Website renamed successfully": "Web stranica je uspješno preimenovana!",
+  "Will be deleted": "{{subject}} bit će izbrisan.",
   "Your name": "Vaše ime"
 }

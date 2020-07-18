@@ -159,7 +159,10 @@ const SiteController = {
       const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
       const sortedPages = await PageController.findAllAndSort(site._id);
 
+      console.log(sortedPages);
+
       if (navbar && sortedPages) {
+        console.log(navbar);
         const payload: CurrentSite = {
           title: site.title,
           slug: site.slug,

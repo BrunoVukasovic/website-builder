@@ -10,7 +10,9 @@
   "Create website": "Create website",
   "Croatian": "Croatian",
   "Delete": "Delete",
+  "Delete whole page": "Delete whole page?",
   "English": "English",
+  "Enter page name": "Enter page name: ",
   "Email address": "Email address",
   "Error": {
     "Check your internet connection": "Something went wrong. Please, check your internet connection and try again.",
@@ -34,7 +36,9 @@
   "Save changes": "Save changes",
   "Submit": "Submit",
   "The link will be generated based on the title": "The link will be generated based on the title",
+  "This action cannot be undone": "This action cannot be undone.",
   "View": "View",
   "Website renamed successfully": "Website renamed successfully!",
+  "Will be deleted": "{{subject}} will be deleted",
   "Your name": "Your name"
 }
