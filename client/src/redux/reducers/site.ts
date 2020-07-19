@@ -29,12 +29,17 @@ import {
   UNDO_MENU_ICON_COLOR_CHANGE,
   UPDATE_INITIAL_MENU_ICON_COLOR,
   CHANGE_LOGO,
+  DELETE_LOGO,
+  MOVE_PAGE_SEGMENT_FORWARD,
+  MOVE_PAGE_SEGMENT_BACKWARDS,
+  MOVE_NAVBAR_ITEM_BACKWARDS,
+  MOVE_NAVBAR_ITEM_FORWARD,
+  UPDATE_CURRENT_PAGE_POSITION,
 } from '../types/site';
 
 export interface SiteReducerState {
   currentSite: CurrentSiteState;
-  currentPage: CurrentPage;
-  // allSites?: string[];
+  currentPage: Omit<CurrentPage, 'position'>;
 }
 
 const initialState: SiteReducerState = {
@@ -48,7 +53,6 @@ const initialState: SiteReducerState = {
   },
   currentPage: {
     name: '',
-    position: 0,
     slug: '',
     backgroundColor: '',
     container: [],
@@ -75,7 +79,11 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           ...state.currentPage,
           container: [
             ...state.currentPage.container,
-            { position: state.currentPage.container.length + 1, content: payload.content, type: payload.type },
+            {
+              position: payload.position ? payload.position : state.currentPage.container.length + 1,
+              content: payload.content,
+              type: payload.type,
+            },
           ],
           updatedElements: {
             ...state.currentPage.updatedElements,
@@ -131,6 +139,18 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
           },
         },
       };
+    case DELETE_LOGO:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          navbar: {
+            ...state.currentSite.navbar,
+            logo: undefined,
+            isUpdated: true,
+          },
+        },
+      };
     case DELETE_PAGE:
       return {
         ...state,
@@ -150,6 +170,118 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
             container: true,
           },
           container: state.currentPage.container.filter((segment) => segment.position !== payload),
+        },
+      };
+    case MOVE_NAVBAR_ITEM_BACKWARDS:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          pages: state.currentSite.pages.map((page) => {
+            if (page.position === payload) {
+              return {
+                ...page,
+                position: payload - 1,
+                updatedElements: {
+                  ...page.updatedElements,
+                  position: true,
+                },
+              };
+            } else if (page.position === payload - 1) {
+              return {
+                ...page,
+                position: page.position + 1,
+                updatedElements: {
+                  ...page.updatedElements,
+                  position: true,
+                },
+              };
+            } else {
+              return page;
+            }
+          }),
+        },
+      };
+    case MOVE_NAVBAR_ITEM_FORWARD:
+      return {
+        ...state,
+        currentSite: {
+          ...state.currentSite,
+          pages: state.currentSite.pages.map((page) => {
+            if (page.position === payload) {
+              return {
+                ...page,
+                position: payload + 1,
+                updatedElements: {
+                  ...page.updatedElements,
+                  position: true,
+                },
+              };
+            } else if (page.position === payload + 1) {
+              return {
+                ...page,
+                position: page.position - 1,
+                updatedElements: {
+                  ...page.updatedElements,
+                  position: true,
+                },
+              };
+            } else {
+              return page;
+            }
+          }),
+        },
+      };
+    case MOVE_PAGE_SEGMENT_BACKWARDS:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            container: true,
+          },
+          container: state.currentPage.container.map((segment) => {
+            if (segment.position === payload) {
+              return {
+                ...segment,
+                position: payload - 1,
+              };
+            } else if (segment.position === payload - 1) {
+              return {
+                ...segment,
+                position: segment.position + 1,
+              };
+            } else {
+              return segment;
+            }
+          }),
+        },
+      };
+    case MOVE_PAGE_SEGMENT_FORWARD:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            container: true,
+          },
+          container: state.currentPage.container.map((segment) => {
+            if (segment.position === payload) {
+              return {
+                ...segment,
+                position: payload + 1,
+              };
+            } else if (segment.position === payload + 1) {
+              return {
+                ...segment,
+                position: segment.position - 1,
+              };
+            } else {
+              return segment;
+            }
+          }),
         },
       };
     case SET_CURRENT_PAGE:
@@ -180,7 +312,7 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
         currentSite: {
           ...state.currentSite,
           pages: state.currentSite.pages.map((page) =>
-            page.slug === state.currentPage.slug ? { ...state.currentPage } : page
+            page.slug === state.currentPage.slug ? { ...state.currentPage, position: page.position } : page
           ),
         },
       };
@@ -231,6 +363,18 @@ const siteReducer: Reducer<SiteReducerState> = (state = initialState, { type, pa
               color: true,
             },
           })),
+        },
+      };
+    case UPDATE_CURRENT_PAGE_POSITION:
+      return {
+        ...state,
+        currentPage: {
+          ...state.currentPage,
+          position: payload,
+          updatedElements: {
+            ...state.currentPage.updatedElements,
+            position: true,
+          },
         },
       };
     case UPDATE_CURRENT_PAGE_SEGMENT:

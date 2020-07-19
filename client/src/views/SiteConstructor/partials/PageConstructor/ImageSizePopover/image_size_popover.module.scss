@@ -1,31 +1,18 @@
-.container {
-  max-width: 40rem;
-  padding: 0rem 1rem 1rem;
+.rowTitleWrapper {
+  min-width: 3rem;
+}
 
-  .closeButton {
-    margin-left: auto;
-  }
+.inputWrapper {
+  max-width: 8rem;
+  padding: 0 2rem;
+}
 
-  .rowTitleWrapper {
-    min-width: 3rem;
+.autoWrapper {
+  & > p {
+    margin: 0;
   }
+}
 
-  .inputWrapper {
-    max-width: 8rem;
-    padding: 0 2rem;
-  }
-
-  .autoWrapper {
-    & > p {
-      margin: 0;
-    }
-  }
-
-  .buttonWrapper {
-    margin-top: 1.5rem;
-  }
-
-  .errorMessage {
-    color: red;
-  }
+.errorMessage {
+  color: red;
 }

@@ -10,27 +10,35 @@ import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
 
 import Flex from '../../../../../components/Flex';
 
-import styles from '../AddSegmentDropdownMenu/add_segment_dropdown_menu.module.scss';
+import styles from '../AddSegmentMenu/add_segment_menu.module.scss';
 
-export interface EditSegmentDropdownMenuProps {
+export interface EditSegmentMenuProps {
   segmentType: 'text' | 'image';
   onClose: () => void;
   onEditTextClick: () => void;
+  onMoveSegmentClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onMoveUpClick?: () => void;
+  onMoveDownClick?: () => void;
+  onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  onDeleteSegmentClick: () => void;
+  onChangeImageSizeClick: () => void;
+  onChangeImagePositionClick: () => void;
+  onNotSupportedClick: () => void;
   transparent?: boolean;
   anchorEl?: HTMLElement;
   MenuProps?: Partial<MUIMenuProps>;
-  onDeleteSegmentClick?: () => void;
-  onNotSupportedClick?: () => void;
-  onChangeImageSizeClick?: () => void;
-  onChangeImagePositionClick?: () => void;
 }
 
-const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
+const EditSegmentMenu: React.FC<EditSegmentMenuProps> = ({
   anchorEl,
   transparent,
   segmentType,
   onClose,
   onEditTextClick,
+  onMoveSegmentClick,
+  onMoveUpClick,
+  onMoveDownClick,
+  onImageChange,
   MenuProps,
   onNotSupportedClick,
   onChangeImageSizeClick,
@@ -61,14 +69,17 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
             </Button>
           ) : (
             <>
-              <Button
-                // onClick={onEditClick}
-                color="primary"
-                size="small"
-                startIcon={<EditIcon />}
-                className={styles.dropdownMenuBtn}
-              >
-                Change image
+              <input
+                id="changeImageInput"
+                type="file"
+                accept="image/*"
+                onChange={onImageChange}
+                className={styles.imageInput}
+              />
+              <Button color="primary" size="small" startIcon={<EditIcon />} className={styles.dropdownMenuBtn}>
+                <label htmlFor="changeImageInput" className={styles.addImageLabel}>
+                  Change image
+                </label>
               </Button>
               <Button
                 onClick={onChangeImageSizeClick}
@@ -92,7 +103,8 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
           )}
 
           <Button
-            onClick={onNotSupportedClick}
+            id="pageSegmentBackwards"
+            onClick={onMoveSegmentClick}
             color="primary"
             size="small"
             startIcon={<ExpandLessIcon />}
@@ -101,7 +113,8 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
             Move up
           </Button>
           <Button
-            onClick={onNotSupportedClick}
+            id="pageSegmentForward"
+            onClick={onMoveSegmentClick}
             color="primary"
             size="small"
             startIcon={<ExpandMoreIcon />}
@@ -124,4 +137,4 @@ const EditSegmentDropdownMenu: React.FC<EditSegmentDropdownMenuProps> = ({
   );
 };
 
-export default EditSegmentDropdownMenu;
+export default EditSegmentMenu;

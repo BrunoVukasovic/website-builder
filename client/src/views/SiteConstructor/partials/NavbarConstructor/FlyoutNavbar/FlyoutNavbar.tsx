@@ -3,6 +3,7 @@ import cx from 'classnames';
 import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
+import PaletteIcon from '@material-ui/icons/Palette';
 
 import { NavLink } from 'react-router-dom';
 import { Navbar } from '../../../../../models';
@@ -20,7 +21,7 @@ export interface FlyoutNavbarProps {
   allowEditing?: boolean;
   onClose: () => void;
   onAddItemClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  onColorPaletteButtonClick?: () => void;
+  onColorPaletteButtonClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const FlyoutNavbar: React.FC<FlyoutNavbarProps> = ({
@@ -59,10 +60,17 @@ const FlyoutNavbar: React.FC<FlyoutNavbarProps> = ({
           </NavLink>
         ))}
         {allowEditing && (
-          <Flex className={styles.addPageWrapper}>
-            <IconButton aria-label="add-page" onClick={onAddItemClick}>
-              <AddCircleIcon color="primary" className={styles.addIcon} />
-            </IconButton>
+          <Flex>
+            <Flex className={styles.addPageWrapper}>
+              <IconButton aria-label="add-page" onClick={onAddItemClick}>
+                <AddCircleIcon color="primary" className={styles.addIcon} />
+              </IconButton>
+            </Flex>
+            <Flex className={styles.addPageWrapper}>
+              <IconButton aria-label="color-picker" onClick={onColorPaletteButtonClick}>
+                <PaletteIcon color="primary" className={styles.addIcon} />
+              </IconButton>
+            </Flex>
           </Flex>
         )}
       </Flex>

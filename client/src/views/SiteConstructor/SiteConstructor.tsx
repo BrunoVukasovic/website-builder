@@ -69,6 +69,7 @@ const SiteConstructor: React.FC = () => {
         return {
           slug: page.slug,
           name: page.name,
+          position: page.position,
           id: page._id,
         };
       }),
@@ -84,11 +85,7 @@ const SiteConstructor: React.FC = () => {
       }
     }
 
-    // if (!wantedPage) {
     return currentSite.pages[0];
-    // }
-
-    // return wantedPage;
   }, [currentSite.pages, params.page]);
 
   const handleDeleteSite = () => {
@@ -135,10 +132,11 @@ const SiteConstructor: React.FC = () => {
           <NavbarConstructor
             pagesData={pagesData}
             activePageSlug={activePage.slug}
+            acitvePagePosition={activePage.position}
             siteSlug={params.site}
             navbarData={currentSite.navbar}
           />
-          <PageConstructor page={activePage} siteBackgroundColor={currentSite.backgroundColor} />
+          <PageConstructor page={activePage} />
         </SiteContainer>
         <Footer onMenuClick={toggleMainMenu} onPrimaryBtnClick={handleSaveChangesClick} showMenu />
         {shouldSaveChanges &&
@@ -156,12 +154,7 @@ const SiteConstructor: React.FC = () => {
             onDeleteSiteClick={toggleDeleteSiteModal}
           />
         )}
-        {authModalOpen && (
-          // <Modal onClose={toggleAuthModal}>
-          //   <Auth closeModal={toggleAuthModal} />
-          // </Modal>
-          <Redirect to="/action/auth" />
-        )}
+        {authModalOpen && <Redirect to="/action/auth" />}
         {deleteSiteModalOpen && (
           <Modal
             onClose={toggleDeleteSiteModal}

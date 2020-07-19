@@ -12,7 +12,7 @@ const NavbarController = {
       const { logo, backgroundColor, menuIconColor } = data;
 
       await NavbarModel.findByIdAndUpdate(navbarID, {
-        ...(logo && { logo }),
+        logo,
         ...(backgroundColor && { backgroundColor }),
         ...(menuIconColor && { menuIconColor }),
       });

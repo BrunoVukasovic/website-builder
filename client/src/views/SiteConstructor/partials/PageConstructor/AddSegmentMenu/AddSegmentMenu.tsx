@@ -5,9 +5,9 @@ import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
 
 import Flex from '../../../../../components/Flex';
 
-import styles from './add_segment_dropdown_menu.module.scss';
+import styles from './add_segment_menu.module.scss';
 
-export interface AddSegmentDropdownMenuProps {
+export interface AddSegmentMenuProps {
   onClose: () => void;
   onAddTextClick: () => void;
   onImageInputChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
@@ -16,7 +16,7 @@ export interface AddSegmentDropdownMenuProps {
   MenuProps?: Partial<MUIMenuProps>;
 }
 
-const AddSegmentDropdownMenu: React.FC<AddSegmentDropdownMenuProps> = ({
+const AddSegmentMenu: React.FC<AddSegmentMenuProps> = ({
   anchorEl,
   onClose,
   onNotSupportedClick,
@@ -60,4 +60,4 @@ const AddSegmentDropdownMenu: React.FC<AddSegmentDropdownMenuProps> = ({
   );
 };
 
-export default AddSegmentDropdownMenu;
+export default AddSegmentMenu;

@@ -27,11 +27,17 @@ import {
   UNDO_MENU_ICON_COLOR_CHANGE,
   UPDATE_INITIAL_MENU_ICON_COLOR,
   CHANGE_LOGO,
+  DELETE_LOGO,
+  MOVE_PAGE_SEGMENT_FORWARD,
+  MOVE_PAGE_SEGMENT_BACKWARDS,
+  MOVE_NAVBAR_ITEM_FORWARD,
+  MOVE_NAVBAR_ITEM_BACKWARDS,
+  UPDATE_CURRENT_PAGE_POSITION,
 } from '../types/site';
 import { SiteReducerState } from '../reducers/site';
 import {
   TitleAndSlug,
-  SegmentContentAndType,
+  AddSegmentActionPayload,
   CurrentSiteState,
   UpdatePageNamePayload,
   WidthAndPosition,
@@ -45,7 +51,7 @@ export const addNewPage = (payload: TitleAndSlug): Action<TitleAndSlug> => ({
   payload,
 });
 
-export const addPageSegment = (payload: SegmentContentAndType): Action<SegmentContentAndType> => ({
+export const addPageSegment = (payload: AddSegmentActionPayload): Action<AddSegmentActionPayload> => ({
   type: ADD_PAGE_SEGMENT,
   payload,
 });
@@ -70,6 +76,10 @@ export const changeLogo = (payload: string): Action<string> => ({
   payload,
 });
 
+export const deleteLogo = (): Action => ({
+  type: DELETE_LOGO,
+});
+
 export const deletePage = (payload: SlugAndId): Action<SlugAndId> => ({
   type: DELETE_PAGE,
   payload,
@@ -78,6 +88,26 @@ export const deletePage = (payload: SlugAndId): Action<SlugAndId> => ({
 export const deletePageSegment = (payload: number): Action<number> => ({
   type: DELETE_PAGE_SEGMENT,
   payload,
+});
+
+export const moveNavbarItemBackwards = (position: number): Action<number> => ({
+  type: MOVE_NAVBAR_ITEM_BACKWARDS,
+  payload: position,
+});
+
+export const moveNavbarItemForward = (position: number): Action<number> => ({
+  type: MOVE_NAVBAR_ITEM_FORWARD,
+  payload: position,
+});
+
+export const movePageSegmentBackwards = (position: number): Action<number> => ({
+  type: MOVE_PAGE_SEGMENT_BACKWARDS,
+  payload: position,
+});
+
+export const movePageSegmentForward = (position: number): Action<number> => ({
+  type: MOVE_PAGE_SEGMENT_FORWARD,
+  payload: position,
 });
 
 export const setCurrentPage = (page: CurrentPage): Action<CurrentPage> => ({
@@ -113,6 +143,11 @@ export const undoPageColorChange = (): Action => ({
 
 export const updateAllPagesColor = (): Action => ({
   type: UPDATE_ALL_PAGES_COLOR,
+});
+
+export const updateCurrentPagePosition = (position: number): Action<number> => ({
+  type: UPDATE_CURRENT_PAGE_POSITION,
+  payload: position,
 });
 
 export const updateCurrentPageSegment = (segment: PageSegment): Action<PageSegment> => ({

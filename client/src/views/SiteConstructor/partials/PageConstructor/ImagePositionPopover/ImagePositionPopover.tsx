@@ -33,7 +33,6 @@ const ImagePositionPopover: React.FC<ImagePositionPopoverProps> = ({ segment, an
       anchorElement={anchorElement}
       headerText={headerText}
       onClose={onClose}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       showFooter
       primaryButtonText="Close"
       onPrimaryButtonClick={onClose}

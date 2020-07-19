@@ -17,9 +17,12 @@ export interface EditItemMenuProps {
   anchorEl: HTMLElement | null | undefined;
   onClose: () => void;
   onEditClick: () => void;
+  onMoveNavbarItemClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onDeletePageClick: () => void;
-  isColorMenu?: boolean;
+  onLogoChange: (_: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  onDeleteLogoClick?: () => void;
   isRow?: boolean;
+  isLogo?: boolean;
   MenuProps?: Partial<MUIMenuProps>;
   onNotSupportedClick?: () => void;
 }
@@ -28,10 +31,14 @@ const EditItemMenu: React.FC<EditItemMenuProps> = ({
   anchorEl,
   onClose,
   onEditClick,
+  onMoveNavbarItemClick,
   onDeletePageClick,
-  MenuProps,
   onNotSupportedClick,
+  onLogoChange,
+  onDeleteLogoClick,
+  MenuProps,
   isRow,
+  isLogo,
 }) => {
   return (
     <Menu
@@ -45,42 +52,72 @@ const EditItemMenu: React.FC<EditItemMenuProps> = ({
     >
       <li>
         <Flex fluid direction="column" className={styles.buttonWrapper}>
-          <Button
-            onClick={onEditClick}
-            color="primary"
-            size="small"
-            startIcon={<EditIcon />}
-            className={styles.dropdownMenuBtn}
-          >
-            Edit
-          </Button>
-          <Button
-            onClick={onNotSupportedClick}
-            color="primary"
-            size="small"
-            startIcon={isRow ? <ArrowBackIosIcon /> : <ExpandLessIcon />}
-            className={styles.dropdownMenuBtn}
-          >
-            {isRow ? `Move left` : `Move up`}
-          </Button>
-          <Button
-            onClick={onNotSupportedClick}
-            color="primary"
-            size="small"
-            startIcon={isRow ? <ArrowForwardIosIcon /> : <ExpandMoreIcon />}
-            className={styles.dropdownMenuBtn}
-          >
-            {isRow ? `Move right` : `Move down`}
-          </Button>
-          <Button
-            onClick={onDeletePageClick}
-            color="secondary"
-            size="small"
-            startIcon={<DeleteForeverIcon />}
-            className={styles.dropdownMenuBtn}
-          >
-            Delete
-          </Button>
+          {isLogo ? (
+            <>
+              <input
+                id="changeLogoInput"
+                type="file"
+                accept="image/*"
+                onChange={onLogoChange}
+                className={styles.imageInput}
+              />
+              <Button color="primary" size="small" className={styles.dropdownMenuBtn}>
+                <label htmlFor="changeLogoInput" className={styles.addImageLabel}>
+                  Change logo
+                </label>
+              </Button>
+              <Button
+                onClick={onDeleteLogoClick}
+                color="secondary"
+                size="small"
+                startIcon={<DeleteForeverIcon />}
+                className={styles.dropdownMenuBtn}
+              >
+                Delete
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                onClick={onEditClick}
+                color="primary"
+                size="small"
+                startIcon={<EditIcon />}
+                className={styles.dropdownMenuBtn}
+              >
+                Edit
+              </Button>
+              <Button
+                id="navbarItemBackwards"
+                onClick={onMoveNavbarItemClick}
+                color="primary"
+                size="small"
+                startIcon={isRow ? <ArrowBackIosIcon /> : <ExpandLessIcon />}
+                className={styles.dropdownMenuBtn}
+              >
+                {isRow ? `Move left` : `Move up`}
+              </Button>
+              <Button
+                id="navbarItemForward"
+                onClick={onMoveNavbarItemClick}
+                color="primary"
+                size="small"
+                startIcon={isRow ? <ArrowForwardIosIcon /> : <ExpandMoreIcon />}
+                className={styles.dropdownMenuBtn}
+              >
+                {isRow ? `Move right` : `Move down`}
+              </Button>
+              <Button
+                onClick={onDeletePageClick}
+                color="secondary"
+                size="small"
+                startIcon={<DeleteForeverIcon />}
+                className={styles.dropdownMenuBtn}
+              >
+                Delete
+              </Button>
+            </>
+          )}
         </Flex>
       </li>
     </Menu>

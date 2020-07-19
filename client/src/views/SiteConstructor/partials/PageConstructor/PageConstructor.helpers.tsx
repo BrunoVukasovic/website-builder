@@ -39,6 +39,6 @@ export const DisplaySegment: React.FC<DisplaySegmentProps> = ({ segment }) => {
         </Flex>
       );
     default:
-      return <p>Content not supported!</p>;
+      return null;
   }
 };

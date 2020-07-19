@@ -3,15 +3,9 @@ import ReactQuill from 'react-quill';
 
 import { useDispatch } from 'react-redux';
 
-import { Flex, Plate } from '../';
+import { Plate } from '../';
 
-import {
-  updateCurrentPageSegment,
-  addNewPage,
-  addPageSegment,
-  updatePageName,
-  updateCurrentPageName,
-} from '../../redux/actions/site';
+import { updateCurrentPageSegment, addNewPage, addPageSegment, updatePageName } from '../../redux/actions/site';
 import { modules, formats } from './TextEditor.helpers';
 
 import 'react-quill/dist/quill.snow.css';

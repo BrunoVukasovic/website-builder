@@ -8,18 +8,21 @@ import { useSnackbar } from 'notistack';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import Flex from '../../../../components/Flex';
-import TextEditor from '../../../../components/TextEditor';
-import AddSegmentDropdownMenu from './AddSegmentDropdownMenu';
-import EditSegmentDropdownMenu from './EditSegmentDropdownMenu';
+import AddSegmentMenu from './AddSegmentMenu';
+import EditSegmentMenu from './EditSegmentMenu';
 import ImageSizePopover from './ImageSizePopover';
 import ImagePositionPopover from './ImagePositionPopover';
-import Modal from '../../../../components/Modal';
-import ColorPicker from '../../../../components/ColorPicker';
 
+import { Spinner, Flex, TextEditor, Modal, ColorPicker } from '../../../../components';
 import { selectCurrentPage } from '../../../../redux/selectors/site';
-import { setCurrentPageToCurrentSite, addPageSegment, deletePageSegment } from '../../../../redux/actions/site';
-import { setCurrentPage } from '../../../../redux/actions/site';
+import {
+  setCurrentPageToCurrentSite,
+  addPageSegment,
+  deletePageSegment,
+  setCurrentPage,
+  movePageSegmentForward,
+  movePageSegmentBackwards,
+} from '../../../../redux/actions/site';
 import { CurrentPage, PageSegment } from '../../../../models';
 import { DisplaySegment } from './PageConstructor.helpers';
 import { fileToBase64String } from '../../../../utils/shared';
@@ -29,22 +32,26 @@ import styles from './page_constructor.module.scss';
 
 export interface PageConstructorProps {
   page: CurrentPage;
-  siteBackgroundColor?: string;
 }
 
-const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundColor }) => {
+const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
   const [currentSegment, setCurrentSegment] = useState<PageSegment | undefined>(undefined);
   const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
-  const [addSegmentMenuOpen, setAddSegmentMenuOpen] = useState<boolean>(false);
-  const [textEditorOpen, setTextEditorOpen] = useState<boolean>(false);
-  const [imagePositionPopoverOpen, setImagePositionPopoverOpen] = useState<boolean>(false);
-  const [imageSizePopoverOpen, setImageSizePopoverOpen] = useState<boolean>(false);
-  const [deleteSegmentModalOpen, setDeleteSegmentModalOpen] = useState<boolean>(false);
+  const [addSegmentMenuOpen, toggleAddSegmentMenu] = useToggle(false);
+  const [textEditorOpen, toggleTextEditor] = useToggle(false);
+  const [imagePositionPopoverOpen, toggleImagePositionPopover] = useToggle(false);
+  const [imageSizePopoverOpen, toggleImageSizePopover] = useToggle(false);
+  const [deleteSegmentModalOpen, toggleDeleteSegmentModal] = useToggle(false);
   const [colorPickerPopoverOpen, toggleColorPickerPopover] = useToggle(false);
+
   const currentPage = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
+
+  const sortedSegments = React.useMemo(() => currentPage.container.sort((a, b) => a.position - b.position), [
+    currentPage.container,
+  ]);
 
   useEffect(() => {
     if (currentPage && currentPage.slug) {
@@ -55,10 +62,10 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
     } else {
       dispatch(setCurrentPage(page));
     }
-
-    return () => {
-      dispatch(setCurrentPageToCurrentSite());
-    };
+    //@NOTE vidi je li ovo potribno
+    // return () => {
+    //   dispatch(setCurrentPageToCurrentSite());
+    // };
   }, [page, currentPage, dispatch]);
 
   const deleteSegment = () => {
@@ -74,12 +81,23 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
 
   const handleAddImageClick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
+    let segmentPosition: number | undefined;
+
+    if (currentSegment) {
+      segmentPosition = currentSegment.position;
+
+      removeCurrentSegment();
+      dispatch(deletePageSegment(currentSegment.position));
+    }
 
     if (files && files[0].size < 500000) {
       try {
         const image = await fileToBase64String(files[0]);
-        dispatch(addPageSegment({ content: image, type: 'image' }));
-        toggleAddSegmentMenuOpen();
+        dispatch(addPageSegment({ content: image, type: 'image', position: segmentPosition }));
+
+        if (!segmentPosition) {
+          toggleAddSegmentMenu();
+        }
       } catch {
         enqueueSnackbar('Something went wrong while processing image. Please, try again.', { variant: 'error' });
       }
@@ -95,11 +113,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
 
   const handleAddSegmentMenuClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorElement(e.currentTarget);
-    toggleAddSegmentMenuOpen();
-  };
-
-  const handleChangeImageSize = () => {
-    toggleImageSizePopoverOpen();
+    toggleAddSegmentMenu();
   };
 
   const handleColorPickerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -120,36 +134,30 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
     }
   };
 
+  const handleMoveSegmentClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const { currentTarget } = e;
+
+    if (currentSegment) {
+      if (currentTarget.id === 'pageSegmentForward' && currentSegment.position < sortedSegments.length) {
+        dispatch(movePageSegmentForward(currentSegment.position));
+      } else if (currentTarget.id === 'pageSegmentBackwards' && currentSegment.position > 1) {
+        dispatch(movePageSegmentBackwards(currentSegment.position));
+      }
+    }
+
+    removeCurrentSegment();
+  };
+
   const handleTextEditorClose = () => {
     if (currentSegment) {
       removeCurrentSegment();
     }
 
-    toggleTextEditorOpen();
+    toggleTextEditor();
   };
 
   const removeCurrentSegment = () => {
     setCurrentSegment(undefined);
-  };
-
-  const toggleAddSegmentMenuOpen = () => {
-    setAddSegmentMenuOpen(!addSegmentMenuOpen);
-  };
-
-  const toggleDeleteSegmentModal = () => {
-    setDeleteSegmentModalOpen(!deleteSegmentModalOpen);
-  };
-
-  const toggleImagePositionPopoverOpen = () => {
-    setImagePositionPopoverOpen(!imagePositionPopoverOpen);
-  };
-
-  const toggleImageSizePopoverOpen = () => {
-    setImageSizePopoverOpen(!imageSizePopoverOpen);
-  };
-
-  const toggleTextEditorOpen = () => {
-    setTextEditorOpen(!textEditorOpen);
   };
 
   if (currentPage) {
@@ -161,7 +169,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
         flexOut
       >
         <Flex direction="column">
-          {currentPage.container.map((item) => (
+          {sortedSegments.map((item) => (
             <Flex key={item.content} alignSelf="flex-start" alignItems="center" className={styles.editableItem} fluid>
               <Flex
                 className={currentSegment && currentSegment.position === item.position ? styles.transparent : undefined}
@@ -192,23 +200,25 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
             </Flex>
           </Flex>
           {addSegmentMenuOpen && (
-            <AddSegmentDropdownMenu
+            <AddSegmentMenu
               anchorEl={anchorElement}
-              onClose={toggleAddSegmentMenuOpen}
-              onAddTextClick={toggleTextEditorOpen}
+              onClose={toggleAddSegmentMenu}
+              onAddTextClick={toggleTextEditor}
               onNotSupportedClick={handleNotSupportedClick}
               onImageInputChange={handleAddImageClick}
             />
           )}
           {currentSegment && (
-            <EditSegmentDropdownMenu
+            <EditSegmentMenu
               segmentType={currentSegment.type}
               anchorEl={anchorElement}
               transparent={imageSizePopoverOpen || imagePositionPopoverOpen}
               onClose={removeCurrentSegment}
-              onEditTextClick={toggleTextEditorOpen}
-              onChangeImagePositionClick={toggleImagePositionPopoverOpen}
-              onChangeImageSizeClick={toggleImageSizePopoverOpen}
+              onEditTextClick={toggleTextEditor}
+              onMoveSegmentClick={handleMoveSegmentClick}
+              onImageChange={handleAddImageClick}
+              onChangeImagePositionClick={toggleImagePositionPopover}
+              onChangeImageSizeClick={toggleImageSizePopover}
               onNotSupportedClick={handleNotSupportedClick}
               onDeleteSegmentClick={toggleDeleteSegmentModal}
             />
@@ -222,9 +232,9 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
               onClose={handleTextEditorClose}
             />
           )}
-          {imageSizePopoverOpen && currentSegment && (
+          {imageSizePopoverOpen && currentSegment && anchorElement && (
             <ImageSizePopover
-              onClose={toggleImageSizePopoverOpen}
+              onClose={toggleImageSizePopover}
               anchorElement={anchorElement}
               segment={{
                 position: currentSegment.position,
@@ -235,7 +245,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
           )}
           {imagePositionPopoverOpen && currentSegment && anchorElement && (
             <ImagePositionPopover
-              onClose={toggleImagePositionPopoverOpen}
+              onClose={toggleImagePositionPopover}
               anchorElement={anchorElement}
               segment={{
                 position: currentSegment.position,
@@ -269,7 +279,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page, siteBackgroundC
     );
   }
 
-  return <p>Loading</p>;
+  return <Spinner />;
 };
 
 export default PageConstructor;

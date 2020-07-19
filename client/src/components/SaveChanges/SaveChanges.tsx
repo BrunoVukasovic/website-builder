@@ -54,7 +54,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose }) => {
       const { logo, backgroundColor, menuIconColor } = navbar;
 
       payload.navbarData = {
-        ...(logo && { logo }),
+        logo,
         ...(backgroundColor && { backgroundColor }),
         ...(menuIconColor && { menuIconColor }),
       };

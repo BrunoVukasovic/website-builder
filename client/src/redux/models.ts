@@ -48,9 +48,10 @@ export interface RegisterFormValues {
   password: string;
 }
 
-export interface SegmentContentAndType {
+export interface AddSegmentActionPayload {
   content: string;
   type: 'text' | 'image';
+  position?: number;
 }
 
 export interface SlugAndId {

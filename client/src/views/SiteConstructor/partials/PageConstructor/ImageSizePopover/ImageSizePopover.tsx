@@ -11,6 +11,7 @@ import Input from '../../../../../components/Input';
 import { updateImageWidth, updateImageHeight } from '../../../../../redux/actions/site';
 
 import styles from './image_size_popover.module.scss';
+import { Plate } from '../../../../../components';
 
 export interface ImageSizePopoverProps {
   onClose: () => void;
@@ -19,7 +20,7 @@ export interface ImageSizePopoverProps {
     width?: string;
     height?: string;
   };
-  anchorElement?: HTMLElement;
+  anchorElement: HTMLElement;
   headerText?: string;
 }
 
@@ -63,19 +64,22 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
     const currentValue = parseInt(e.currentTarget.value, 10);
 
     if (currentValue < 101 && currentValue > 0) {
-      //@NOTE % of maxContentWidht = 68rem
+      //@NOTE maxContentWidht = 68rem
+      //@NOTE heightInRem = % of maxContentWidht
       const heightInRem = (currentValue / 100) * 68;
       dispatch(updateImageHeight({ height: `${heightInRem}rem`, position: segment.position }));
       setLastNonAutoHeight(e.currentTarget.value);
 
       if (showErrorMessage) {
         const widthInput = document.getElementById('widthInput') as HTMLInputElement | null;
-        if (widthInput) {
+        if (widthInput && widthInput.value) {
           const currentWidth = parseInt(widthInput.value, 10);
 
           if (currentWidth > 0 && currentWidth < 101) {
             setShowErrorMessage(false);
           }
+        } else {
+          setShowErrorMessage(false);
         }
       }
     } else {
@@ -92,12 +96,14 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
 
       if (showErrorMessage) {
         const heightInput = document.getElementById('heightInput') as HTMLInputElement | null;
-        if (heightInput) {
+        if (heightInput && heightInput.value) {
           const currentHeight = parseInt(heightInput.value, 10);
 
           if (currentHeight > 0 && currentHeight < 101) {
             setShowErrorMessage(false);
           }
+        } else {
+          setShowErrorMessage(false);
         }
       }
     } else {
@@ -106,14 +112,16 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
   };
 
   return (
-    <Popover open anchorEl={anchorElement} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-      <Flex direction="column" alignItems="flex-start" paper className={styles.container}>
-        <Flex fluid>
-          {headerText && <h3>{`${headerText}`}</h3>}
-          <IconButton aria-label="close" onClick={onClose} className={styles.closeButton}>
-            <CloseIcon />
-          </IconButton>
-        </Flex>
+    <>
+      <Plate
+        anchorElement={anchorElement}
+        headerText={headerText}
+        onClose={onClose}
+        showFooter
+        primaryButtonText="Close"
+        onPrimaryButtonClick={onClose}
+      >
+        {/* <Flex direction="column"> */}
         <Flex alignItems="center">
           <Flex alignItems="center" className={styles.rowTitleWrapper} flexOut>
             <p>Width</p>
@@ -168,13 +176,9 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
           </Flex>
         </Flex>
         {showErrorMessage && <p className={styles.errorMessage}>Width and height value must be between 1 and 100</p>}
-        <Flex justifyContent="flex-end" className={styles.buttonWrapper} fluid>
-          <Button color="primary" variant="contained" onClick={onClose}>
-            Close
-          </Button>
-        </Flex>
-      </Flex>
-    </Popover>
+        {/* </Flex> */}
+      </Plate>
+    </>
   );
 };
 
