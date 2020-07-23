@@ -42,7 +42,8 @@ export const AuthProvider: React.FC = ({ children }) => {
           dispatch(setUser(userData));
           setIsAuth(true);
         } catch (error) {
-          console.log(error);
+          //@NOTE provjeri je li negdi uzrokuje error
+          localStorage.removeItem('token');
         }
       };
 

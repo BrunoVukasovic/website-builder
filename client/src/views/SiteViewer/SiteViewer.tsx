@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-import { useParams, Redirect } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useToggle } from 'react-use';
 
 import SiteService from '../../services/SiteService';
 import Flex from '../../components/Flex';
@@ -15,16 +16,22 @@ import { setSite } from '../../redux/actions/site';
 import { selectCurrentSite } from '../../redux/selectors/site';
 import { defaultSite, emptyPage } from '../SiteConstructor/Site.helpers';
 import { useAuth } from '../../utils/AuthContext';
-import { Spinner } from '../../components';
+import { Spinner, MainMenu } from '../../components';
 
 const SiteConstructor: React.FC = () => {
-  const [notFound, setNotFound] = useState<boolean>(false);
+  const [mainMenuOpen, toggleMainMenu] = useToggle(false);
+  const [notFound, toggleNotFound] = useToggle(false);
   const params = useParams<{ site: string; page: string }>();
   const currentSite = useSelector(selectCurrentSite);
   const dispatch = useDispatch();
+  const history = useHistory();
   const { initUserData, isAuth } = useAuth();
 
   useEffect(() => {
+    if (!isAuth) {
+      initUserData();
+    }
+
     if (params.site) {
       if (params.site !== currentSite.slug) {
         if (params.site === 'new-website') {
@@ -32,15 +39,11 @@ const SiteConstructor: React.FC = () => {
         } else {
           const callApi = async () => {
             try {
-              if (!isAuth) {
-                initUserData();
-              }
-
               const site = await SiteService.getSite(params.site);
 
               dispatch(setSite({ ...site, currentPage: emptyPage }));
             } catch (err) {
-              setNotFound(true);
+              toggleNotFound(true);
             }
           };
 
@@ -50,7 +53,7 @@ const SiteConstructor: React.FC = () => {
     } else {
       dispatch(setSite(defaultSite));
     }
-  }, [params.site, dispatch, initUserData, isAuth]);
+  }, [params.site, dispatch, initUserData, isAuth, currentSite.slug, toggleNotFound]);
 
   const slugsAndNames = React.useMemo(() => {
     return currentSite.pages.map((page) => {
@@ -71,19 +74,14 @@ const SiteConstructor: React.FC = () => {
     }
 
     return currentSite.pages[0];
-    // const activePage = currentSite.pages.find((page) => page.slug === params.page);
-
-    // if (!activePage) {
-    //   return currentSite.pages[0];
-    // }
-
-    // return activePage;
   }, [currentSite.pages, params.page]);
 
   const handleEditClick = () => {
     const url = `${window.location.origin}/edit/${params.site}/${params.page ? params.page : ''}`;
     window.open(url, '_blank');
   };
+
+  const handleLoginClick = () => history.push('/action/auth');
 
   if (currentSite && activePage) {
     return (
@@ -97,7 +95,10 @@ const SiteConstructor: React.FC = () => {
           />
           <PageViewer pageContainer={activePage.container} backgroundColor={activePage.backgroundColor} />
         </SiteContainer>
-        {currentSite.shouldAllowEditing && <Footer primaryBtnText="Edit" onPrimaryBtnClick={handleEditClick} />}
+        {currentSite.shouldAllowEditing && (
+          <Footer showMenu onMenuClick={toggleMainMenu} primaryBtnText="Edit" onPrimaryBtnClick={handleEditClick} />
+        )}
+        {mainMenuOpen && <MainMenu onLoginClick={handleLoginClick} onClose={toggleMainMenu} />}
       </Flex>
     );
   }

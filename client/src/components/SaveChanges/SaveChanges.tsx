@@ -71,7 +71,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose }) => {
     const callApi = async () => {
       try {
         const updatedSite = await SiteService.updateSite(currentSite.oldSlug, payload);
-        console.log(payload);
+
         if (errorMessage) {
           setErrorMessage('');
         }

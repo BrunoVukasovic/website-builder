@@ -1,12 +1,9 @@
 import React from 'react';
-import CloseIcon from '@material-ui/icons/Close';
 
-import { Button, Popover, IconButton } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
-import { Flex } from '../../../../../components';
-import Plate from '../../../../../components/Plate';
-
+import { Flex, Plate } from '../../../../../components';
 import { updateSegmentHorizontalPosition } from '../../../../../redux/actions/site';
 
 import styles from './image_position_popover.module.scss';

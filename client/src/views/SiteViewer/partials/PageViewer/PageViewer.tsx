@@ -34,7 +34,7 @@ const PageViewer: React.FC<PageViewerProps> = ({ pageContainer, backgroundColor 
                 alignItems="center"
                 fluid
               >
-                <img style={style ? style.content : {}} className={styles.imageSegment} src={content} />
+                <img style={style ? style.content : {}} className={styles.imageSegment} src={content} alt="" />
               </Flex>
             );
           default:

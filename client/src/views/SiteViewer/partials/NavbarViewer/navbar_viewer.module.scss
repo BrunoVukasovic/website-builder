@@ -7,6 +7,10 @@
   .navbarItemsWrapper {
     overflow-x: scroll;
 
+    .logo {
+      max-width: 6rem;
+    }
+
     .link {
       text-decoration: none;
       margin-right: 1rem;
@@ -20,6 +24,10 @@
 
         &.active {
           font-weight: bold;
+        }
+
+        & > p {
+          color: black;
         }
       }
     }

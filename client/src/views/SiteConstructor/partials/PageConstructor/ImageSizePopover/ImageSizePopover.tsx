@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
-import CloseIcon from '@material-ui/icons/Close';
 import Switch from '@material-ui/core/Switch';
 
-import { Button, Popover, IconButton, InputAdornment } from '@material-ui/core';
+import { InputAdornment } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
-import Flex from '../../../../../components/Flex';
-import Input from '../../../../../components/Input';
-
+import { Plate, Input, Flex } from '../../../../../components';
 import { updateImageWidth, updateImageHeight } from '../../../../../redux/actions/site';
 
 import styles from './image_size_popover.module.scss';
-import { Plate } from '../../../../../components';
 
 export interface ImageSizePopoverProps {
   onClose: () => void;
@@ -29,7 +25,7 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
   const [lastNonAutoWidth, setLastNonAutoWidth] = useState<string>(segment.width || '50');
   const [lastNonAutoHeight, setLastNonAutoHeight] = useState<string>(segment.width || '50');
   const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
-  const [autoHeight, setAutoHeight] = useState<boolean | undefined>(!segment.height) || segment.height == 'auto';
+  const [autoHeight, setAutoHeight] = useState<boolean | undefined>(!segment.height) || segment.height === 'auto';
   const dispatch = useDispatch();
 
   const handleHeightCheckboxChange = () => {

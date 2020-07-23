@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 import SiteModel, { SiteDocument } from './SiteModel';
 import NavbarModel from '../Navbar';
@@ -32,7 +32,6 @@ const SiteController = {
         res.status(201).send();
       }
     } catch (err) {
-      console.log(err);
       res.status(500).send('Something went wrong, please try again.');
     }
   },
@@ -77,13 +76,9 @@ const SiteController = {
 
       if (site) {
         const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
-        // @TODO extract to PageController.findAllBySiteIDAndSort
-        // const pages: Page[] = await PageModel.find({ siteID: site._id }).select('-siteID -__v');
-        // pages.sort((a, b) => a.position - b.position);
         const sortedPages = await PageController.findAllAndSort(site._id);
 
         if (navbar && sortedPages) {
-          // @TODO remove oldSlug from GetSiteRes
           const payload: GetSiteRes = {
             currentSite: {
               title: site.title,
@@ -136,7 +131,6 @@ const SiteController = {
   },
   updateSite: async (req: Request, res: Response) => {
     const { siteData, pagesData, navbarData } = req.body as UpdateSiteReq;
-    // const { slug } = req.params;
     const { user, site } = (req as unknown) as { user: DecodedToken | undefined; site: SiteDocument };
 
     if (!siteData && !pagesData && !navbarData) {
@@ -159,10 +153,7 @@ const SiteController = {
       const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
       const sortedPages = await PageController.findAllAndSort(site._id);
 
-      console.log(sortedPages);
-
       if (navbar && sortedPages) {
-        console.log(navbar);
         const payload: CurrentSite = {
           title: site.title,
           slug: site.slug,
@@ -177,7 +168,6 @@ const SiteController = {
         res.status(500).send('Something went wrong');
       }
     } catch (error) {
-      console.log(error);
       res.status(500).send("Couldn't update site");
     }
   },

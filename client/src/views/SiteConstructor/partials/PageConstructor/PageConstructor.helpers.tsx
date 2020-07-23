@@ -35,7 +35,7 @@ export const DisplaySegment: React.FC<DisplaySegmentProps> = ({ segment }) => {
     case 'image':
       return (
         <Flex justifyContent={segment.style?.wrapper?.position} flexOut>
-          <img style={segment.style?.content} className={styles.imageSegment} src={segment.content} />
+          <img style={segment.style?.content} className={styles.imageSegment} src={segment.content} alt="" />
         </Flex>
       );
     default:

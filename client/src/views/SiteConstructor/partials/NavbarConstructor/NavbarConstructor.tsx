@@ -18,7 +18,7 @@ import EditItemMenu from './EditItemMenu';
 import FlyoutNavbar from './FlyoutNavbar';
 
 import { Modal, Flex, TextEditor, ColorPicker } from '../../../../components';
-import { Menu } from '../../../../components/Icons';
+import { MenuIcon } from '../../../../components/Icons';
 import { Navbar } from '../../../../models';
 import {
   deletePage,
@@ -32,14 +32,14 @@ import { fileToBase64String } from '../../../../utils/shared';
 
 import styles from './navbar_constructor.module.scss';
 
-export type CurrentEditingItem = {
+export type PageData = {
   slug: string;
   name: string;
   position: number;
   id?: string;
 };
 export interface NavbarConstructorProps {
-  pagesData: CurrentEditingItem[];
+  pagesData: PageData[];
   activePageSlug: string;
   acitvePagePosition: number;
   siteSlug: string;
@@ -53,7 +53,7 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({
   activePageSlug,
   acitvePagePosition,
 }) => {
-  const [currentEditingItem, setCurrentEditingItem] = useState<CurrentEditingItem | undefined>(undefined);
+  const [currentEditingItem, setCurrentEditingItem] = useState<PageData | undefined>(undefined);
   const [shouldColorMenuIcon, toggleShouldColorMenuIcon] = useToggle(false);
   const [anchorElement, setAnchorElement] = useState<HTMLElement | undefined>(undefined);
   const [textEditorOpen, toggleTextEditor] = useToggle(false);
@@ -204,7 +204,7 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({
         </Flex>
       </Flex>
       <Flex alignItems="center" className={styles.menuIconWrapper} onClick={toggleFlyoutNavbar}>
-        <Menu
+        <MenuIcon
           style={{ fill: navbarData.menuIconColor ? navbarData.menuIconColor : '#000000' }}
           className={styles.menuIcon}
         />
@@ -218,6 +218,7 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({
             anchorElement={anchorElement}
             initialValue={currentEditingItem && currentEditingItem.name}
             oldSlug={currentEditingItem && currentEditingItem.slug}
+            pages={pagesData}
           />
         </Flex>
       )}
@@ -281,7 +282,7 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({
           onPrimaryButtonClick={handleDeletePage}
         >
           <p>{`${t('Will be deleted', {
-            subject: currentEditingItem.name.replace(/\s?\<[^>]+\>/g, ''),
+            subject: currentEditingItem.name.replace(/\s?<[^>]+>/g, ''),
           })} ${t('This action cannot be undone')}`}</p>
         </Modal>
       )}

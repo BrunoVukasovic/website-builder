@@ -2,9 +2,7 @@ import React from 'react';
 
 import NotFound from '../NotFound';
 
-import { Auth, Flex, SaveChanges, SiteTitleForm } from '../../components';
-
-import styles from './action_container.module.scss';
+import { Auth, SaveChanges, SiteTitleForm } from '../../components';
 import { CurrentSiteState } from '../../redux/models';
 
 export interface ActionProps {

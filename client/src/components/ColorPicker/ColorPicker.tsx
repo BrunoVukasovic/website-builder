@@ -22,7 +22,6 @@ import {
 } from '../../redux/actions/site';
 
 import styles from './color_picker.module.scss';
-import Toggle from '../Toggle/Toggle';
 
 export interface ColorPickerProps {
   anchorElement: HTMLElement;

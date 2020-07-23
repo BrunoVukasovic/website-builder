@@ -1,3 +1,3 @@
-import Menu from './Menu';
+import MenuIcon from './Menu';
 
-export default Menu;
+export default MenuIcon;

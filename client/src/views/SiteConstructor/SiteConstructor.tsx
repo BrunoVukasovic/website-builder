@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useSnackbar } from 'notistack';
-import { useParams, Redirect } from 'react-router-dom';
+import { useParams, Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToggle } from 'react-use';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +21,6 @@ import { useAuth } from '../../utils/AuthContext';
 const SiteConstructor: React.FC = () => {
   const [shouldSaveChanges, toggleShouldSaveChanges] = useToggle(false);
   const [mainMenuOpen, toggleMainMenu] = useToggle(false);
-  const [authModalOpen, toggleAuthModal] = useToggle(false);
   const [deleteSiteModalOpen, toggleDeleteSiteModal] = useToggle(false);
   const [notFound, setNotFound] = useState<boolean>(false);
 
@@ -29,6 +28,7 @@ const SiteConstructor: React.FC = () => {
   const user = useSelector(selectUserReducerValues);
   const params = useParams<{ site: string; page: string }>();
   const dispatch = useDispatch();
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const { initUserData, isAuth } = useAuth();
   const { t } = useTranslation();
@@ -46,10 +46,10 @@ const SiteConstructor: React.FC = () => {
           const callApi = async () => {
             try {
               const site = await SiteService.getSite(params.site);
-              console.log(site.currentSite.navbar);
-              if (site) {
-                dispatch(setSite({ ...site, currentPage: emptyPage }));
-              }
+
+              // if (site) {
+              dispatch(setSite({ ...site, currentPage: emptyPage }));
+              // }
             } catch (err) {
               setNotFound(true);
             }
@@ -115,10 +115,7 @@ const SiteConstructor: React.FC = () => {
     callApi();
   };
 
-  const handleLoginClick = () => {
-    toggleAuthModal();
-    toggleMainMenu();
-  };
+  const handleLoginClick = () => history.push('/action/auth');
 
   const handleSaveChangesClick = () => {
     dispatch(setCurrentPageToCurrentSite());
@@ -154,7 +151,6 @@ const SiteConstructor: React.FC = () => {
             onDeleteSiteClick={toggleDeleteSiteModal}
           />
         )}
-        {authModalOpen && <Redirect to="/action/auth" />}
         {deleteSiteModalOpen && (
           <Modal
             onClose={toggleDeleteSiteModal}

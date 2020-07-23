@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 
 import { useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
 
 import { Plate } from '../';
-
+import { PageData } from '../../views/SiteConstructor/partials/NavbarConstructor';
 import { updateCurrentPageSegment, addNewPage, addPageSegment, updatePageName } from '../../redux/actions/site';
 import { modules, formats } from './TextEditor.helpers';
 
@@ -19,6 +20,7 @@ export interface TextEditorProps {
   initialValue?: string;
   headerText?: string;
   oldSlug?: string;
+  pages?: PageData[];
 }
 
 const TextEditor: React.FC<TextEditorProps> = ({
@@ -29,9 +31,11 @@ const TextEditor: React.FC<TextEditorProps> = ({
   anchorElement,
   headerText,
   oldSlug,
+  pages,
 }) => {
   const [text, setText] = useState<string>(initialValue || '');
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const onTextValueChange = (value: string) => {
     setText(value);
@@ -40,28 +44,36 @@ const TextEditor: React.FC<TextEditorProps> = ({
   const handleSave = () => {
     switch (objective) {
       case 'addPage':
-        dispatch(
-          addNewPage({
-            title: text,
-            slug: text
-              .replace(/(<([^>]+)>)/gi, '')
-              .replace(/[^a-zA-Z0-9]/g, '-')
-              .toLowerCase(),
-          })
-        );
+        if (pages && pages.find((page) => page.name === text)) {
+          enqueueSnackbar('Page with the same name already exist.', { variant: 'error' });
+        } else {
+          dispatch(
+            addNewPage({
+              title: text,
+              slug: text
+                .replace(/(<([^>]+)>)/gi, '')
+                .replace(/[^a-zA-Z0-9]/g, '-')
+                .toLowerCase(),
+            })
+          );
+        }
         break;
       case 'updatePageName':
-        dispatch(
-          updatePageName({
-            name: text,
-            slug: text
-              .replace(/(<([^>]+)>)/gi, '')
-              .replace(/[^a-zA-Z0-9]/g, '-')
-              .toLowerCase(),
-            //@ts-ignore
-            oldSlug,
-          })
-        );
+        if (pages && text !== initialValue && pages.find((page) => page.name === text)) {
+          enqueueSnackbar('Page with the same name already exist.', { variant: 'error' });
+        } else {
+          dispatch(
+            updatePageName({
+              name: text,
+              slug: text
+                .replace(/(<([^>]+)>)/gi, '')
+                .replace(/[^a-zA-Z0-9]/g, '-')
+                .toLowerCase(),
+              //@ts-ignore
+              oldSlug,
+            })
+          );
+        }
         break;
       case 'addSegment':
         dispatch(
