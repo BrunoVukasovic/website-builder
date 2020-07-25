@@ -10,7 +10,8 @@
   }
 
   .imageSegment {
-    max-width: 60rem;
+    max-width: 100%;
+    align-self: flex-start;
     margin-bottom: 2rem;
   }
 }

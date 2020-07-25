@@ -52,8 +52,8 @@ const SiteTitleForm: React.FC<WithInjectedFormProps> = ({
       try {
         const slug = url.slice(url.lastIndexOf('/') + 1);
 
-        if (slug === 'new-website') {
-          throw new Error('new-website');
+        if (slug === 'new-website' || slug === 'edit') {
+          throw new Error('keyword');
         }
 
         if (currentSlug === 'new-website') {
@@ -66,7 +66,7 @@ const SiteTitleForm: React.FC<WithInjectedFormProps> = ({
           history.push(`/edit/${slug}`);
         }
       } catch (error) {
-        if ((error.response && error.response.status === 409) || error.message === 'new-website') {
+        if ((error.response && error.response.status === 409) || error.message === 'keyword') {
           throw new SubmissionError({ title: t('Error.Title already exist') });
         } else {
           enqueueSnackbar(t('Error.Something went wrong'), { variant: 'error' });
