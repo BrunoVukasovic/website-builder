@@ -10,9 +10,9 @@ import Footer from '../../components/Footer';
 
 import { useAuth } from '../../utils/AuthContext';
 import { selectCurrentSite } from '../../redux/selectors/site';
+import { Action } from './ActionContainer.helpers';
 
 import styles from './action_container.module.scss';
-import { Action } from './ActionContainer.helpers';
 
 const ActionContainer: React.FC = () => {
   const currentSite = useSelector(selectCurrentSite);
@@ -31,7 +31,7 @@ const ActionContainer: React.FC = () => {
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer className={styles.siteContainer}>
           <Flex direction="column" className={styles.actionWrapper}>
-            <Auth />
+            <Auth shouldRedirect />
           </Flex>
         </SiteContainer>
         <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} isOutlined />
@@ -47,6 +47,8 @@ const ActionContainer: React.FC = () => {
             type={params.action}
             currentSite={currentSite}
             redirectToSiteConstructor={redirectToSiteConstructor}
+            isAuth={isAuth}
+            className={styles.action}
           />
         </Flex>
       </SiteContainer>

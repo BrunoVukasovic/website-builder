@@ -90,7 +90,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
       dispatch(deletePageSegment(currentSegment.position));
     }
 
-    if (files && files[0].size < 500000) {
+    if (files && files[0].size < 4194304) {
       try {
         const image = await fileToBase64String(files[0]);
         dispatch(addPageSegment({ content: image, type: 'image', position: segmentPosition }));
@@ -103,7 +103,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
       }
     } else {
       enqueueSnackbar(
-        `Maximum size per image is 500 KB. This image has ${files && Math.round(files[0].size / 100)} KB`,
+        `Maximum size per image is 3 MB. This image has ${files && Math.round(files[0].size / 1000000)} MB`,
         {
           variant: 'error',
         }

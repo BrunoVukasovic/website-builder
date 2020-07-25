@@ -19,11 +19,18 @@ import styles from './login.module.scss';
 export interface LoginFormProps {
   onRegisterClick: () => void;
   shouldRedirect?: boolean;
+  className?: string;
 }
 
 type WithInjectedFormProps = InjectedFormProps<LoginFormValues, LoginFormProps> & LoginFormProps;
 
-const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onRegisterClick, shouldRedirect }) => {
+const LoginForm: React.FC<WithInjectedFormProps> = ({
+  handleSubmit,
+  error,
+  onRegisterClick,
+  shouldRedirect,
+  className,
+}) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
   const { t } = useTranslation();
@@ -55,7 +62,7 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, error, onReg
   );
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" className={className}>
       <h2>{`${t('Login')}:`}</h2>
       <Form<LoginFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>
         <Flex direction="column" alignItems="flex-start">

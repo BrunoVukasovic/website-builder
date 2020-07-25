@@ -1,0 +1,33 @@
+@import '../../styles/variables';
+
+.actionsWrapper {
+  margin-top: 0.5rem;
+  border-top: 0.0625rem solid $grey;
+
+  .singleActionWrapper {
+    padding: 0 4rem;
+
+    &:not(:last-of-type) {
+      border-right: 0.0625rem solid $grey;
+    }
+
+    .link {
+      text-decoration: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .actionsWrapper {
+    flex-direction: column;
+
+    .singleActionWrapper {
+      padding: 0 0 2rem 0;
+
+      &:not(:last-of-type) {
+        border-right: none;
+        border-bottom: 0.0625rem solid $grey;
+      }
+    }
+  }
+}

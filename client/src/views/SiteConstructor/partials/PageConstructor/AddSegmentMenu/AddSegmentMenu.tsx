@@ -51,9 +51,6 @@ const AddSegmentMenu: React.FC<AddSegmentMenuProps> = ({
               Add image
             </label>
           </Button>
-          <Button color="primary" size="medium" onClick={onNotSupportedClick} className={styles.dropdownMenuBtn}>
-            Add form
-          </Button>
         </Flex>
       </li>
     </Menu>

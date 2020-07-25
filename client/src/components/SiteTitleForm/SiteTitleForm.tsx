@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 
 import { useHistory } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
@@ -22,6 +23,7 @@ export interface SiteTitleFormProps {
   currentSlug: string;
   submitButtonText: string;
   initialValues?: { title: string; url: string };
+  className?: string;
 }
 
 type WithInjectedFormProps = InjectedFormProps<SiteTitleFormValues, SiteTitleFormProps> & SiteTitleFormProps;
@@ -31,6 +33,7 @@ const SiteTitleForm: React.FC<WithInjectedFormProps> = ({
   onCancelClick,
   currentSlug,
   submitButtonText,
+  className,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -74,7 +77,7 @@ const SiteTitleForm: React.FC<WithInjectedFormProps> = ({
   );
 
   return (
-    <Flex direction="column" className={styles.siteTitleFormWrapper}>
+    <Flex direction="column" className={cx(styles.siteTitleFormWrapper, className)}>
       <h2 className={styles.heading}>{t('Choose a title for your site')}</h2>
       <p>{t('Link will be generated based on the title')}</p>
       <Form<SiteTitleFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>

@@ -19,9 +19,10 @@ import styles from './save_changes.module.scss';
 export interface SaveChangesProps {
   currentSite: CurrentSiteState;
   onClose: () => void;
+  className?: string;
 }
 
-const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose }) => {
+const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose, className }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isSiteUpdated, setIsSiteUpdated] = useState<boolean>(false);
   const { t } = useTranslation();
@@ -92,7 +93,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose }) => {
 
   if (isSiteUpdated) {
     return (
-      <Flex direction="column">
+      <Flex direction="column" className={className}>
         <CloudDoneIcon color="primary" className={styles.successIcon} />
         <h2>{`${t('Changes saved successfully!')}`}</h2>
         <p>{`${t('Anyone can view the website')}`}</p>
@@ -117,7 +118,7 @@ const SaveChanges: React.FC<SaveChangesProps> = ({ currentSite, onClose }) => {
 
   if (errorMessage) {
     return (
-      <Flex direction="column" alignItems="center">
+      <Flex direction="column" alignItems="center" className={className}>
         <MoodBadIcon color="primary" className={styles.successIcon} />
         <h2 className={styles.errorText}>{t(errorMessage)}</h2>
         <Button size="large" type="submit" variant="contained" color="primary" onClick={onClose}>

@@ -19,11 +19,12 @@ import styles from './register.module.scss';
 export interface RegisterProps {
   onGoBackClick: () => void;
   shouldRedirect?: boolean;
+  className?: string;
 }
 
 type WithInjectedFormProps = InjectedFormProps<RegisterFormValues, RegisterProps> & RegisterProps;
 
-const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick, shouldRedirect }) => {
+const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick, shouldRedirect, className }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
   const { t } = useTranslation();
@@ -57,7 +58,7 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackC
   );
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" className={className}>
       <h2>{`${t('Register')}:`}</h2>
       <Form<RegisterFormValues> onSubmit={handleSubmit(onSubmit)} className={styles.editFormWrapper}>
         <Flex direction="column" alignItems="flex-start">
