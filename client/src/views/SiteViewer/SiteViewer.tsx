@@ -36,6 +36,7 @@ const SiteConstructor: React.FC = () => {
       if (params.site !== currentSite.slug) {
         if (params.site === 'new-website') {
           dispatch(setSite(defaultSite));
+          history.push('/edit/new-website');
         } else {
           const callApi = async () => {
             try {
