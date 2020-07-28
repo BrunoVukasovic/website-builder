@@ -73,6 +73,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
       dispatch(deletePageSegment(currentSegment.position));
       setCurrentSegment(undefined);
     }
+    toggleDeleteSegmentModal();
   };
 
   const handleNotSupportedClick = () => {

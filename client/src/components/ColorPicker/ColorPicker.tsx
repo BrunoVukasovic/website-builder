@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
 import { useToggle } from 'react-use';
-
+import { useSnackbar } from 'notistack';
 import { SketchPicker, ColorResult } from 'react-color';
-import { Switch } from '@material-ui/core';
+import { Checkbox } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { Flex, Plate } from '../';
 
@@ -29,20 +30,14 @@ export interface ColorPickerProps {
   onClose: () => void;
   initialValue?: string;
   headerText?: string;
-  // firstToggleOption?: string;
 }
 
-const ColorPicker: React.FC<ColorPickerProps> = ({
-  coloredArea,
-  onClose,
-  initialValue,
-  anchorElement,
-  headerText,
-  // firstToggleOption,
-}) => {
+const ColorPicker: React.FC<ColorPickerProps> = ({ coloredArea, onClose, initialValue, anchorElement, headerText }) => {
   const [shouldColorAllPages, toggleShouldColorAllPages] = useToggle(false);
   const [color, setColor] = useState<string | undefined>(initialValue);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation();
 
   const handleColorChange = (color: ColorResult) => {
     setColor(color.hex);
@@ -58,7 +53,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         dispatch(changePageColor(color.hex));
         break;
       default:
-      // @TODO show notistack error, couldn't save
+        enqueueSnackbar(t('Error.Something went wrong'), { variant: 'error' });
     }
   };
 
@@ -74,7 +69,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         dispatch(undoPageColorChange());
         break;
       default:
-      // @TODO show notistack error, couldn't save
+        enqueueSnackbar(t('Error.Something went wrong'), { variant: 'error' });
     }
 
     onClose();
@@ -92,7 +87,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         shouldColorAllPages ? dispatch(updateAllPagesColor()) : dispatch(updateInitialPageColor());
         break;
       default:
-      // @TODO show notistack error, couldn't save
+        enqueueSnackbar(t('Error.Something went wrong'), { variant: 'error' });
     }
 
     onClose();
@@ -109,9 +104,14 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     >
       <Flex direction="column" className={styles.colorPickerWrapper}>
         {coloredArea === 'page' && (
-          <Flex alignItems="center" justifyContent="center" className={styles.switchWrapper}>
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            onClick={toggleShouldColorAllPages}
+            className={styles.switchWrapper}
+          >
             <p>Apply to all pages</p>
-            <Switch checked={shouldColorAllPages} onChange={toggleShouldColorAllPages} color="primary" />
+            <Checkbox checked={shouldColorAllPages} name="colorAllPages" color="primary" />
           </Flex>
         )}
         <SketchPicker color={color} onChange={handleColorChange} disableAlpha />

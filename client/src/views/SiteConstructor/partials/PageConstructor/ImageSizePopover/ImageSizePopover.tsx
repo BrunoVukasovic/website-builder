@@ -117,7 +117,6 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
         primaryButtonText="Close"
         onPrimaryButtonClick={onClose}
       >
-        {/* <Flex direction="column"> */}
         <Flex alignItems="center">
           <Flex alignItems="center" className={styles.rowTitleWrapper} flexOut>
             <p>Width</p>
@@ -137,13 +136,13 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
               error={showErrorMessage}
             />
           </Flex>
-          <Flex direction="column" alignItems="center" className={styles.autoWrapper}>
-            <Switch
-              // checked={!segment.width || segment.width === 'auto'}
-              checked={autoWidth}
-              onChange={handleWidthCheckboxChange}
-              color="primary"
-            />
+          <Flex
+            direction="column"
+            alignItems="center"
+            onClick={handleWidthCheckboxChange}
+            className={styles.autoWrapper}
+          >
+            <Switch checked={autoWidth} onChange={handleWidthCheckboxChange} color="primary" />
             <p>Automatic</p>
           </Flex>
         </Flex>
@@ -166,13 +165,17 @@ const ImageSizePopover: React.FC<ImageSizePopoverProps> = ({ segment, anchorElem
               error={showErrorMessage}
             />
           </Flex>
-          <Flex direction="column" alignItems="center" className={styles.autoWrapper}>
+          <Flex
+            direction="column"
+            alignItems="center"
+            onClick={handleHeightCheckboxChange}
+            className={styles.autoWrapper}
+          >
             <Switch checked={autoHeight} onChange={handleHeightCheckboxChange} color="primary" />
             <p>Automatic</p>
           </Flex>
         </Flex>
         {showErrorMessage && <p className={styles.errorMessage}>Width and height value must be between 1 and 100</p>}
-        {/* </Flex> */}
       </Plate>
     </>
   );
