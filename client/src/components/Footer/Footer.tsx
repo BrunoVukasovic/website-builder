@@ -43,7 +43,7 @@ const Footer: React.FC<FooterProps> = ({ onPrimaryBtnClick, primaryBtnText, onMe
         className={isOutlined ? styles.outlined : ''}
         startIcon={primaryBtnText ? <EditIcon /> : <SaveIcon />}
       >
-        {primaryBtnText ? `${primaryBtnText}` : `${t('Save changes')}`}
+        {primaryBtnText ? `${t(primaryBtnText)}` : `${t('Save changes')}`}
       </Button>
     </Flex>
   );

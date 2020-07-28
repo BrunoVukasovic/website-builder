@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Menu, Button } from '@material-ui/core';
 import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../../../../components/Flex';
 
@@ -22,6 +23,8 @@ const AddItemMenu: React.FC<AddItemMenuProps> = ({
   onLogoInputChange,
   MenuProps,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -35,7 +38,7 @@ const AddItemMenu: React.FC<AddItemMenuProps> = ({
       <li>
         <Flex fluid direction="column" className={styles.buttonWrapper}>
           <Button onClick={onAddPageClick} color="primary" size="small" className={styles.dropdownMenuBtn}>
-            Add page
+            {t('Add page')}
           </Button>
           <input
             id="addLogoInput"
@@ -46,7 +49,7 @@ const AddItemMenu: React.FC<AddItemMenuProps> = ({
           />
           <Button color="primary" size="small" className={styles.dropdownMenuBtn}>
             <label htmlFor="addLogoInput" className={styles.addImageLabel}>
-              Add logo
+              {t('Add logo')}
             </label>
           </Button>
         </Flex>

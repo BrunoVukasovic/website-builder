@@ -76,10 +76,6 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
     toggleDeleteSegmentModal();
   };
 
-  const handleNotSupportedClick = () => {
-    enqueueSnackbar('This feature is not implemented yet.', { variant: 'error' });
-  };
-
   const handleAddImageClick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     let segmentPosition: number | undefined;
@@ -100,11 +96,13 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
           toggleAddSegmentMenu();
         }
       } catch {
-        enqueueSnackbar('Something went wrong while processing image. Please, try again.', { variant: 'error' });
+        enqueueSnackbar(t('Error.Something went wrong'), { variant: 'error' });
       }
     } else {
       enqueueSnackbar(
-        `Maximum size per image is 3 MB. This image has ${files && Math.round(files[0].size / 1000000)} MB`,
+        `${t('Error.Maximum size', {
+          size: files && Math.round(files[0].size / 1000000),
+        })}`,
         {
           variant: 'error',
         }
@@ -205,7 +203,6 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               anchorEl={anchorElement}
               onClose={toggleAddSegmentMenu}
               onAddTextClick={toggleTextEditor}
-              onNotSupportedClick={handleNotSupportedClick}
               onImageInputChange={handleAddImageClick}
             />
           )}
@@ -220,7 +217,6 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
               onImageChange={handleAddImageClick}
               onChangeImagePositionClick={toggleImagePositionPopover}
               onChangeImageSizeClick={toggleImageSizePopover}
-              onNotSupportedClick={handleNotSupportedClick}
               onDeleteSegmentClick={toggleDeleteSegmentModal}
             />
           )}
@@ -257,7 +253,7 @@ const PageConstructor: React.FC<PageConstructorProps> = ({ page }) => {
           {deleteSegmentModalOpen && currentSegment && (
             <Modal
               onClose={toggleDeleteSegmentModal}
-              headerText="Delete page segment?"
+              headerText="Delete page segment"
               showFooter
               primaryButtonText="Delete"
               secondaryButtonText="Close"

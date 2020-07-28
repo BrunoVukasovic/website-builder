@@ -110,7 +110,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ coloredArea, onClose, initial
             onClick={toggleShouldColorAllPages}
             className={styles.switchWrapper}
           >
-            <p>Apply to all pages</p>
+            <p>{t('Apply to all pages')}</p>
             <Checkbox checked={shouldColorAllPages} name="colorAllPages" color="primary" />
           </Flex>
         )}

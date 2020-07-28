@@ -8,6 +8,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 import { Menu, Button } from '@material-ui/core';
 import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../../../../components/Flex';
 
@@ -40,6 +41,8 @@ const EditItemMenu: React.FC<EditItemMenuProps> = ({
   isRow,
   isLogo,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -63,7 +66,7 @@ const EditItemMenu: React.FC<EditItemMenuProps> = ({
               />
               <Button color="primary" size="small" className={styles.dropdownMenuBtn}>
                 <label htmlFor="changeLogoInput" className={styles.addImageLabel}>
-                  Change logo
+                  {t('Change logo')}
                 </label>
               </Button>
               <Button
@@ -73,7 +76,7 @@ const EditItemMenu: React.FC<EditItemMenuProps> = ({
                 startIcon={<DeleteForeverIcon />}
                 className={styles.dropdownMenuBtn}
               >
-                Delete
+                {t('Delete')}
               </Button>
             </>
           ) : (
@@ -85,7 +88,7 @@ const EditItemMenu: React.FC<EditItemMenuProps> = ({
                 startIcon={<EditIcon />}
                 className={styles.dropdownMenuBtn}
               >
-                Edit
+                {t('Edit')}
               </Button>
               <Button
                 id="navbarItemBackwards"
@@ -95,7 +98,7 @@ const EditItemMenu: React.FC<EditItemMenuProps> = ({
                 startIcon={isRow ? <ArrowBackIosIcon /> : <ExpandLessIcon />}
                 className={styles.dropdownMenuBtn}
               >
-                {isRow ? `Move left` : `Move up`}
+                {isRow ? `${t('Move left')}` : `${t('Move up')}`}
               </Button>
               <Button
                 id="navbarItemForward"
@@ -105,7 +108,7 @@ const EditItemMenu: React.FC<EditItemMenuProps> = ({
                 startIcon={isRow ? <ArrowForwardIosIcon /> : <ExpandMoreIcon />}
                 className={styles.dropdownMenuBtn}
               >
-                {isRow ? `Move right` : `Move down`}
+                {isRow ? `${t('Move right')}` : `${t('Move down')}`}
               </Button>
               <Button
                 onClick={onDeletePageClick}
@@ -114,7 +117,7 @@ const EditItemMenu: React.FC<EditItemMenuProps> = ({
                 startIcon={<DeleteForeverIcon />}
                 className={styles.dropdownMenuBtn}
               >
-                Delete
+                {t('Delete')}
               </Button>
             </>
           )}

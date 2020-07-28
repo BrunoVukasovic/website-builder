@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Menu, Button } from '@material-ui/core';
 import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../../../../components/Flex';
 
@@ -22,6 +23,8 @@ const ChangeColorMenu: React.FC<ChangeColorMenuProps> = ({
   onMenuIconClick,
   MenuProps,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -35,10 +38,10 @@ const ChangeColorMenu: React.FC<ChangeColorMenuProps> = ({
       <li>
         <Flex fluid direction="column" className={styles.buttonWrapper}>
           <Button onClick={onBackgroundClick} color="primary" size="small" className={styles.dropdownMenuBtn}>
-            Background
+            {t('Background')}
           </Button>
           <Button onClick={onMenuIconClick} color="primary" size="small" className={styles.dropdownMenuBtn}>
-            Menu Icon
+            {t('Menu icon')}
           </Button>
         </Flex>
       </li>

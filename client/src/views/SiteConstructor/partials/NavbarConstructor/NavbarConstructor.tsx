@@ -86,11 +86,13 @@ const NavbarConstructor: React.FC<NavbarConstructorProps> = ({
         const image = await fileToBase64String(files[0]);
         dispatch(changeLogo(image));
       } catch {
-        enqueueSnackbar('Something went wrong while processing image. Please, try again.', { variant: 'error' });
+        enqueueSnackbar(t('Error.Something went wrong'), { variant: 'error' });
       }
     } else {
       enqueueSnackbar(
-        `Maximum size per image is 3 MB. This image has ${files && Math.round(files[0].size / 1000000)} MB`,
+        `${t('Error.Maximum size', {
+          size: files && Math.round(files[0].size / 1000000),
+        })}`,
         {
           variant: 'error',
         }

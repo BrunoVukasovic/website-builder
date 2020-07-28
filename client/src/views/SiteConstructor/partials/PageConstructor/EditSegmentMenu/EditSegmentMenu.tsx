@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { Menu, Button } from '@material-ui/core';
 import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../../../../components/Flex';
 
@@ -17,13 +18,10 @@ export interface EditSegmentMenuProps {
   onClose: () => void;
   onEditTextClick: () => void;
   onMoveSegmentClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  onMoveUpClick?: () => void;
-  onMoveDownClick?: () => void;
   onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   onDeleteSegmentClick: () => void;
   onChangeImageSizeClick: () => void;
   onChangeImagePositionClick: () => void;
-  onNotSupportedClick: () => void;
   transparent?: boolean;
   anchorEl?: HTMLElement;
   MenuProps?: Partial<MUIMenuProps>;
@@ -36,15 +34,14 @@ const EditSegmentMenu: React.FC<EditSegmentMenuProps> = ({
   onClose,
   onEditTextClick,
   onMoveSegmentClick,
-  onMoveUpClick,
-  onMoveDownClick,
   onImageChange,
   MenuProps,
-  onNotSupportedClick,
   onChangeImageSizeClick,
   onChangeImagePositionClick,
   onDeleteSegmentClick,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -65,7 +62,7 @@ const EditSegmentMenu: React.FC<EditSegmentMenuProps> = ({
               startIcon={<EditIcon />}
               className={styles.dropdownMenuBtn}
             >
-              Edit content
+              {t('Edit content')}
             </Button>
           ) : (
             <>
@@ -78,7 +75,7 @@ const EditSegmentMenu: React.FC<EditSegmentMenuProps> = ({
               />
               <Button color="primary" size="small" startIcon={<EditIcon />} className={styles.dropdownMenuBtn}>
                 <label htmlFor="changeImageInput" className={styles.addImageLabel}>
-                  Change image
+                  {t('Change image')}
                 </label>
               </Button>
               <Button
@@ -88,7 +85,7 @@ const EditSegmentMenu: React.FC<EditSegmentMenuProps> = ({
                 startIcon={<EditIcon />}
                 className={styles.dropdownMenuBtn}
               >
-                Change size
+                {t('Change size')}
               </Button>
               <Button
                 onClick={onChangeImagePositionClick}
@@ -97,7 +94,7 @@ const EditSegmentMenu: React.FC<EditSegmentMenuProps> = ({
                 startIcon={<EditIcon />}
                 className={styles.dropdownMenuBtn}
               >
-                Change position
+                {t('Change position')}
               </Button>
             </>
           )}
@@ -110,7 +107,7 @@ const EditSegmentMenu: React.FC<EditSegmentMenuProps> = ({
             startIcon={<ExpandLessIcon />}
             className={styles.dropdownMenuBtn}
           >
-            Move up
+            {t('Move up')}
           </Button>
           <Button
             id="pageSegmentForward"
@@ -120,7 +117,7 @@ const EditSegmentMenu: React.FC<EditSegmentMenuProps> = ({
             startIcon={<ExpandMoreIcon />}
             className={styles.dropdownMenuBtn}
           >
-            Move down
+            {t('Move down')}
           </Button>
           <Button
             onClick={onDeleteSegmentClick}
@@ -129,7 +126,7 @@ const EditSegmentMenu: React.FC<EditSegmentMenuProps> = ({
             startIcon={<DeleteForeverIcon />}
             className={styles.dropdownMenuBtn}
           >
-            Delete
+            {t('Delete')}
           </Button>
         </Flex>
       </li>

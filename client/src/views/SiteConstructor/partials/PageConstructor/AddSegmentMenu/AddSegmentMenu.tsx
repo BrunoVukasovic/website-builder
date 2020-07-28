@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Menu, Button } from '@material-ui/core';
 import { MenuProps as MUIMenuProps } from '@material-ui/core/Menu';
+import { useTranslation } from 'react-i18next';
 
 import Flex from '../../../../../components/Flex';
 
@@ -11,7 +12,6 @@ export interface AddSegmentMenuProps {
   onClose: () => void;
   onAddTextClick: () => void;
   onImageInputChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
-  onNotSupportedClick?: () => void;
   anchorEl?: HTMLElement;
   MenuProps?: Partial<MUIMenuProps>;
 }
@@ -19,11 +19,12 @@ export interface AddSegmentMenuProps {
 const AddSegmentMenu: React.FC<AddSegmentMenuProps> = ({
   anchorEl,
   onClose,
-  onNotSupportedClick,
   onImageInputChange,
   onAddTextClick,
   MenuProps,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -37,7 +38,7 @@ const AddSegmentMenu: React.FC<AddSegmentMenuProps> = ({
       <li>
         <Flex fluid direction="column" className={styles.buttonWrapper}>
           <Button onClick={onAddTextClick} className={styles.dropdownMenuBtn} color="primary" size="medium">
-            Add text
+            {t('Add text')}
           </Button>
           <input
             id="addImageInput"
@@ -48,7 +49,7 @@ const AddSegmentMenu: React.FC<AddSegmentMenuProps> = ({
           />
           <Button color="primary" size="medium" className={styles.imageInputBtn}>
             <label htmlFor="addImageInput" className={styles.addImageLabel}>
-              Add image
+              {t('Add image')}
             </label>
           </Button>
         </Flex>

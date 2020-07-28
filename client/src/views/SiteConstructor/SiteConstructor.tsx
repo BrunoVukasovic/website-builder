@@ -94,7 +94,7 @@ const SiteConstructor: React.FC = () => {
         const otherSites = user.allSites.filter((site) => site.slug !== currentSite.slug);
 
         await SiteService.deleteSite(currentSite.slug);
-        enqueueSnackbar('Website deleted successfully.', { variant: 'success' });
+        enqueueSnackbar(t('Website deleted successfully'), { variant: 'success' });
 
         if (otherSites.length > 0) {
           window.open(`${window.location.origin}/edit/${otherSites[0].slug}`, '_self');
@@ -103,9 +103,9 @@ const SiteConstructor: React.FC = () => {
         }
       } catch (error) {
         if (error.response || error.request) {
-          enqueueSnackbar('Something went wrong. Please, try again.', { variant: 'error' });
+          enqueueSnackbar(t('Error.Something went wrong'), { variant: 'error' });
         } else {
-          enqueueSnackbar('Something went wrong. Please, check your internet connection and try again.', {
+          enqueueSnackbar(t('Error.Check your internet connection'), {
             variant: 'error',
           });
         }
@@ -154,7 +154,7 @@ const SiteConstructor: React.FC = () => {
         {deleteSiteModalOpen && (
           <Modal
             onClose={toggleDeleteSiteModal}
-            headerText="Delete whole website?"
+            headerText="Delete whole website"
             showFooter
             primaryButtonText="Delete"
             secondaryButtonText="Close"
