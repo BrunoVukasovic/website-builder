@@ -17,9 +17,7 @@ import styles from './action_container.module.scss';
 const ActionContainer: React.FC = () => {
   const currentSite = useSelector(selectCurrentSite);
   const params = useParams<{ action: string }>();
-  // const dispatch = useDispatch();
   const { isAuth } = useAuth();
-  // const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   // const origin = React.useMemo(() => window.location.origin, []);
@@ -31,7 +29,7 @@ const ActionContainer: React.FC = () => {
       <Flex direction="column" alignItems="center" maxHeight>
         <SiteContainer className={styles.siteContainer}>
           <Flex direction="column" className={styles.actionWrapper}>
-            <Auth shouldRedirect />
+            <Auth shouldRedirect className={styles.action} />
           </Flex>
         </SiteContainer>
         <Footer primaryBtnText="Back to editing" onPrimaryBtnClick={redirectToSiteConstructor} isOutlined />
