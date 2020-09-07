@@ -39,14 +39,18 @@ const SiteController = {
     const { site } = (req as unknown) as { site: SiteDocument };
 
     if (site) {
-      const pages = PageModel.find({ siteID: site._id });
-      const navbar = NavbarModel.findById(site.navbarID);
+      try {
+        const pages = PageModel.find({ siteID: site._id });
+        const navbar = NavbarModel.findById(site.navbarID);
 
-      await pages.remove();
-      await navbar.remove();
-      await site.remove();
+        await pages.remove();
+        await navbar.remove();
+        await site.remove();
 
-      res.status(200).send('Site deleted successfully.');
+        res.status(200).send('Site deleted successfully.');
+      } catch (err) {
+        res.status(500).send('Something went wrong, please try again.');
+      }
     } else {
       res.status(500).send("Couldn't find site attached in the request");
     }
@@ -74,29 +78,31 @@ const SiteController = {
     try {
       const site = await SiteModel.findOne({ slug });
 
-      if (site) {
-        const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
-        const sortedPages = await PageController.findAllAndSort(site._id);
-
-        if (navbar && sortedPages) {
-          const payload: GetSiteRes = {
-            currentSite: {
-              title: site.title,
-              slug: site.slug,
-              oldSlug: site.slug,
-              pages: sortedPages,
-              navbar,
-              shouldAllowEditing: user && site.userID.equals(user._id),
-            },
-          };
-
-          res.status(200).send(payload);
-        } else {
-          res.status(500).send("Couldn't find site elements");
-        }
-      } else {
+      if (!site) {
         res.status(400).send("Couldn't find site");
+        return;
       }
+
+      const navbar = await NavbarModel.findById(site.navbarID).select('-_id -__v');
+      const sortedPages = await PageController.findAllAndSort(site._id);
+
+      if (!navbar || !sortedPages) {
+        res.status(500).send("Couldn't find site elements");
+        return;
+      }
+
+      const payload: GetSiteRes = {
+        currentSite: {
+          title: site.title,
+          slug: site.slug,
+          oldSlug: site.slug,
+          pages: sortedPages,
+          navbar,
+          shouldAllowEditing: user && site.userID.equals(user._id),
+        },
+      };
+
+      res.status(200).send(payload);
     } catch (err) {
       res.status(500).send("Couldn't fetch site");
     }
@@ -130,6 +136,7 @@ const SiteController = {
     }
   },
   updateSite: async (req: Request, res: Response) => {
+    //@TODO siteData is not needed anymore
     const { siteData, pagesData, navbarData } = req.body as UpdateSiteReq;
     const { user, site } = (req as unknown) as { user: DecodedToken | undefined; site: SiteDocument };
 
