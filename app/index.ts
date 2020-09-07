@@ -12,7 +12,7 @@ import connectDatabase from './config/database';
 const PORT = process.env.PORT || 5000;
 
 const app: Application = express();
-
+// branch 1
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: false }));
 
