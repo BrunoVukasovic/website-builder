@@ -80,9 +80,9 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackC
           />
           <Field
             name="password"
-            type="text"
+            type="password"
             component={Input}
-            label={t('Email address')}
+            label={t('Password')}
             validate={[Validator.required]}
             className={styles.input}
           />

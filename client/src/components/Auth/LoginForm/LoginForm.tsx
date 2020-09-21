@@ -77,9 +77,9 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({
           />
           <Field
             name="password"
-            type="text"
+            type="password"
             component={Input}
-            label={t('Email address')}
+            label={t('Password')}
             validate={[Validator.required]}
             error={error}
             className={styles.input}
