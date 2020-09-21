@@ -65,6 +65,6 @@
   "Want to create a new website": "Want to create a new website?",
   "Website deleted successfully": "Website deleted successfully",
   "Website renamed successfully": "Website renamed successfully!",
-  "Will be deleted": "{{ subject }} will be deleted",
+  "Will be deleted": "{{ subject }} will be deleted.",
   "Your name": "Your name"
 }

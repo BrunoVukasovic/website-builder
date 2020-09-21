@@ -60,7 +60,7 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({
         }
       }
     },
-    [enqueueSnackbar, history, shouldRedirect, logIn, t]
+    [enqueueSnackbar, history, shouldRedirect, logIn, t, currentSite]
   );
 
   return (

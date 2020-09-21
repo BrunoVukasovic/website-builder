@@ -61,7 +61,7 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({
         }
       }
     },
-    [enqueueSnackbar, logIn, history, shouldRedirect]
+    [enqueueSnackbar, logIn, history, shouldRedirect, currentSite]
   );
 
   return (

@@ -54,7 +54,7 @@ const SiteConstructor: React.FC = () => {
     } else {
       dispatch(setSite(defaultSite));
     }
-  }, [params.site, dispatch, initUserData, isAuth, currentSite.slug, toggleNotFound]);
+  }, [params.site, dispatch, initUserData, isAuth, currentSite.slug, toggleNotFound, history]);
 
   const slugsAndNames = React.useMemo(() => {
     return currentSite.pages.map((page) => {

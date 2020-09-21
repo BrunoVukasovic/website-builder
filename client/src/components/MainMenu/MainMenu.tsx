@@ -199,7 +199,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ children, className, onClose, onLog
             className={styles.menuButton}
             onClick={onDeleteSiteClick}
           >
-            <p className={styles.deleteText}>{`Delete ${currentSite.title}`}</p>
+            <p className={styles.deleteText}>{`${t('Delete')} ${currentSite.title}`}</p>
           </Button>
         </Flex>
       )}
