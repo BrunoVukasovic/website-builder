@@ -11,13 +11,14 @@ import Input from '../../Input/Input';
 import Validator from '../../../utils/validation';
 import UserService from '../../../services/UserService';
 
-import { LoginFormValues } from '../../../redux/models';
+import { CurrentSiteState, LoginFormValues } from '../../../redux/models';
 import { useAuth } from '../../../utils/AuthContext';
 
 import styles from './login.module.scss';
 
 export interface LoginFormProps {
   onRegisterClick: () => void;
+  currentSite?: CurrentSiteState;
   shouldRedirect?: boolean;
   className?: string;
 }
@@ -29,6 +30,7 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({
   error,
   onRegisterClick,
   shouldRedirect,
+  currentSite,
   className,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -48,7 +50,7 @@ const LoginForm: React.FC<WithInjectedFormProps> = ({
         enqueueSnackbar(t('Authentication successful'), { variant: 'success' });
 
         if (shouldRedirect) {
-          history.push(user.allSites.length > 0 ? `/edit/${user.allSites[0].slug}` : '/edit/new-website');
+          history.push(currentSite ? `/edit/${currentSite.slug}` : '/edit/new-website');
         }
       } catch (error) {
         if (error.response) {

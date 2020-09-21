@@ -11,20 +11,27 @@ import Input from '../../Input/Input';
 import Validator from '../../../utils/validation';
 import UserService from '../../../services/UserService';
 
-import { RegisterFormValues } from '../../../redux/models';
+import { CurrentSiteState, RegisterFormValues } from '../../../redux/models';
 import { useAuth } from '../../../utils/AuthContext';
 
 import styles from './register.module.scss';
 
 export interface RegisterProps {
   onGoBackClick: () => void;
+  currentSite?: CurrentSiteState;
   shouldRedirect?: boolean;
   className?: string;
 }
 
 type WithInjectedFormProps = InjectedFormProps<RegisterFormValues, RegisterProps> & RegisterProps;
 
-const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackClick, shouldRedirect, className }) => {
+const RegisterForm: React.FC<WithInjectedFormProps> = ({
+  handleSubmit,
+  onGoBackClick,
+  shouldRedirect,
+  currentSite,
+  className,
+}) => {
   const { enqueueSnackbar } = useSnackbar();
   const { logIn } = useAuth();
   const { t } = useTranslation();
@@ -44,7 +51,7 @@ const RegisterForm: React.FC<WithInjectedFormProps> = ({ handleSubmit, onGoBackC
         enqueueSnackbar('Registration successful!', { variant: 'success' });
 
         if (shouldRedirect) {
-          history.push(user.allSites.length > 0 ? `/edit/${user.allSites[0].slug}` : '/edit/new-website');
+          history.push(currentSite ? `/edit/${currentSite.slug}` : '/edit/new-website');
         }
       } catch (error) {
         if (error.response && error.response.status === 409) {
