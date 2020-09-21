@@ -7,6 +7,10 @@
   .navbarItemsWrapper {
     overflow-x: scroll;
 
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     .logo {
       max-width: 6rem;
     }
